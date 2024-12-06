@@ -198,12 +198,12 @@
 #X floatatom 222 722 5 0 0 0 - - - 12;
 #X obj 202 786 bng 25 250 50 0 empty empty empty 17 7 0 10 #ffffff #000000 #000000;
 #X obj 248 786 bng 25 250 50 0 empty empty empty 17 7 0 10 #ffffff #000000 #000000;
-#X msg -40 392 all_pots_to_min;
-#X msg -40 425 all_pots_to_max;
 #X msg 37 42 open 1, f 7;
 #X msg 37 69 open 2, f 7;
 #X msg 37 94 open 3, f 7;
 #X msg 37 121 open 4, f 8;
+#X msg -40 392 all_pots_to_min 1;
+#X msg -40 425 all_pots_to_max 1;
 #X connect 3 0 6 0;
 #X connect 4 0 6 0;
 #X connect 5 0 6 0;
@@ -324,9 +324,9 @@
 #X connect 132 0 121 0;
 #X connect 137 0 138 0;
 #X connect 138 0 131 1;
-#X connect 141 0 64 0;
-#X connect 142 0 64 0;
+#X connect 141 0 6 0;
+#X connect 142 0 6 0;
 #X connect 143 0 6 0;
 #X connect 144 0 6 0;
-#X connect 145 0 6 0;
-#X connect 146 0 6 0;
+#X connect 145 0 64 0;
+#X connect 146 0 64 0;
