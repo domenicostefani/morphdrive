@@ -1,0 +1,3 @@
+*.wav
+!db_input_short.wav
+!db_input.wav

@@ -1,1 +1,8 @@
-Made and tested with PlugData v0.9.1
+DAFX2024 Morph Overdrive Pedals Project
+---
+
+## Folders
+- `robotic_database_recorder` - contains the code for the robotic database recorder
+
+Francesco Ardan Dal Rì  
+Domenico Stefani
