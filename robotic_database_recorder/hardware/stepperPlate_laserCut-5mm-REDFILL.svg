@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="269.83499mm"
+   height="58.949245mm"
+   viewBox="0 0 269.83499 58.949245"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   sodipodi:docname="RED_FILL_stepper_slide_plate.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="1"
+     inkscape:cx="385.99999"
+     inkscape:cy="37.499999"
+     inkscape:window-width="2560"
+     inkscape:window-height="1373"
+     inkscape:window-x="1911"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     showguides="false">
+    <sodipodi:guide
+       position="10.049783,34.47477"
+       orientation="0,-1"
+       id="guide9"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="10.049783,24.474865"
+       orientation="0,-1"
+       id="guide10"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="261.4316,46.712783"
+       orientation="1,0"
+       id="guide11"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="10.049782,29.474622"
+       orientation="0,-1"
+       id="guide1"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="19.049782,29.474622"
+       orientation="1,0"
+       id="guide3"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="256.43394,24.474865"
+       orientation="1,0"
+       id="guide4"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-0.52537717,-61.343372)">
+    <path
+       id="rect1"
+       style="fill:#ff0000;fill-opacity:1;stroke:#ff0000;stroke-width:0.07055556;stroke-linecap:square;paint-order:markers stroke fill;stroke-opacity:1;stroke-dasharray:none"
+       inkscape:label="outline"
+       d="M 0.57550331 61.393498 L 0.57550331 120.24262 L 270.31046 120.24262 L 270.31046 61.393498 L 0.57550331 61.393498 z M 72.997956 64.62896 A 1.5 1.5 0 0 1 74.498123 66.12861 A 1.5 1.5 0 0 1 72.997956 67.628776 A 1.5 1.5 0 0 1 71.498306 66.12861 A 1.5 1.5 0 0 1 72.997956 64.62896 z M 135.42102 64.62896 A 1.5 1.5 0 0 1 136.92119 66.12861 A 1.5 1.5 0 0 1 135.42102 67.628776 A 1.5 1.5 0 0 1 133.92085 66.12861 A 1.5 1.5 0 0 1 135.42102 64.62896 z M 197.93245 64.62896 A 1.5 1.5 0 0 1 199.43262 66.12861 A 1.5 1.5 0 0 1 197.93245 67.628776 A 1.5 1.5 0 0 1 196.43228 66.12861 A 1.5 1.5 0 0 1 197.93245 64.62896 z M 12.079194 72.066232 L 260.45266 72.066232 A 1.5042933 1.5133401 0 0 1 261.95696 73.579834 A 1.5042933 1.5133401 0 0 1 260.45266 75.09292 L 12.079194 75.09292 A 1.5042933 1.5133401 0 0 1 10.57541 73.579834 A 1.5042933 1.5133401 0 0 1 12.079194 72.066232 z M 19.575377 81.818091 L 252.957 81.818091 A 9 9 0 0 1 261.95696 90.818059 A 9 9 0 0 1 252.957 99.818026 L 19.575377 99.818026 A 9 9 0 0 1 10.57541 90.818059 A 9 9 0 0 1 19.575377 81.818091 z M 12.079194 106.54113 L 260.45266 106.54113 A 1.5042933 1.5133401 0 0 1 261.95696 108.05422 A 1.5042933 1.5133401 0 0 1 260.45266 109.56782 L 12.079194 109.56782 A 1.5042933 1.5133401 0 0 1 10.57541 108.05422 A 1.5042933 1.5133401 0 0 1 12.079194 106.54113 z M 197.93245 113.95721 A 1.5 1.5 0 0 1 199.43262 115.45738 A 1.5 1.5 0 0 1 197.93245 116.95703 A 1.5 1.5 0 0 1 196.43228 115.45738 A 1.5 1.5 0 0 1 197.93245 113.95721 z M 72.997956 114.00734 A 1.5 1.5 0 0 1 74.498123 115.50699 A 1.5 1.5 0 0 1 72.997956 117.00716 A 1.5 1.5 0 0 1 71.498306 115.50699 A 1.5 1.5 0 0 1 72.997956 114.00734 z M 135.42102 114.00734 A 1.5 1.5 0 0 1 136.92119 115.50699 A 1.5 1.5 0 0 1 135.42102 117.00716 A 1.5 1.5 0 0 1 133.92085 115.50699 A 1.5 1.5 0 0 1 135.42102 114.00734 z "
+       transform="translate(0)" />
+  </g>
+</svg>
