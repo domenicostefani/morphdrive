@@ -1,3 +1,6 @@
+import oscP5.*;
+import netP5.*;
+
 PImage backgroundImg;
 PSNColors psnColors;
 PedalPoints pedalPoints;
@@ -5,10 +8,18 @@ ArrayList<PVector> centers;
 float SCALE; // Gui scale, from [0,1] coordinates to [width,height] pixel coordinates to display
 PVector mousePos;
 
+
+OscP5 oscP5;
+NetAddress pythonReceiver;
+
 void setup() {
   size(640, 640);
   SCALE = min(width,height); // Set scale to minimum window dimension
-  frameRate(60);
+  frameRate(10);
+  
+  // Initialize OSC
+  oscP5 = new OscP5(this, 12000); // Listen for incoming OSC messages on port 12000 (if needed)
+  pythonReceiver = new NetAddress("127.0.0.1", 12345); // Python receiver on localhost:12345
   
   pedalPoints = new PedalPoints();
   psnColors = new PSNColors();
@@ -34,7 +45,7 @@ void draw() {
   stroke(255);
   
   // Allow locking cursor position with mouse press
-  if (!cursorLock){
+  if (!cursorLock) {
     mousePos.x = mouseX;  
     mousePos.y = mouseY;
     noCursor();
@@ -55,13 +66,24 @@ void draw() {
   stroke(0);
   ellipse(mousePos.x, mousePos.y,potRadius*2,potRadius*2);
   // Draw pot intex pointing to closest area
-  PVector directionVector = PVector.sub(centers.get(closestAreaIdx), scalecMousePos).normalize();;
+  PVector directionVector = PVector.sub(centers.get(closestAreaIdx), scalecMousePos).normalize();
   PVector intersectionPoint = PVector.add(mousePos, PVector.mult(directionVector, potRadius));
   // Actual pot-index drawing
   line(mousePos.x,mousePos.y,intersectionPoint.x,intersectionPoint.y);
+  
+  // Send OSC message
+  sendOscMessage(mousePos.x, mousePos.y);
 }
 
 void mousePressed() {
   // Lock cursor position when pressing
   cursorLock = !cursorLock;
+}
+
+
+void sendOscMessage(float x, float y) {
+  OscMessage msg = new OscMessage("/mouse/position");
+  msg.add(x); 
+  msg.add(y); 
+  oscP5.send(msg, pythonReceiver);
 }
