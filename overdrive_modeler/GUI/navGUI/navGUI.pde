@@ -11,11 +11,12 @@ PVector mousePos;
 
 OscP5 oscP5;
 NetAddress pythonReceiver;
+int OSC_SEND_EVERY_X_FRAMES = 6; // with framerate at 60fps, osc framerate is 10fps
 
 void setup() {
   size(640, 640);
   SCALE = min(width,height); // Set scale to minimum window dimension
-  frameRate(10);
+  frameRate(60);
   
   // Initialize OSC
   oscP5 = new OscP5(this, 12000); // Listen for incoming OSC messages on port 12000 (if needed)
@@ -72,7 +73,9 @@ void draw() {
   line(mousePos.x,mousePos.y,intersectionPoint.x,intersectionPoint.y);
   
   // Send OSC message
-  sendOscMessage(PVector scaledMousePos);
+  if (frameCount % OSC_SEND_EVERY_X_FRAMES == 0) {
+    sendOscMessage(scaledMousePos);
+  }
 }
 
 void mousePressed() {
@@ -83,7 +86,7 @@ void mousePressed() {
 
 void sendOscMessage(PVector mousepos01) {
   OscMessage msg = new OscMessage("/mouse/positionScaled");
-  msg.add(mousepos01,x); 
-  msg.add(mousepos01,y); 
+  msg.add(mousepos01.x); 
+  msg.add(mousepos01.y); 
   oscP5.send(msg, pythonReceiver);
 }
