@@ -16,7 +16,6 @@ PCA_NN = "pca_to_latent_model_8.pth"
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-
 class PCAtoLatentModel(nn.Module):
     def __init__(self, input_dim=2, output_dim=8):
         super(PCAtoLatentModel, self).__init__()
@@ -34,7 +33,7 @@ class PCAtoLatentModel(nn.Module):
         return self.fc(x)
 
 pca_model = PCAtoLatentModel().to(device)
-pca_model.load_state_dict(torch.load(PCA_NN, map_location=device))
+pca_model.load_state_dict(torch.load(PCA_NN, map_location=device, weights_only=True))
 pca_model.eval()
 
 
@@ -77,8 +76,6 @@ overlap_buffer = np.zeros(CHUNK_SIZE)
 def handle_coordinates(address, *args):
     global vec_c
     x, y = args
-    x /= 640  
-    y /= 640  
     input_tensor = torch.tensor([[x, y]], dtype=torch.float32).to(device)
 
     with torch.no_grad():
@@ -120,7 +117,7 @@ def main():
 
     # Start OSC server
     dispatcher = Dispatcher()
-    dispatcher.map("/mouse/position", handle_coordinates)
+    dispatcher.map("/mouse/positionScaled", handle_coordinates)
 
     osc_server = BlockingOSCUDPServer(("127.0.0.1", 12345), dispatcher)
     osc_thread = threading.Thread(target=osc_server.serve_forever, daemon=True)

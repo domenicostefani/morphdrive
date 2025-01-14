@@ -54,8 +54,8 @@ void draw() {
   }
   
   // Draw pot-shaped cursor
-  PVector scalecMousePos = mousePos.copy().div(SCALE);
-  float[] closestAreaIdxDist = getClosestCenter(scalecMousePos);
+  PVector scaledMousePos = mousePos.copy().div(SCALE);
+  float[] closestAreaIdxDist = getClosestCenter(scaledMousePos);
   int closestAreaIdx = int(closestAreaIdxDist[0]);
   float closestAreaDist = closestAreaIdxDist[1];
   float alpha = map(closestAreaDist,0,0.5,255,0);
@@ -66,13 +66,13 @@ void draw() {
   stroke(0);
   ellipse(mousePos.x, mousePos.y,potRadius*2,potRadius*2);
   // Draw pot intex pointing to closest area
-  PVector directionVector = PVector.sub(centers.get(closestAreaIdx), scalecMousePos).normalize();
+  PVector directionVector = PVector.sub(centers.get(closestAreaIdx), scaledMousePos).normalize();
   PVector intersectionPoint = PVector.add(mousePos, PVector.mult(directionVector, potRadius));
   // Actual pot-index drawing
   line(mousePos.x,mousePos.y,intersectionPoint.x,intersectionPoint.y);
   
   // Send OSC message
-  sendOscMessage(mousePos.x, mousePos.y);
+  sendOscMessage(PVector scaledMousePos);
 }
 
 void mousePressed() {
@@ -81,9 +81,9 @@ void mousePressed() {
 }
 
 
-void sendOscMessage(float x, float y) {
-  OscMessage msg = new OscMessage("/mouse/position");
-  msg.add(x); 
-  msg.add(y); 
+void sendOscMessage(PVector mousepos01) {
+  OscMessage msg = new OscMessage("/mouse/positionScaled");
+  msg.add(mousepos01,x); 
+  msg.add(mousepos01,y); 
   oscP5.send(msg, pythonReceiver);
 }
