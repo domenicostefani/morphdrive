@@ -6,7 +6,7 @@ import pyaudio
 from pythonosc.dispatcher import Dispatcher
 from pythonosc.osc_server import BlockingOSCUDPServer
 
-from rnn_static_minuscola import StaticHyperGRU
+from rnn_static_mini import StaticHyperGRU
 
 
 SR = 44100
