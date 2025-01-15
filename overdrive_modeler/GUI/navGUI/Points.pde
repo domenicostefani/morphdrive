@@ -142,12 +142,36 @@ float[] getClosestCenter(PVector pos){
 class PedalPoints {
   ArrayList<PedalPoint> points;
   ArrayList<Integer> classes;
+  ArrayList<String> classnames;
   ArrayList<PVector> centersCache;
   
   PedalPoints(){
     points = new ArrayList<PedalPoint>();
     classes = new ArrayList<Integer>();
+    classnames = new ArrayList<String>();
     centersCache = new ArrayList<PVector>();
+  }
+  
+  
+  int size(){
+    return points.size();
+  }
+  
+  void add(float x, float y, int pClass, String pClassName){
+    PedalPoint toadd = new PedalPoint(x,y, pClass);
+    points.add(toadd);
+
+    boolean inclasses = false;
+    for (int ci=0; ci<classes.size(); ++ci) {
+      if (classes.get(ci) == pClass) {
+        inclasses = true;
+        break;
+      }
+    }
+    if (!inclasses) {
+      classes.add(pClass);
+      classnames.add(pClassName);
+    }  
   }
   
   /**
@@ -158,21 +182,24 @@ class PedalPoints {
     for (int i=0; i<numPedals; ++i){
       float x = random(1), y = random(1);
       int pClass = x< 0.5 && y<0.5 ? 0: (x>= 0.5 && y<0.5)?1:(x<0.5 ? 2:3); // Choose pedal class depending on space corner
-      PedalPoint toadd = new PedalPoint(x,y, pClass);
-      points.add(toadd);
-      
-      boolean inclasses = false;
-      for (int ci=0; ci<classes.size(); ++ci) {
-        if (classes.get(ci) == pClass) {
-          inclasses = true;
-          break;
-        }
-      }
-      if (!inclasses) {
-        classes.add(pClass);
-      }  
+      String classname = "test "+pClass;
+      this.add(x,y,pClass,classname);
     }
-    Collections.sort(classes);
+  }
+
+  void clear(){
+    points.clear();
+    classes.clear();
+    classnames.clear();
+  }
+
+  String getClassname(int idx){
+    if (idx < 0 || idx >= classnames.size()) {
+      println("Bad index ",idx);
+      return null;
+    }
+    println("Returning ",classnames.get(idx));
+    return classnames.get(idx);
   }
   
   PedalPoint get(int index) {
@@ -185,6 +212,7 @@ class PedalPoints {
   
   ArrayList<PVector> computeCenters(){
     centersCache.clear();
+    println("Computing centers");
     
     for (int cidx=0; cidx<classes.size(); ++cidx){
       int classValue = classes.get(cidx);
