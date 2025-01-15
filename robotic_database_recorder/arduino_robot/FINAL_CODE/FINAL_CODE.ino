@@ -12,7 +12,7 @@
 
 // define step constant
 #define STEP_PER_REVOLUTION_TOP 2038
-#define STEP_PER_REVOLUTION_RIGHT 509
+#define STEP_PER_REVOLUTION_RIGHT 2038
 
 #define CONTROLLER_TOP_PIN1 6
 #define CONTROLLER_TOP_PIN2 7
@@ -31,9 +31,9 @@
 #define LED_LB_PIN 12
 
 
-#define STEPPER_MAXSPEED 20.0
-#define STEPPER_ACCELERATION 10.0
-#define STEPPER_SPEED 20.0
+#define STEPPER_MAXSPEED 80.0
+#define STEPPER_ACCELERATION 40.0
+#define STEPPER_SPEED 80.0
 
 // Declare Stepper Controllers
 AccelStepper stepperTop(AccelStepper::FULL4WIRE, CONTROLLER_TOP_PIN1, CONTROLLER_TOP_PIN3, CONTROLLER_TOP_PIN2, CONTROLLER_TOP_PIN4);
@@ -241,9 +241,9 @@ void setup() {
   Serial.begin(BAUD_RATE);
   while(!Serial);
   // 4 times more because slower gear ratio on top
-  stepperTop.setMaxSpeed(STEPPER_MAXSPEED*4.0);   // set the maximum speed
-  stepperTop.setAcceleration(STEPPER_ACCELERATION*4.0); // set acceleration
-  stepperTop.setSpeed(STEPPER_SPEED*4.0);         // set initial speed
+  stepperTop.setMaxSpeed(STEPPER_MAXSPEED);   // set the maximum speed
+  stepperTop.setAcceleration(STEPPER_ACCELERATION); // set acceleration
+  stepperTop.setSpeed(STEPPER_SPEED);         // set initial speed
 
   stepperRight.setMaxSpeed(STEPPER_MAXSPEED);   // set the maximum speed
   stepperRight.setAcceleration(STEPPER_ACCELERATION); // set acceleration
