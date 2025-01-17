@@ -7,6 +7,7 @@ from pythonosc.dispatcher import Dispatcher
 from pythonosc.osc_server import BlockingOSCUDPServer
 
 from rnn_static_mini import StaticHyperGRU
+from sendDataframe2Processing import DFSender
 
 
 SR = 44100
@@ -14,7 +15,12 @@ CHUNK_SIZE = 1024
 TRACED_RNN = "pedaliny_static_rnn_mini_traced.pth"
 PCA_NN = "pca_to_latent_model_8.pth"
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+DATAFRAME_PATH = "complete_dataframe_8.csv" # Declare dataframe path
 
+## Read and send points on startup, later send again if receiving message "/gimmeDataframe"
+dataframeSender = DFSender("127.0.0.1", 12000)
+dataframeSender.readDataframe(DATAFRAME_PATH)
+dataframeSender.send()
 
 class PCAtoLatentModel(nn.Module):
     def __init__(self, input_dim=2, output_dim=8):
@@ -118,6 +124,7 @@ def main():
     # Start OSC server
     dispatcher = Dispatcher()
     dispatcher.map("/mouse/positionScaled", handle_coordinates)
+    dispatcher.map("/gimmeDataframe", lambda address, *args : dataframeSender.send())
 
     osc_server = BlockingOSCUDPServer(("127.0.0.1", 12345), dispatcher)
     osc_thread = threading.Thread(target=osc_server.serve_forever, daemon=True)

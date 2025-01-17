@@ -3,16 +3,22 @@ import java.util.Collections;
 class PedalPoint {
   PVector position;
   int label;
+  float gain = 0;
+  float tone = 0;
 
   
-  PedalPoint(float x, float y, int label){
+  PedalPoint(float x, float y, int label, float gain, float tone){
     position = new PVector(x, y);
     this.label = label;
+    this.gain = gain;
+    this.tone = tone;
   }
   
-  PedalPoint(PVector position, int label){
+  PedalPoint(PVector position, int label, float gain, float tone){
     this.position = position;
     this.label = label;
+    this.gain = gain;
+    this.tone = tone;
   }
   
   void draw(float draw_scale){
@@ -22,6 +28,26 @@ class PedalPoint {
     pushMatrix();
     ellipse(position.x*draw_scale,position.y*draw_scale,10,10);
     popMatrix();
+  }
+
+  PVector getPosition(){
+    return position;
+  }
+
+  float getX(){
+    return position.x;
+  }
+
+  float getY(){
+      return position.y;
+  }
+
+  float getGain(){
+    return gain;
+  }
+
+  float getTone(){
+    return tone;
   }
   
 }
@@ -112,30 +138,6 @@ float[] getClosestCenter(PVector pos){
   return res;
 }
 
-
-
-//ArrayList<PedalPoint> test_getRandomPointArray(int len){
-//    ArrayList<PedalPoint> res = new ArrayList<PedalPoint>();
-    
-    
-//    for (int i=0; i<len; ++i){
-//      float x, y;
-//      x = random(1);
-//      y = random(1);
-//      int label = x< 0.5 && y<0.5 ? 0: (x>= 0.5 && y<0.5)?1:(x<0.5 ? 2:3);
-      
-      
-//      PedalPoint toadd = new PedalPoint(x,y, label);
-      
-//      res.add(toadd);
-      
-//    }
-    
-    
-//    return res;
-
-//}
-
 /**
  * Class with list of points representing different pedals in the 2D representation of the latent space
  */
@@ -157,8 +159,8 @@ class PedalPoints {
     return points.size();
   }
   
-  void add(float x, float y, int pClass, String pClassName){
-    PedalPoint toadd = new PedalPoint(x,y, pClass);
+  void add(float x, float y, int pClass, String pClassName, float gain, float tone){
+    PedalPoint toadd = new PedalPoint(x,y, pClass, gain, tone); //TODO: fix gaintone
     points.add(toadd);
 
     boolean inclasses = false;
@@ -183,7 +185,7 @@ class PedalPoints {
       float x = random(1), y = random(1);
       int pClass = x< 0.5 && y<0.5 ? 0: (x>= 0.5 && y<0.5)?1:(x<0.5 ? 2:3); // Choose pedal class depending on space corner
       String classname = "test "+pClass;
-      this.add(x,y,pClass,classname);
+      this.add(x,y,pClass,classname, x,y);
     }
   }
 
@@ -243,6 +245,15 @@ class PedalPoints {
       res.add(points.get(i));
     }
     return res;
+  }
+
+  PedalPoint getHovering(PVector pos){
+    for (int i=0; i<points.size(); ++i){
+      if (pos.dist(points.get(i).position) < 0.01){
+        return points.get(i);
+      }
+    }
+    return null;
   }
   
 }

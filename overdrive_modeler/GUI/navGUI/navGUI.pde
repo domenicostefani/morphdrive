@@ -36,6 +36,10 @@ void setup() {
   drawPointer = true;//TODO: remove this line
 
   mousePos = new PVector(); // Save mouse position
+  
+  // Ask for dataframe with pedal points
+  OscMessage msg = new OscMessage("/gimmeDataframe");
+  oscP5.send(msg, pythonReceiver);
 }
 
 boolean DO_RENDER_BACKGROUND = false;
@@ -44,15 +48,77 @@ void renderBackground() {
   if (!rendering) {
     rendering = true;
 
-    centers = pedalPoints.computeCenters();
+    centers = pedalPoints.computeCenters(); //<>//
     drawBackground(SCALE); // Draw Background with (1) measurement points (2) faded color area blobs (3) area barycenters
- //<>// //<>//
+ //<>// //<>// //<>// //<>//
     save("back.png"); // Save as an image to save computations later in draw()
-    backgroundImg = loadImage("back.png");  // Load into backgroundImg
+    backgroundImg = loadImage("back.png");  // Load into backgroundImg //<>//
 
     rendering = false;
   }
 }
+
+void drawTooltip(float x, float y, float val1, float val2) {
+    // draw a tooltip that should look like a minimal baloon
+    // First there should be a triangle pointing up to x,t, with equal sides at 20px
+    // Then there should be a rectangle with rounded corners of 5px, attached to the bottom 
+    // of the triangle, with a width of 100px and a height of 50px
+    y = y+15; // move tooltip down a bit
+    fill(255, 255, 255, 90);
+    noStroke();
+    int val1_10 = round(val1*10.0);
+    int val2_10 = round(val2*10.0);
+    // stroke(255, 255, 255, 50);
+    // Draw triangle
+    beginShape();
+    vertex(x, y);
+    vertex(x-10, y+21);
+    vertex(x+10, y+21);
+    endShape(CLOSE);
+
+    // Draw rectangle
+    float rectWidth = 100, rectHeight = 50, bottomTextArea = 14;
+    rect(x-rectWidth/2, y+20, rectWidth, rectHeight+bottomTextArea, 5);
+    PVector leftCenter = new PVector(rectWidth/4.0+x-rectWidth/2, rectHeight/2.0+y+20);
+    PVector rightCenter = new PVector(3.0*rectWidth/4.0+x-rectWidth/2, rectHeight/2.0+y+20);
+
+    // We now draw a knob in each center
+    noFill();
+    stroke(0);
+    float margin = 5;
+    float potRadius = min(rectHeight/2.0-margin, rectWidth/4.0-margin);
+    ellipse(leftCenter.x, leftCenter.y, potRadius*2, potRadius*2);
+    ellipse(rightCenter.x, rightCenter.y, potRadius*2, potRadius*2);
+
+    // We now draw the values of the knobs with a line. value 0 should be at -150 degrees from the top, value 1 at 150 degrees from the top
+    
+    float startangle = -240;
+    float endangle = 60; 
+    float angle1 = radians(map(val1, 0, 1,startangle, endangle));
+    float angle2 = radians(map(val2, 0, 1, startangle, endangle));
+    PVector leftKnob = PVector.add(leftCenter, PVector.fromAngle(angle1).mult(potRadius));
+    PVector rightKnob = PVector.add(rightCenter, PVector.fromAngle(angle2).mult(potRadius));
+    line(leftCenter.x, leftCenter.y, leftKnob.x, leftKnob.y);
+    line(rightCenter.x, rightCenter.y, rightKnob.x, rightKnob.y);
+
+    // Now draw Gain and Tone labels under the knobs
+    fill(0);
+    textAlign(CENTER, CENTER);
+    textSize(12);
+    // text("Gain: "+int(val1*10), leftCenter.x, leftCenter.y+potRadius+10);
+    // text("Tone: "+int(val2*10), rightCenter.x, rightCenter.y+potRadius+10);
+    text("Gain: "+(val1_10), leftCenter.x, leftCenter.y+potRadius+10);
+    text("Tone: "+(val2_10), rightCenter.x, rightCenter.y+potRadius+10);
+
+
+    // text("G: "+val1, x-40, y+40);
+    // text("T: "+val2, x-40, y+60);
+
+
+}
+
+long lastCheck = 0;
+boolean lockTooltip = false;
 
 void draw() {
   // Draw rendered background
@@ -105,6 +171,18 @@ void draw() {
   if (frameCount % OSC_SEND_EVERY_X_FRAMES == 0) {
     sendOscMessage(scaledMousePos);
   }
+
+  // Draw tooltip if hovering any point
+  if ((millis() > lastCheck + 500)||lockTooltip) {
+    // lastCheck = millis();
+    PedalPoint hoveringPoint = pedalPoints.getHovering(scaledMousePos);
+    if (hoveringPoint != null) {
+      drawTooltip(hoveringPoint.getX()*SCALE, hoveringPoint.getY()*SCALE, hoveringPoint.getGain(), hoveringPoint.getTone());
+      lockTooltip = true;
+    } else {
+      lockTooltip = false;
+    }
+  }
 }
 
 void mousePressed() {
@@ -140,14 +218,16 @@ void oscEvent(OscMessage theOscMessage) {
 
 
   if (theOscMessage.checkAddrPattern("/addPoint")==true) {
-    if (theOscMessage.checkTypetag("ffis")) {
+    if (theOscMessage.checkTypetag("ffisff")) {
       println("$ I received a point");
       float sentx = theOscMessage.get(0).floatValue();
       float senty = theOscMessage.get(1).floatValue();
       int sentlabel = theOscMessage.get(2).intValue();
       String sentlabelName = theOscMessage.get(3).toString();
+      float gain = theOscMessage.get(4).floatValue();
+      float tone = theOscMessage.get(5).floatValue();
 
-      pedalPoints.add(sentx, senty, sentlabel,sentlabelName);
+      pedalPoints.add(sentx, senty, sentlabel,sentlabelName, gain, tone);
 
       return;
     }
