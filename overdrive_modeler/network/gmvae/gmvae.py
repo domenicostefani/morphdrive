@@ -228,13 +228,13 @@ def log_gauss(q_z, mu, logvar):
     return torch.sum(llh, dim=1)
 
 
-class Pedaliny_GMVAE(nn.Module):
+class Pedals_GMVAE(nn.Module):
     def __init__(self, 
                  input_dim=1,
                  latent_dim=16, 
                  n_pedals=5
                  ):
-        super(Pedaliny_GMVAE, self).__init__()
+        super(Pedals_GMVAE, self).__init__()
         self.latent_dim = latent_dim
         self.n_pedals = n_pedals
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -294,7 +294,7 @@ class Pedaliny_GMVAE(nn.Module):
 
 
 if __name__ == '__main__':
-    model = Pedaliny_GMVAE(input_dim=1, latent_dim=16, n_pedals=5).to('cuda')
+    model = Pedals_GMVAE(input_dim=1, latent_dim=16, n_pedals=5).to('cuda')
     input = torch.randn(1, 1, 192000).to('cuda') # 88200
     output = model(input)
     print(f'OUTPUT SHAPE : {output[0].shape}')

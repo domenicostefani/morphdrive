@@ -1,9 +1,9 @@
 import pandas as pd
 import os
+os.chdir(os.path.dirname(os.path.abspath(__file__))) # Change working directory to the script directory
 
-DATASET_DIR = '/home/ardan/ARDAN/PEDALINY/pedaliny_prove'
-OUTPUT_PATH = '/home/ardan/ARDAN/PEDALINY/pedaliny_dataframe_ultimate.csv'
-
+DATASET_DIR = '../dataset/'
+OUTPUT_PATH = os.path.join(DATASET_DIR,'pedals_dataframe_ultimate.csv')
 
 data = []
 
@@ -26,7 +26,12 @@ for pedal_name in os.listdir(DATASET_DIR):
         file_path = os.path.join(pedal_path, file_name)
 
         if complete_name not in file_dict:
-            file_dict[complete_name] = {"pedal_name": pedal_name, "g_value": g_value, "t_value": t_value, "audio_path": "", "sweep_path": "", "noise_path": ""}
+            file_dict[complete_name] = {"pedal_name": pedal_name,
+                                        "g_value": g_value,
+                                        "t_value": t_value,
+                                        "audio_path": "",
+                                        "sweep_path": "",
+                                        "noise_path": ""}
         
         if file_type == "a":
             file_dict[complete_name]["audio_path"] = file_path
@@ -42,4 +47,3 @@ df.insert(0, "complete_name", df.index)
 
 df.to_csv(OUTPUT_PATH, index=False)
 print(f"Dataframe saved to {OUTPUT_PATH}")
-

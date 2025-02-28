@@ -3,7 +3,6 @@ import time
 import os
 import pandas as pd
 
-# Load the data from C:\Users\cimil\Desktop\DAFx24-Pedaliny\ROBOT_RECORDER\overdrive_modeler\network\complete_dataframe_8.csv
 TEST_DATAPATH = "../../network/complete_dataframe_8.csv"
 
 class DFSender:
