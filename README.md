@@ -1,7 +1,12 @@
 DAFX2025 Morph Overdrive Pedals Project
 ---
 
-Robot Prototype:
+<!-- ### Neural Modeler -->
+
+### GUI
+![docs\images\gui_two_pedals.png](docs\images\gui_two_pedals.png)
+
+### Robot Prototype:
 <!-- ![Robot Prototype](docs\images\IMG_1123.jpg)
 -->
 
