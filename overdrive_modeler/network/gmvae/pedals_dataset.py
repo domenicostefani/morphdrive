@@ -32,7 +32,10 @@ class PedalsDataset(Dataset):
             filepath = row["sweep_path"]
         elif self.mode == "noise":
             filepath = row["noise_path"]
+        else:
+            raise ValueError("Mode must be either 'audio', 'sweep' or 'noise'")
 
+        assert os.path.exists(filepath), f"File {filepath} not found"
         audio, _ = librosa.load(filepath, sr=48000)
 
         return {

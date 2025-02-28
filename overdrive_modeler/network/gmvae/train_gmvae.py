@@ -20,7 +20,7 @@ EPOCHS = 3000
 
 def train():
 
-    dataset = PedalsDataset(DATAFRAME_PATH, mode="sweeps")
+    dataset = PedalsDataset(DATAFRAME_PATH, mode="sweep")
     unique_labels = len(dataset.get_unique_labels())
 
     dataloader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True, drop_last=True)
