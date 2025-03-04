@@ -168,7 +168,7 @@ if __name__ == "__main__":
     assert os.path.exists(DATAFRAME_PATH), f"Dataframe not found at {DATAFRAME_PATH}"
     dataframe = pd.read_csv(DATAFRAME_PATH)
     dataframe = filter_dataframe(dataframe, PEDALS)
-    dataset = Pedaliny_Dataset_VAE(dataframe, sr=SR, mode="sweep1", offset=20000, length=88200)
+    dataset = PedalsDataset_VAE(dataframe, sr=SR, mode="sweep1", offset=20000, length=88200)
     labels = dataset.get_unique_labels() 
     unique_labels = len(labels)
     label_to_index = {label: idx for idx, label in enumerate(labels)}
