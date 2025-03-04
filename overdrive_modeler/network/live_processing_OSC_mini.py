@@ -9,6 +9,8 @@ from pythonosc.osc_server import BlockingOSCUDPServer
 from rnn_static_mini import StaticHyperGRU
 from sendDataframe2Processing import DFSender
 
+import os
+os.chdir(os.path.dirname(os.path.abspath(__file__))) # Change working directory to the script directory
 
 SR = 44100
 CHUNK_SIZE = 1024
@@ -16,6 +18,10 @@ TRACED_RNN = "pedaliny_static_rnn_mini_traced.pth"
 PCA_NN = "pca_to_latent_model_8.pth"
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 DATAFRAME_PATH = "complete_dataframe_8.csv" # Declare dataframe path
+
+assert os.path.exists(TRACED_RNN), "Traced RNN model not found at %s" % os.path.abspath(TRACED_RNN)
+assert os.path.exists(PCA_NN), "PCA to latent model not found at %s" % os.path.abspath(PCA_NN)
+assert os.path.exists(DATAFRAME_PATH), "Datagram file not found at %s" % os.path.abspath(DATAFRAME_PATH)
 
 ## Read and send points on startup, later send again if receiving message "/gimmeDataframe"
 dataframeSender = DFSender("127.0.0.1", 12000)
@@ -42,8 +48,6 @@ pca_model = PCAtoLatentModel().to(device)
 pca_model.load_state_dict(torch.load(PCA_NN, map_location=device, weights_only=True))
 pca_model.eval()
 
-
-
 rnn_model = StaticHyperGRU(
     inp_channel=1,
     out_channel=1,
@@ -54,23 +58,8 @@ rnn_model = StaticHyperGRU(
     num_conds=8,
 ).to(device)
 
-
-
-'''
-x = torch.randn(1, 1, 1024) 
-c = torch.randn(1, 8) 
-h0 = torch.randn(1, 1, 2)  
-
-model.load_state_dict(torch.load("/Users/ardan/Desktop/PedalinY/pedaliny_static_rnn_mini.pth", map_location=DEVICE))
-model.eval()
-model_traced = torch.jit.trace(model, (x, c, h0))
-model_traced.save("pedaliny_static_rnn_mini_traced.pth")'''
-
-
-
 rnn_model_traced = torch.jit.load(TRACED_RNN)
 rnn_model_traced.eval()
-
 
 vec_c = torch.zeros(1, 8, dtype=torch.float32).to(device)
 vec_lock = threading.Lock()

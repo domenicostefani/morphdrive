@@ -1,21 +1,20 @@
-
 import pandas as pd
 import librosa
 from torch.utils.data import Dataset
+import os
+os.chdir(os.path.dirname(os.path.abspath(__file__))) # Change working directory to the script directory
 
-DATAFRAME_PATH_PROVA = "/home/ardan/ARDAN/PEDALINY/pedaliny_dataframe_marzo_32000.csv"
+
+DATASET_DIR = '../dataset/'
+DATAFRAME_PATH = os.path.join(DATASET_DIR,'pedals_dataframe_ultimate.csv')
 
 
+class PedalsDataset(Dataset):
 
-class Pedaliny_Dataset_VAE(Dataset):
+    def __init__(self, dataframe_path, mode):
 
-    def __init__(self, dataframe, sr, mode, offset=0, length=-1):
-
-        self.df = dataframe
+        self.df = pd.read_csv(dataframe_path)
         self.mode = mode
-        self.sr = sr
-        self.offset = offset
-        self.length = length
 
 
     def __len__(self):
@@ -24,26 +23,20 @@ class Pedaliny_Dataset_VAE(Dataset):
     def get_unique_labels(self):
         return self.df['pedal_name'].unique() 
 
-
     def __getitem__(self, idx):
         row = self.df.iloc[idx]
         
         if self.mode == "audio":
             filepath = row["audio_path"]
-        elif self.mode == "sweep1":
-            filepath = row["sweep_path1"]
-        elif self.mode == "sweep2":
-            filepath = row["sweep_path2"]
-        elif self.mode == "sweep3":
-            filepath = row["sweep_path3"]
+        elif self.mode == "sweep":
+            filepath = row["sweep_path"]
         elif self.mode == "noise":
             filepath = row["noise_path"]
-
-        audio, _ = librosa.load(filepath, sr=self.sr)
-        if self.offset == 0 and self.length == -1:
-            pass
         else:
-            audio = audio[self.offset:self.length+self.offset] 
+            raise ValueError("Mode must be either 'audio', 'sweep' or 'noise'")
+
+        assert os.path.exists(filepath), f"File {filepath} not found"
+        audio, _ = librosa.load(filepath, sr=48000)
 
         return {
             "audio": audio,
@@ -54,8 +47,7 @@ class Pedaliny_Dataset_VAE(Dataset):
 
 
 if __name__ == "__main__":
-    dataframe = pd.read_csv(DATAFRAME_PATH_PROVA)
-    dataset_audio = Pedaliny_Dataset_VAE(dataframe, sr=32000, mode="sweep1")
+    dataset_audio = PedalsDataset(DATAFRAME_PATH, mode="audio")
     print(f"Number of samples in dataset: {len(dataset_audio)}")
     sample_audio = dataset_audio[0]
     print(f"Sample audio shape: {sample_audio['audio'].shape}")

@@ -7,7 +7,6 @@ points_per_label = 5
 
 import pandas as pd
 
-# Load the data from C:\Users\cimil\Desktop\DAFx24-Pedaliny\ROBOT_RECORDER\overdrive_modeler\network\complete_dataframe_8.csv
 DATAPATH = "../../network/complete_dataframe_8.csv"
 assert os.path.exists(DATAPATH), "File not found at %s" % DATAPATH
 df = pd.read_csv(DATAPATH)

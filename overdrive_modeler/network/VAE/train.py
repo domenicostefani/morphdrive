@@ -2,8 +2,8 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 from torch.optim import Adam
-from model import Pedaliny_VAE
-from dataset import Pedaliny_Dataset_VAE
+from model import Pedals_VAE
+from dataset import PedalsDataset_VAE
 import wandb
 import matplotlib.pyplot as plt
 from torch.optim.lr_scheduler import LambdaLR
@@ -12,7 +12,10 @@ import seaborn as sns
 import pandas as pd
 from plotters import plot_spectrograms_to_wandb, load_audio_to_wandb, pca_on_latents, tsne_on_latents
 import os
+os.chdir(os.path.dirname(os.path.abspath(__file__))) # Change working directory to the script directory
 
+DATASET_DIR = '../dataset_32000Hz/'
+DATAFRAME_PATH = os.path.join(DATASET_DIR,'pedals_dataframe.csv')
 
 SR = 32000
 BATCH_SIZE = 32
@@ -20,17 +23,15 @@ LEARNING_RATE = 1e-3
 EPOCHS = 2
 N_LATENTS = 8
 VERSION = 3
-DATAFRAME_PATH = "/home/ardan/ARDAN/PEDALINY/pedaliny_dataframe_marzo_32000.csv"
 THIS_FOLDER_PATH = os.path.dirname(os.path.abspath(__file__))
 
-SAVE_MODEL_PATH = f'{THIS_FOLDER_PATH}/model_VAE_{N_LATENTS}_V{VERSION}.pth'
-SAVE_LATENTS_PATH = f'{THIS_FOLDER_PATH}/latents_VAE_{N_LATENTS}_V{VERSION}.csv'
-print(THIS_FOLDER_PATH)
+SAVE_MODEL_PATH = os.path.abspath(f'model_VAE_{N_LATENTS}_V{VERSION}.pth')
+SAVE_LATENTS_PATH = os.path.abspath(f'latents_VAE_{N_LATENTS}_V{VERSION}.csv')
 LOGS = False
 
 PEDALS = ['bigfella', 'chime', 'silkdrive', 'zendrive']
 
-WANDB_PROJECT_NAME = "pedaliny_vae_marzo"
+WANDB_PROJECT_NAME = "Pedals_VAE_marzo"
 WANDB_ENTITY = 'francesco-dalri-2'
 
 ###################################################################################################
@@ -38,7 +39,6 @@ WANDB_ENTITY = 'francesco-dalri-2'
 if LOGS:
     wandb.login()
     wandb.init(project=WANDB_PROJECT_NAME, entity=WANDB_ENTITY)
-
 
 def model_loss(target_audio, x_predict, mu, logvar):
     recon_loss1 = nn.MSELoss(reduction='sum')(target_audio, x_predict)
@@ -165,7 +165,7 @@ def extract_latents(dataloader, model, label_to_index):
 
 
 if __name__ == "__main__":
-
+    assert os.path.exists(DATAFRAME_PATH), f"Dataframe not found at {DATAFRAME_PATH}"
     dataframe = pd.read_csv(DATAFRAME_PATH)
     dataframe = filter_dataframe(dataframe, PEDALS)
     dataset = Pedaliny_Dataset_VAE(dataframe, sr=SR, mode="sweep1", offset=20000, length=88200)
@@ -186,7 +186,7 @@ if __name__ == "__main__":
     test_dataloader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True, drop_last=False)
 
 
-    model = Pedaliny_VAE(pedal_latent_dim=N_LATENTS).to('cuda')
+    model = Pedals_VAE(pedal_latent_dim=N_LATENTS).to('cuda')
     model.apply(weights_init)
     optimizer_model = Adam(model.parameters(), lr=LEARNING_RATE, weight_decay=1e-5)
 
