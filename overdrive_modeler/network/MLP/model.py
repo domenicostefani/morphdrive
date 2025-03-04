@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+from torchinfo import summary
 
 
 class Pedals_MLP(nn.Module):
@@ -30,7 +31,6 @@ if __name__ == '__main__':
         printBoth('sum(p.numel() for p in model.parameters() if p.requires_grad):',str(sum(p.numel() for p in model.parameters() if p.requires_grad)))
         printBoth('output.shape:', output.shape)
         with torch.no_grad():
-            from torchinfo import summary
             summ = summary(model.to('cuda'), (1,2))
             print(summ)
             print(summ, file=f)
