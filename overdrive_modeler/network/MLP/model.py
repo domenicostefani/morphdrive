@@ -34,3 +34,4 @@ if __name__ == '__main__':
             summ = summary(model.to('cuda'), (1,2))
             print(summ)
             print(summ, file=f)
+            
