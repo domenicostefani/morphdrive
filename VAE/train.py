@@ -17,7 +17,7 @@ import os
 SR = 32000
 BATCH_SIZE = 32
 LEARNING_RATE = 1e-3
-EPOCHS = 2000
+EPOCHS = 2
 N_LATENTS = 8
 VERSION = 3
 DATAFRAME_PATH = "/home/ardan/ARDAN/PEDALINY/pedaliny_dataframe_marzo_32000.csv"
@@ -83,7 +83,7 @@ def train(dataloader, model, optimizer, EPOCHS):
             audio = batch["audio"].float().to('cuda').unsqueeze(1)    
             output, mu, logvar, _ = model(audio)
 
-            loss, recon_loss1, recon_loss2, kl_loss = model_loss(model, audio, output, mu, logvar)
+            loss, recon_loss1, recon_loss2, kl_loss = model_loss(audio, output, mu, logvar)
 
             optimizer.zero_grad()
             loss.backward()
@@ -137,30 +137,27 @@ def test(dataloader, model):
 
 
 
-def extract_and_store_latents_in_dataframe(dataloader, model, label_to_index):
+def extract_latents(dataloader, model, label_to_index):
     model.eval()
-    all_latents = []
-    all_labels = []
-    all_gains = []
-    all_tones = []
+    all_data = []
 
     for batch in dataloader:
-        audio = batch["audio"].float().to('cuda').unsqueeze(1)
-        target_class = torch.tensor([label_to_index[label] for label in batch["label"]], dtype=torch.long).to('cuda')
-        target_gain = batch["g"].clone().detach().to(torch.long).to('cuda')
-        target_tone = batch["t"].clone().detach().to(torch.long).to('cuda')
+        audio = batch["audio"].float().to("cuda").unsqueeze(1)
+        target_class = torch.tensor([label_to_index[label] for label in batch["label"]], dtype=torch.long).to("cuda")
+        target_gain = batch["g"].clone().detach().to(torch.long).to("cuda")
+        target_tone = batch["t"].clone().detach().to(torch.long).to("cuda")
 
         _, _, _, z = model(audio)
 
-        all_latents.extend(z.cpu().detach().numpy())
-        all_labels.extend(target_class.cpu().detach().numpy())
-        all_gains.extend(target_gain.cpu().detach().numpy())
-        all_tones.extend(target_tone.cpu().detach().numpy())
+        for i in range(z.shape[0]):
+            all_data.append({
+                "label": target_class[i].item(),
+                "gain": target_gain[i].item(),
+                "tone": target_tone[i].item(),
+                "latents": z[i].cpu().detach().numpy().tolist()
+            })
 
-    df = pd.DataFrame(all_latents)
-    df["label"] = all_labels
-    df["gain"] = all_gains
-    df["tone"] = all_tones
+    df = pd.DataFrame(all_data)
     df.to_csv(SAVE_LATENTS_PATH, index=False)
     print("Latents saved")
 
@@ -171,7 +168,7 @@ if __name__ == "__main__":
 
     dataframe = pd.read_csv(DATAFRAME_PATH)
     dataframe = filter_dataframe(dataframe, PEDALS)
-    dataset = Pedaliny_Dataset_VAE(dataframe, sr=SR, mode="sweep1")
+    dataset = Pedaliny_Dataset_VAE(dataframe, sr=SR, mode="sweep1", offset=20000, length=88200)
     labels = dataset.get_unique_labels() 
     unique_labels = len(labels)
     label_to_index = {label: idx for idx, label in enumerate(labels)}
@@ -193,9 +190,9 @@ if __name__ == "__main__":
     model.apply(weights_init)
     optimizer_model = Adam(model.parameters(), lr=LEARNING_RATE, weight_decay=1e-5)
 
-    train(train_dataloader, model, optimizer_model, EPOCHS, label_to_index)
-    test(test_dataloader, model, label_to_index, index_to_label)
-    extract_and_store_latents_in_dataframe(train_dataloader, model, label_to_index)
+    train(train_dataloader, model, optimizer_model, EPOCHS)
+    test(test_dataloader, model)
+    extract_latents(train_dataloader, model, label_to_index)
     pca_on_latents(index_to_label, SAVE_LATENTS_PATH, THIS_FOLDER_PATH)
     tsne_on_latents(index_to_label, SAVE_LATENTS_PATH, THIS_FOLDER_PATH)
 

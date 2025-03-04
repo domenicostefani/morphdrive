@@ -44,87 +44,76 @@ def load_audio_to_wandb(original, predicted, sr=32000):
     })
 
 
+def normalize_coordinates(coords):
+    x_min, x_max = coords[:, 0].min(), coords[:, 0].max()
+    y_min, y_max = coords[:, 1].min(), coords[:, 1].max()
+    coords[:, 0] = (coords[:, 0] - x_min) / (x_max - x_min)
+    coords[:, 1] = (coords[:, 1] - y_min) / (y_max - y_min)
+    return coords
 
-def pca_on_latents(index_to_pedal_label, latents_csv_path, folder_path):
-    df = pd.read_csv(latents_csv_path)
-    
-    X = df.drop(columns=["label", "gain", "tone"])
 
-    for type in ['pedal', 'gain', 'tone']:
-        if type == "pedal":
-            y = df["label"]
-        elif type == "gain":
-            y = df["gain"]
-        elif type == "tone":
-            y = df["tone"]
-        
-        pca = PCA(n_components=2)
-        X_pca = pca.fit_transform(X)
-        unique_labels = np.unique(y)
+def visualize_latents(reduction, X_transformed, y, index_to_label, folder_path):
+
+    for label_type in ["pedal", "gain", "tone"]:
+        if label_type == "pedal":
+            labels = y["label"]
+        elif label_type == "gain":
+            labels = y["gain"]
+        elif label_type == "tone":
+            labels = y["tone"]
+
+        unique_labels = np.unique(labels)
         num_labels = len(unique_labels)
-        
-        if type == "pedal":
-            cmap = plt.get_cmap("tab10" if num_labels <= 10 else "hsv")  
-            colors = [cmap(i / num_labels) for i in range(num_labels)]
-        else:
-            cmap = plt.get_cmap("coolwarm")  
-            colors = [cmap(i / (num_labels - 1)) for i in range(num_labels)]
-        
+
+        cmap = plt.get_cmap("tab10" if num_labels <= 10 else "hsv") if label_type == "pedal" else plt.get_cmap("coolwarm")
+        colors = [cmap(i / num_labels) for i in range(num_labels)]
         label_to_color = {label: colors[i] for i, label in enumerate(unique_labels)}
-        if type == "pedal":
-            label_names = {label: index_to_pedal_label[label] for label in unique_labels}  
-        else:
-            label_names = {label: str(label) for label in unique_labels} 
-        
+        label_names = {label: index_to_label[label] if label_type == "pedal" else str(label) for label in unique_labels}
+
         plt.figure(figsize=(10, 10))
-        
         for label in unique_labels:
-            indices = (y == label)
-            plt.scatter(X_pca[indices, 0], X_pca[indices, 1], color=[label_to_color[label]], label=label_names[label])
-        
+            indices = (labels == label)
+            plt.scatter(X_transformed[indices, 0], X_transformed[indices, 1], color=[label_to_color[label]], label=label_names[label])
+
         plt.legend()
-        plt.title(f"PCA on Latents ({type.capitalize()})")
-        plt.savefig(f'{folder_path}/PCA_latents_VAE_{type}.png')
+        plt.title(f"{reduction} on Latents ({label_type.capitalize()})")
+        plt.savefig(f"{folder_path}/{reduction}_latents_VAE_{label_type}.png")
 
 
-
-def tsne_on_latents(index_to_pedal_label, latents_csv_path, folder_path):
+def pca_on_latents(index_to_label, latents_csv_path, folder_path):
     df = pd.read_csv(latents_csv_path)
 
-    X = df.drop(columns=["label", "gain", "tone"])
-    tsne = TSNE(n_components=2, perplexity=80, n_iter=2000)
+    df["latents"] = df["latents"].apply(eval)  
+    X = np.array(df["latents"].to_list())
+    y = df[["label", "gain", "tone"]]
+
+    pca = PCA(n_components=2)
+    X_pca = pca.fit_transform(X)
+    X_pca = normalize_coordinates(X_pca)
+
+    df["coords"] = X_pca.tolist()  
+
+    df["label_name"] = df["label"].map(index_to_label)
+    df = df[["label_name", "gain", "tone", "latents", "coords"]]
+
+    df.to_csv(f"{folder_path}/pca_latents_dataframe.csv", index=False)
+    visualize_latents("PCA", X_pca, y, index_to_label, folder_path)
+
+
+def tsne_on_latents(index_to_label, latents_csv_path, folder_path):
+    df = pd.read_csv(latents_csv_path)
+
+    df["latents"] = df["latents"].apply(eval) 
+    X = np.array(df["latents"].to_list())
+    y = df[["label", "gain", "tone"]]
+
+    tsne = TSNE(n_components=2, perplexity=80, n_iter=2000, random_state=42)
     X_tsne = tsne.fit_transform(X)
+    X_tsne = normalize_coordinates(X_tsne)
+    df["coords"] = X_tsne.tolist()  
 
-    for type in ['pedal', 'gain', 'tone']:
-        if type == "pedal":
-            y = df["label"]
-        elif type == "gain":
-            y = df["gain"]
-        elif type == "tone":
-            y = df["tone"]
-        
-        unique_labels = np.unique(y)
-        num_labels = len(unique_labels)
-        
-        if type == "pedal":
-            cmap = plt.get_cmap("tab10" if num_labels <= 10 else "hsv")
-            colors = [cmap(i / num_labels) for i in range(num_labels)]
-        else:
-            cmap = plt.get_cmap("coolwarm")
-            colors = [cmap(i / (num_labels - 1)) for i in range(num_labels)]
-        
-        label_to_color = {label: colors[i] for i, label in enumerate(unique_labels)}
-        if type == "pedal":
-            label_names = {label: index_to_pedal_label[label] for label in unique_labels}
-        else:
-            label_names = {label: str(label) for label in unique_labels}
-        
-        plt.figure(figsize=(10, 10))
-        
-        for label in unique_labels:
-            indices = (y == label)
-            plt.scatter(X_tsne[indices, 0], X_tsne[indices, 1], color=[label_to_color[label]], label=label_names[label])
-        
-        plt.legend()
-        plt.title(f"t-SNE on Latents ({type.capitalize()})")
-        plt.savefig(f'{folder_path}/TSNE_latents_VAE_{type}.png')
+    df["label_name"] = df["label"].map(index_to_label)
+    df = df[["label_name", "gain", "tone", "latents", "coords"]]
+
+    df.to_csv(f"{folder_path}/tsne_latents_dataframe.csv", index=False)
+    visualize_latents("TSNE", X_tsne, y, index_to_label, folder_path)
