@@ -21,7 +21,16 @@ class Pedals_MLP(nn.Module):
 
 if __name__ == '__main__':
     model = Pedals_MLP(input_dim=2, output_dim=8)
-    print(sum(p.numel() for p in model.parameters() if p.requires_grad))
     input = torch.randn(1, 2)
     output = model(input)
-    print(output.shape)
+
+    with open('mlp_summary.txt', 'w', encoding='utf-8') as f:
+        printBoth = lambda *args, **kwargs: print(*args, **kwargs) or print(*args, **kwargs, file=f)
+
+        printBoth('sum(p.numel() for p in model.parameters() if p.requires_grad):',str(sum(p.numel() for p in model.parameters() if p.requires_grad)))
+        printBoth('output.shape:', output.shape)
+        with torch.no_grad():
+            from torchinfo import summary
+            summ = summary(model.to('cuda'), (1,2))
+            print(summ)
+            print(summ, file=f)

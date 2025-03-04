@@ -3,6 +3,8 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 import pandas as pd
 import os
+os.chdir(os.path.dirname(os.path.abspath(__file__))) # Change working directory to the script directory
+
 from dataset import PedalsDataset_MLP
 from model import Pedals_MLP
 import ast
@@ -11,7 +13,10 @@ EPOCHS = 3
 LEARNING_RATE = 1e-3
 N_LATENTS = 8
 
-DATAFRAME_PROVA = "/home/ardan/ARDAN/PEDALINY/tsne_latents_dataframe.csv"
+VAE_DIR = '../VAE/'
+DATAFRAME_PROVA = os.path.join(VAE_DIR,'tsne_latents_dataframe.csv')
+assert os.path.exists(DATAFRAME_PROVA), f"File '{DATAFRAME_PROVA}' not found"
+
 THIS_FOLDER_PATH = os.path.dirname(os.path.abspath(__file__))
 MLP_PATH = f'{THIS_FOLDER_PATH}/model_MLP_{N_LATENTS}.pth'
 
@@ -41,9 +46,9 @@ def train(dataloader, model, optimizer, EPOCHS):
 
 
 if __name__ == '__main__':
-    model = Pedaliny_MLP(input_dim=N_LATENTS, output_dim=2)
+    model = Pedals_MLP(input_dim=N_LATENTS, output_dim=2)
     dataframe = pd.read_csv(DATAFRAME_PROVA)
-    dataset = Pedaliny_Dataset_MLP(dataframe)
+    dataset = PedalsDataset_MLP(dataframe)
     dataloader = DataLoader(dataset, batch_size=32, shuffle=True, drop_last=True)
     optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE, weight_decay=1e-5)
     train(dataloader, model, optimizer, EPOCHS)
