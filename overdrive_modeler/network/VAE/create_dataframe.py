@@ -1,27 +1,28 @@
 import pandas as pd
 import os
+os.chdir(os.path.dirname(os.path.abspath(__file__))) # Change working directory to the script directory
 
-DATASET_DIR = '/mnt/volDISI_conci_Datasets/audio/dataset_pedals_32000'
-OUTPUT_CSV_PATH = '/home/ardan/ARDAN/PEDALINY/pedaliny_dataframe_32000.csv'
-
+DATASET_DIR = '../dataset_32000Hz/'
+OUTPUT_PATH = os.path.join(DATASET_DIR,'pedals_dataframe.csv')
 
 data = []
 
 for pedal_name in os.listdir(DATASET_DIR):
     pedal_path = os.path.join(DATASET_DIR, pedal_name)
 
-    print(pedal_path)
-
     if not os.path.isdir(pedal_path):
         continue
-    print(pedal_name)
+
+    print('Processing', pedal_name)
 
     file_dict = {}
+    
+    pedal_files = os.listdir(pedal_path)
+    pedal_files = [file for file in pedal_files if file.endswith('.wav')]
 
-    for file_name in os.listdir(pedal_path):
+    for pfidx,file_name in enumerate(os.listdir(pedal_path)):
+        print(f"Processing {pfidx+1}/{len(pedal_files)}", end='\r')
         parts = file_name.split("_")
-
-        print(parts)
 
         file_type = parts[0]
         g_value = parts[2][1]  
@@ -29,16 +30,17 @@ for pedal_name in os.listdir(DATASET_DIR):
 
         complete_name = f"{pedal_name}_g{g_value}_t{t_value}"
         file_path = os.path.join(pedal_path, file_name)
+        file_path = os.path.abspath(file_path)
 
         if complete_name not in file_dict:
             file_dict[complete_name] = {
-                "pedal_name": pedal_name, 
-                "g_value": g_value, 
-                "t_value": t_value, 
-                "audio_path": "", 
-                "sweep_path1": "", 
-                "sweep_path2": "", 
-                "sweep_path3": "", 
+                "pedal_name": pedal_name,
+                "g_value": g_value,
+                "t_value": t_value,
+                "audio_path": "",
+                "sweep_path1": "",
+                "sweep_path2": "",
+                "sweep_path3": "",
                 "noise_path": ""
             }
 
@@ -53,8 +55,11 @@ for pedal_name in os.listdir(DATASET_DIR):
         elif file_type == "n":
             file_dict[complete_name]["noise_path"] = file_path
 
+    print('file_dict contains', len(file_dict), 'files')
     data.extend(file_dict.values())
 
 df = pd.DataFrame(data)
-df.to_csv(OUTPUT_CSV_PATH, index=False)
-print(f"Dataframe saved to {OUTPUT_CSV_PATH}")
+df.insert(0, "complete_name", df.index)
+
+df.to_csv(OUTPUT_PATH, index=False)
+print(f"Dataframe saved to {OUTPUT_PATH}")

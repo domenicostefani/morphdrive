@@ -3,7 +3,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 from einops import rearrange
 
-
 class Classifier(nn.Module):
     def __init__(self, input_dim=8, n_classes=4):
         super(Classifier, self).__init__()
@@ -165,14 +164,12 @@ class Decoder(nn.Module):
 
         return x
 
-
-
-class Pedaliny_VAE(nn.Module):
+class Pedals_VAE(nn.Module):
     def __init__(self, 
                  input_dim=1,
                  pedal_latent_dim=8, 
                  ):
-        super(Pedaliny_VAE, self).__init__()
+        super(Pedals_VAE, self).__init__()
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.encoder = Encoder(input_dim, pedal_latent_dim)
         self.decoder = Decoder(input_dim, pedal_latent_dim)
@@ -188,12 +185,21 @@ class Pedaliny_VAE(nn.Module):
 
 
 if __name__ == '__main__':
-    model = Pedaliny_VAE(input_dim=1, pedal_latent_dim=8).to('cuda')
+    model = Pedals_VAE(input_dim=1, pedal_latent_dim=8).to('cuda')
     input = torch.randn(1, 1, 88200).to('cuda') 
     output, mu, logvar, z = model(input)
-    print(f'OUTPUT SHAPE : {output[0].shape}')
-    print(f'MU SHAPE : {mu.shape}')
-    print(f'LOGVAR SHAPE : {logvar.shape}')
-    print(f'Z SHAPE : {z.shape}')
-    print(f'NUMBER OF PARAMETERS: {sum(p.numel() for p in model.parameters())}')
 
+    with open('vae_summary.txt', 'w', encoding='utf-8') as f:
+        printBoth = lambda x: print(x, file=f) or print(x)
+        printBoth(f'OUTPUT SHAPE : {output[0].shape}')
+        printBoth(f'MU SHAPE : {mu.shape}')
+        printBoth(f'LOGVAR SHAPE : {logvar.shape}')
+        printBoth(f'Z SHAPE : {z.shape}')
+        printBoth(f'NUMBER OF PARAMETERS: {sum(p.numel() for p in model.parameters())}')
+        print('', file=f)
+
+        with torch.no_grad():
+            from torchinfo import summary
+            summ = summary(model.to('cuda'), (1,1,192000))
+            print(summ)
+            print(summ, file=f)

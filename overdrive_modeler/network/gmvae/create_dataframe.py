@@ -33,13 +33,15 @@ for pedal_name in os.listdir(DATASET_DIR):
         file_path = os.path.abspath(file_path)
 
         if complete_name not in file_dict:
-            file_dict[complete_name] = {"pedal_name": pedal_name,
-                                        "g_value": g_value,
-                                        "t_value": t_value,
-                                        "audio_path": "",
-                                        "sweep_path": "",
-                                        "noise_path": ""}
-        
+            file_dict[complete_name] = {
+                "pedal_name": pedal_name,
+                "g_value": g_value,
+                "t_value": t_value,
+                "audio_path": "",
+                "sweep_path": "",
+                "noise_path": ""
+            }
+
         if file_type == "a":
             file_dict[complete_name]["audio_path"] = file_path
         elif file_type == "s0":
