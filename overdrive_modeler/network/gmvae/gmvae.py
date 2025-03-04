@@ -297,14 +297,25 @@ if __name__ == '__main__':
     model = Pedals_GMVAE(input_dim=1, latent_dim=16, n_pedals=5).to('cuda')
     input = torch.randn(1, 1, 192000).to('cuda') # 88200
     output = model(input)
-    print(f'OUTPUT SHAPE : {output[0].shape}')
-    print(f'MU SHAPE : {output[1].shape}')
-    print(f'LOGVAR SHAPE : {output[2].shape}')
-    print(f'Z SHAPE : {output[3].shape}')
-    print(f'Z MIXTURE SHAPE : {output[4].shape}')
-    print(f'Q_Y SHAPE : {output[5].shape}')
-    print(f'IND SHAPE : {output[6].shape}')
-    print(f'NUMBER OF PARAMETERS: {sum(p.numel() for p in model.parameters())}')
+    
+    with open('gmvae_summary.txt', 'w', encoding='utf-8') as f:
+        printBoth = lambda x: print(x, file=f) or print(x)
+        printBoth(f'OUTPUT SHAPE : {output[0].shape}')
+        printBoth(f'MU SHAPE : {output[1].shape}')
+        printBoth(f'LOGVAR SHAPE : {output[2].shape}')
+        printBoth(f'Z SHAPE : {output[3].shape}')
+        printBoth(f'Z MIXTURE SHAPE : {output[4].shape}')
+        printBoth(f'Q_Y SHAPE : {output[5].shape}')
+        printBoth(f'IND SHAPE : {output[6].shape}')
+        printBoth(f'NUMBER OF PARAMETERS: {sum(p.numel() for p in model.parameters())}')
+
+        print('', file=f)
+
+        with torch.no_grad():
+            from torchinfo import summary
+            summ = summary(model.to('cuda'), (1,1,192000))
+            print(summ)
+            print(summ, file=f)
 
 
 
