@@ -29,7 +29,9 @@ SAVE_MODEL_PATH = os.path.abspath(f'model_VAE_{N_LATENTS}_V{VERSION}.pth')
 SAVE_LATENTS_PATH = os.path.abspath(f'latents_VAE_{N_LATENTS}_V{VERSION}.csv')
 LOGS = False
 
-PEDALS = ['bigfella', 'chime', 'silkdrive', 'zendrive']
+PEDALS = ['bigfella', 'honeybee']
+for pedal in PEDALS:
+    assert os.path.exists(os.path.join(DATASET_DIR, pedal)), f"Pedal '{pedal}' not found in '{DATASET_DIR}'"
 
 WANDB_PROJECT_NAME = "Pedals_VAE_marzo"
 WANDB_ENTITY = 'francesco-dalri-2'
