@@ -107,7 +107,7 @@ def tsne_on_latents(index_to_label, latents_csv_path, folder_path):
     X = np.array(df["latents"].to_list())
     y = df[["label", "gain", "tone"]]
 
-    tsne = TSNE(n_components=2, perplexity=80, n_iter=2000, random_state=42)
+    tsne = TSNE(n_components=2, perplexity=min(80, len(y)-1), n_iter=2000, random_state=42)
     X_tsne = tsne.fit_transform(X)
     X_tsne = normalize_coordinates(X_tsne)
     df["coords"] = X_tsne.tolist()  

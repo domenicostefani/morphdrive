@@ -29,7 +29,9 @@ SAVE_MODEL_PATH = os.path.abspath(f'model_VAE_{N_LATENTS}_V{VERSION}.pth')
 SAVE_LATENTS_PATH = os.path.abspath(f'latents_VAE_{N_LATENTS}_V{VERSION}.csv')
 LOGS = False
 
-PEDALS = ['bigfella', 'chime', 'silkdrive', 'zendrive']
+PEDALS = ['bigfella', 'honeybee']
+for pedal in PEDALS:
+    assert os.path.exists(os.path.join(DATASET_DIR, pedal)), f"Pedal '{pedal}' not found in '{DATASET_DIR}'"
 
 WANDB_PROJECT_NAME = "Pedals_VAE_marzo"
 WANDB_ENTITY = 'francesco-dalri-2'
@@ -168,7 +170,7 @@ if __name__ == "__main__":
     assert os.path.exists(DATAFRAME_PATH), f"Dataframe not found at {DATAFRAME_PATH}"
     dataframe = pd.read_csv(DATAFRAME_PATH)
     dataframe = filter_dataframe(dataframe, PEDALS)
-    dataset = Pedaliny_Dataset_VAE(dataframe, sr=SR, mode="sweep1", offset=20000, length=88200)
+    dataset = PedalsDataset_VAE(dataframe, sr=SR, mode="sweep1", offset=20000, length=88200)
     labels = dataset.get_unique_labels() 
     unique_labels = len(labels)
     label_to_index = {label: idx for idx, label in enumerate(labels)}
