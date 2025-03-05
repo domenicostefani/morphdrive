@@ -20,6 +20,9 @@ class PedalsDataset_VAE(Dataset):
     
     def get_unique_labels(self):
         return self.df['pedal_name'].unique() 
+    
+    def get_labels_list(self):
+        return self.df['pedal_name'].tolist()
 
     def __getitem__(self, idx):
         row = self.df.iloc[idx]

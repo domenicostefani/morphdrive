@@ -13,13 +13,13 @@ def extract_spectrogram(audio, sr=32000):
     log_spectrogram = librosa.power_to_db(extracted_spectrogram, ref=np.max)
     return log_spectrogram
 
-def plot_spectrograms_to_wandb(model_output, original_audio):
+def plot_spectrograms_to_wandb(model_output, original_audio, sr):
 
     predicted = model_output.squeeze().cpu().detach().numpy()
     original = original_audio.squeeze().cpu().detach().numpy()
 
-    predicted_spectrogram = extract_spectrogram(predicted)
-    original_spectrogram = extract_spectrogram(original)
+    predicted_spectrogram = extract_spectrogram(predicted, sr)
+    original_spectrogram = extract_spectrogram(original, sr)
 
     plt.figure(figsize=(10, 10))
     plt.subplot(2, 1, 1)
@@ -52,15 +52,15 @@ def normalize_coordinates(coords):
     return coords
 
 
-def visualize_latents(reduction, X_transformed, y, index_to_label, folder_path):
+def visualize_latents(reduction, X_transformed, y, index_to_label, image_path):
 
-    for label_type in ["pedal", "gain", "tone"]:
-        if label_type == "pedal":
-            labels = y["label"]
-        elif label_type == "gain":
+    for label_type in ["gain", "tone", "pedal"]:
+        if label_type == "gain":
             labels = y["gain"]
         elif label_type == "tone":
             labels = y["tone"]
+        elif label_type == "pedal":
+            labels = y["label"]
 
         unique_labels = np.unique(labels)
         num_labels = len(unique_labels)
@@ -77,10 +77,10 @@ def visualize_latents(reduction, X_transformed, y, index_to_label, folder_path):
 
         plt.legend()
         plt.title(f"{reduction} on Latents ({label_type.capitalize()})")
-        plt.savefig(f"{folder_path}/{reduction}_latents_VAE_{label_type}.png")
+        plt.savefig(image_path)
 
 
-def pca_on_latents(index_to_label, latents_csv_path, folder_path):
+def pca_on_latents(index_to_label, latents_csv_path, csv_path, image_path):
     df = pd.read_csv(latents_csv_path)
 
     df["latents"] = df["latents"].apply(eval)  
@@ -96,11 +96,11 @@ def pca_on_latents(index_to_label, latents_csv_path, folder_path):
     df["label_name"] = df["label"].map(index_to_label)
     df = df[["label_name", "gain", "tone", "latents", "coords"]]
 
-    df.to_csv(f"{folder_path}/pca_latents_dataframe.csv", index=False)
-    visualize_latents("PCA", X_pca, y, index_to_label, folder_path)
+    df.to_csv(csv_path, index=False)
+    visualize_latents("PCA", X_pca, y, index_to_label, image_path)
 
 
-def tsne_on_latents(index_to_label, latents_csv_path, folder_path):
+def tsne_on_latents(index_to_label, latents_csv_path, csv_path, image_path):
     df = pd.read_csv(latents_csv_path)
 
     df["latents"] = df["latents"].apply(eval) 
@@ -115,5 +115,5 @@ def tsne_on_latents(index_to_label, latents_csv_path, folder_path):
     df["label_name"] = df["label"].map(index_to_label)
     df = df[["label_name", "gain", "tone", "latents", "coords"]]
 
-    df.to_csv(f"{folder_path}/tsne_latents_dataframe.csv", index=False)
-    visualize_latents("TSNE", X_tsne, y, index_to_label, folder_path)
+    df.to_csv(csv_path, index=False)
+    visualize_latents("TSNE", X_tsne, y, index_to_label, image_path)

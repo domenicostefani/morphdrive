@@ -2,8 +2,8 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 from torch.optim import Adam
-from model import Pedals_VAE
-from dataset import PedalsDataset_VAE
+from vae_model import Pedals_VAE
+from vae_dataset import PedalsDataset_VAE
 import wandb
 import matplotlib.pyplot as plt
 from torch.optim.lr_scheduler import LambdaLR
@@ -12,7 +12,7 @@ import seaborn as sns
 import pandas as pd
 from plotters import plot_spectrograms_to_wandb, load_audio_to_wandb, pca_on_latents, tsne_on_latents
 import os
-os.chdir(os.path.dirname(os.path.abspath(__file__))) # Change working directory to the script directory
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 DATASET_DIR = '../dataset_32000Hz/'
 DATAFRAME_PATH = os.path.join(DATASET_DIR,'pedals_dataframe.csv')
@@ -139,7 +139,7 @@ def test(dataloader, model):
 
 
 
-def extract_latents(dataloader, model, label_to_index):
+def extract_latents(dataloader, model, label_to_index, save_path):
     model.eval()
     all_data = []
 
@@ -160,7 +160,7 @@ def extract_latents(dataloader, model, label_to_index):
             })
 
     df = pd.DataFrame(all_data)
-    df.to_csv(SAVE_LATENTS_PATH, index=False)
+    df.to_csv(save_path, index=False)
     print("Latents saved")
 
 
@@ -194,7 +194,7 @@ if __name__ == "__main__":
 
     train(train_dataloader, model, optimizer_model, EPOCHS)
     test(test_dataloader, model)
-    extract_latents(train_dataloader, model, label_to_index)
+    extract_latents(train_dataloader, model, label_to_index, SAVE_LATENTS_PATH)
     pca_on_latents(index_to_label, SAVE_LATENTS_PATH, THIS_FOLDER_PATH)
     tsne_on_latents(index_to_label, SAVE_LATENTS_PATH, THIS_FOLDER_PATH)
 
