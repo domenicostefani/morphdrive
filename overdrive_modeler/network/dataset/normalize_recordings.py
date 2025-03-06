@@ -1,12 +1,31 @@
+"""
+    This script takes the raw dataset files from the PureData recorder patch and normalizes them so that the loudest
+    peak for each PEDAL is at -3dB. All the remaining audio files for the same pedal are normalized by the same factor.
+    The script also separates the audio recording into the three sine sweeps at different gain, the noise floor recording, and the 
+    generic audio input taken from:
+     - Yeh, Y. T., Hsiao, W. Y., & Yang, Y. H. (2024). Hyper recurrent neural network: Condition mechanisms for black-box audio effect modeling. arXiv preprint arXiv:2408.04829.  
+    Their demo page: https://yytung.notion.site/HyperRNN-ce8cecb3ef6a41fcbcb54a94f9f6de6f
+    Their DB download link: https://drive.google.com/file/d/1y3iQH94dAZbRgP33Pt4lJakgolvV7Xal/view
+    Their code: https://github.com/ytsrt66589/pyneuralfx/tree/main
+
+    The recordings should be in ../dataset_raw/
+"""
+
 import os
 import librosa
 import soundfile as sf
 import numpy as np
 import pandas as pd
+import os
+from glob import glob
+os.chdir(os.path.dirname(os.path.abspath(__file__))) # Change working directory to the script file location
 
 # Configuration
-input_folder = "/Users/ardan/Desktop/PedalinY/robotic_database_recorder/puredata_recorder/out"
-output_folder = "/Users/ardan/Desktop/PedalinY/pedaliny_audio_dataset"
+input_folder = "../dataset_raw"
+assert os.path.exists(input_folder) and os.path.isdir(input_folder), "Input folder not found!"
+assert len(glob(os.path.join(input_folder, "*.wav"))) > 0, "No WAV files found in input folder!"
+output_folder = "../dataset"
+
 normalization_level_db = -3  # Target normalization level in dB
 initial_offset_samples = 1272  # Initial offset in samples
 pause_samples = 24000  # 0.5 seconds for 48kHz sampling rate
@@ -109,6 +128,39 @@ for effect, files in effect_groups.items():
 
 # Save normalization log to CSV
 df = pd.DataFrame(log_data, columns=["name", "file_db", "norm_db"])
-df.to_csv(log_file, index=False)
+df['appied_gain_db'] = df['norm_db'] - df['file_db']
+df.to_csv(log_file, index=False, float_format="%.2f")
 
-print(f"Processing complete! Normalization log saved at {log_file}.")
+print(f"Processing complete! Normalization log saved at \"{log_file}\".")
+
+df['pedal'] = df['name'].apply(lambda x: x.split("_")[0])
+df['gain'] = df['name'].apply(lambda x: int(x.split("_")[1].lstrip("g")))
+df['tone'] = df['name'].apply(lambda x: int(x.split("_")[2].lstrip("t").rstrip(".wav")))
+# Drop the 'name' column
+df.drop(columns=['name'], inplace=True)
+
+print(df)
+
+# Compute summary statistics for df
+summary = df.groupby('pedal').agg(['mean', 'std', 'max'])
+# rename to gain_meain, gain_std etc
+summary.columns = ['_'.join(col).strip() for col in summary.columns.values]
+summary.reset_index(inplace=True)
+
+
+print(summary)
+
+
+
+for pedal in summary['pedal']:
+    pedal_df = df[df['pedal'] == pedal]
+    assert pedal_df['gain'].nunique() == 5, f"Pedal {pedal} is missing some gain values"
+    assert pedal_df['tone'].nunique() == 5, f"Pedal {pedal} is missing some tone values"
+
+
+summary.drop(columns=['gain_mean','gain_std','gain_max','tone_mean','tone_std','tone_max'], inplace=True)
+
+
+summary_path = os.path.join(output_folder, "normalization_summary.csv")
+summary.to_csv(summary_path, float_format="%.2f")
+print(f"Summary statistics saved at \"{summary_path}\".")
