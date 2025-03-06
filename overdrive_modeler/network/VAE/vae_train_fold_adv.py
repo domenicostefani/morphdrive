@@ -20,7 +20,7 @@ DATAFRAME_PATH = os.path.join(DATASET_DIR, 'pedals_dataframe.csv')
 SR = 32000
 BATCH_SIZE = 32
 LEARNING_RATE = 1e-3
-EPOCHS = 1
+EPOCHS = 5000
 N_LATENTS = 8
 FOLDS = 5  # Number of folds for cross-validation
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -198,7 +198,8 @@ def model_loss(target_audio, x_predict, mu, logvar, discriminator):
     real_labels = torch.ones(x_predict.size(0), 1).to(DEVICE)
     adv_loss = nn.BCELoss()(discriminator(x_predict), real_labels)
     
-    total_loss = recon_loss + stft_loss + 0.2 * kl_loss - adv_loss 
+    # total_loss = recon_loss + stft_loss + 0.2 * kl_loss - adv_loss
+    total_loss = recon_loss + stft_loss + kl_loss - adv_loss * 2
     return total_loss, recon_loss, stft_loss, kl_loss, adv_loss
 
 def valid_model_loss(target_audio, x_predict):
@@ -397,6 +398,10 @@ if __name__ == "__main__":
     tsne_csv_path = f'{THIS_FOLDER_PATH}/{start_time}_tsne_latents.csv'
     pca_image_path = f'{THIS_FOLDER_PATH}/{start_time}_pca_latents.png'
     tsne_image_path = f'{THIS_FOLDER_PATH}/{start_time}_tsne_latents.png'
+
+    print("Training on full dataset")
+    if LOGS:
+        wandb.init(project=WANDB_PROJECT_NAME, name=f"{start_time}_FINAL", reinit=True, entity=WANDB_ENTITY) 
 
     train_fold(full_dataloader, None, model, discriminator, optimizer_model, optimizer_disc, save_model_path, with_validation=False)
     extract_latents(full_dataloader, model, label_to_index, save_latents_path)
