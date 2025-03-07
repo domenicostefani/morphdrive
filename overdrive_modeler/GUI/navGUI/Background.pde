@@ -52,4 +52,10 @@ void drawBackground(float SCALE){
 
     text(label,centerx+offsetX*offsetXsign,centery+offsetY*offsetYsign);
   }
+  
+  if (width > height) {
+    fill(#3F3E3A);
+    noStroke();
+    rect(height,0,width-height,height);
+  }
 }

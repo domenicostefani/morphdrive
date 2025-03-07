@@ -1,5 +1,6 @@
 import oscP5.*;
 import netP5.*;
+import controlP5.*;
 
 PImage backgroundImg;
 PSNColors psnColors;
@@ -13,13 +14,18 @@ OscP5 oscP5;
 NetAddress pythonReceiver;
 int OSC_SEND_EVERY_X_FRAMES = 6; // with framerate at 60fps, osc framerate is 10fps
 
+
+ControlP5 controlP5;
+Knob[] latKnobs;
+
+
 void setup() {
-  size(640, 640);
+  size(720, 640);
   SCALE = min(width, height); // Set scale to minimum window dimension
   frameRate(60);
 
   // Initialize OSC
-  oscP5 = new OscP5(this, 12000); // Listen for incoming OSC messages on port 12000 (if needed)
+  oscP5 = new OscP5(this, 12000); // Listen for incoming OSC messages on port 12000 (if needed) //<>//
   pythonReceiver = new NetAddress("127.0.0.1", 12345); // Python receiver on localhost:12345
 
   pedalPoints = new PedalPoints();
@@ -40,6 +46,24 @@ void setup() {
   // Ask for dataframe with pedal points
   OscMessage msg = new OscMessage("/gimmeDataframe");
   oscP5.send(msg, pythonReceiver);
+  
+  
+  controlP5 = new ControlP5(this);
+  int margin = int((width-height)*0.12);
+  latKnobs = new Knob[8];
+  for (int pix=0; pix <8; pix++){
+    latKnobs[pix] = controlP5.addKnob("latent"+str(pix),
+                              -1,//min
+                              1, //max
+                              0, //default
+                              height+margin, //x
+                              margin+pix*((height-2*margin)/8), //y
+                              width-height-2*margin); //width
+    float alpha = 1;
+    latKnobs[pix].setColorBackground(psnColors.getOpaque(pix, alpha));  // Set foreground color to white
+    float randomval = random(-1.0,1.0);
+    latKnobs[pix].setValue(randomval);
+  }
 }
 
 boolean DO_RENDER_BACKGROUND = false;
@@ -131,14 +155,19 @@ void draw() {
 
   fill(0);
   stroke(255);
+  
+  //text("mousex: "+str(mousePos.x), 100, 100);
 
+  boolean isInsidePlayground = (mouseX < height) && (mouseY < height);
   // Allow locking cursor position with mouse press
-  if (!cursorLock) {
+  if (!cursorLock && isInsidePlayground) {
     mousePos.x = mouseX;
     mousePos.y = mouseY;
     noCursor();
-  } else {
+  } else if (cursorLock){
     cursor(CROSS);
+  } else {
+    cursor(HAND);
   }
 
   if (centers.size() == 0)
