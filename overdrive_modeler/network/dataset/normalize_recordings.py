@@ -26,10 +26,12 @@ assert os.path.exists(input_folder) and os.path.isdir(input_folder), "Input fold
 assert len(glob(os.path.join(input_folder, "*.wav"))) > 0, "No WAV files found in input folder!"
 output_folder = "../dataset"
 
+UNPROCESSED_INPUT_FILENAME = "0-unprocessed_input.wav"
+assert os.path.exists(os.path.join(input_folder, UNPROCESSED_INPUT_FILENAME)), "Input file not found!"
 normalization_level_db = -3  # Target normalization level in dB
-initial_offset_samples = 1272  # Initial offset in samples
+initial_offset_samples = 1268  # Initial offset in samples
 pause_samples = 24000  # 0.5 seconds for 48kHz sampling rate
-chunk_length_seconds = 4  # 4 seconds
+sweep_length_seconds = 4  # 4 seconds
 sampling_rate = 48000  # Assuming 48kHz sampling rate
 
 # Convert ms to samples
@@ -55,7 +57,7 @@ def normalize_audio(audio, target_db, max_db):
 effect_groups = {}
 for file in os.listdir(input_folder):
     if file.endswith(".wav"):
-        effect_name = file.split("_")[0]  # Extract effect name
+        effect_name = file.split("_")[0] if file != UNPROCESSED_INPUT_FILENAME else 'input' # Extract effect name
         effect_groups.setdefault(effect_name, []).append(file)
 
 # DataFrame to store normalization logs
@@ -84,16 +86,18 @@ for effect, files in effect_groups.items():
     for file in files:
         file_path = os.path.join(input_folder, file)
         audio, sr = librosa.load(file_path, sr=sampling_rate)
-        normalized_audio = normalize_audio(audio, normalization_level_db, max_amplitude)
+        if not effect == 'input': # Skip normalization for the input file
+            normalized_audio = normalize_audio(audio, normalization_level_db, max_amplitude)
 
-        # Log normalization details in DataFrame
-        normalized_level = calculate_max_amplitude(normalized_audio)
-        log_data.append([file, file_amplitudes[file], normalized_level])
-        print(f"Normalized {file}: {file_amplitudes[file]:.2f} dB -> {normalized_level:.2f} dB")
+            # Log normalization details in DataFrame
+            normalized_level = calculate_max_amplitude(normalized_audio)
+            log_data.append([file, file_amplitudes[file], normalized_level])
+            print(f"Normalized {file}: {file_amplitudes[file]:.2f} dB -> {normalized_level:.2f} dB")
 
-        # Chunking process
-        audio = normalized_audio[initial_offset_samples:]  # Remove initial offset
-        chunk_length_samples = chunk_length_seconds * sr
+            # Chunking process
+            audio = normalized_audio[initial_offset_samples:]  # Remove initial offset
+
+        chunk_length_samples = sweep_length_seconds * sr
 
         # Create and save chunks
         for i in range(3):  # First 3 chunks (s0, s1, s2)
@@ -153,6 +157,8 @@ print(summary)
 
 
 for pedal in summary['pedal']:
+    if pedal == '0-input':
+        continue
     pedal_df = df[df['pedal'] == pedal]
     assert pedal_df['gain'].nunique() == 5, f"Pedal {pedal} is missing some gain values"
     assert pedal_df['tone'].nunique() == 5, f"Pedal {pedal} is missing some tone values"

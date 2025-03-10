@@ -1,6 +1,8 @@
 env/
 
 dataset_*Hz/
+dataset_raw/
+
 *.pth
 *.csv
 *.png
