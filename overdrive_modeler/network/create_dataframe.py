@@ -2,7 +2,7 @@ import pandas as pd
 import os
 os.chdir(os.path.dirname(os.path.abspath(__file__))) # Change working directory to the script directory
 
-DATASET_DIR = '/mnt/volDISI_conci_Datasets/audio/dataset_pedals_32000'
+DATASET_DIR = 'dataset_32000/'
 OUTPUT_PATH = os.path.join(DATASET_DIR,'pedals_dataframe.csv')
 
 data = []
