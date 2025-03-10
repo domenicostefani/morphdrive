@@ -14,7 +14,7 @@ print(f"Found {len(audio_files)} audio files")
 ORIGINAL_SR = 48000
 NEW_SR = 32000
 
-OUTPUT_DIR = f'../dataset_{NEW_SR}Hz'
+OUTPUT_DIR = f'../dataset_{NEW_SR}'
 if not os.path.exists(OUTPUT_DIR):
     os.makedirs(OUTPUT_DIR)
 
