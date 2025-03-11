@@ -8,7 +8,7 @@ import soundfile as sf
 from glob import glob
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-audio_files = glob('./*/*.wav')
+audio_files = glob('./*/s0*.wav') # Resample only the first sweep to save space
 print(f"Found {len(audio_files)} audio files")
 
 ORIGINAL_SR = 48000
