@@ -14,9 +14,10 @@ print(f"Found {len(audio_files)} audio files")
 ORIGINAL_SR = 48000
 NEW_SR = 32000
 
-OUTPUT_DIR = f'../dataset_{NEW_SR}'
-if not os.path.exists(OUTPUT_DIR):
-    os.makedirs(OUTPUT_DIR)
+OUTPUT_DIR = f'../dataset_{NEW_SR//1000}'
+assert os.path.exists(OUTPUT_DIR), f"Output directory {OUTPUT_DIR} does not exist"
+# if not os.path.exists(OUTPUT_DIR):
+#     os.makedirs(OUTPUT_DIR)
 
 for iaf, audio_file in enumerate(audio_files):
     new_path = os.path.join(OUTPUT_DIR, os.path.relpath(audio_file, '.'))

@@ -151,10 +151,10 @@ if __name__ == "__main__":
     model = StaticHyperGRU(
         inp_channel=1,
         out_channel=1,
-        rnn_size=4,
+        rnn_size=32,
         sample_rate=48000,
-        n_mlp_blocks=3,
-        mlp_size=32,
+        n_mlp_blocks=2,
+        mlp_size=16,
         num_conds=8,
     )
 
@@ -162,9 +162,22 @@ if __name__ == "__main__":
 
     x = torch.randn(32, 1, 1024 + _rec_in_samples - 1)
     c = torch.randn(32, 8)
-    h = torch.ones(1, 32, 4)
+    h = torch.ones(1, 32, 32)
 
     out, _, _ = model(x, c, h)
 
     print(f'Out shape: {out.shape}')
     print(f'Number of parameters: {model.compute_num_of_params()}')
+
+
+
+    # PICCOLA   
+    model = StaticHyperGRU(
+        inp_channel=1,
+        out_channel=1,
+        rnn_size=4,
+        sample_rate=48000,
+        n_mlp_blocks=3,
+        mlp_size=32,
+        num_conds=8,
+    )

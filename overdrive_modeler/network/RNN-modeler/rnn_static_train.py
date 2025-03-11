@@ -6,30 +6,37 @@ from torch.nn.utils import clip_grad_norm_
 import torch.nn as nn
 import torch.nn.functional as F
 from scipy import signal
+from torch.optim.lr_scheduler import LambdaLR
+import os
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 import warnings
 warnings.filterwarnings("ignore")
 
 
-from dataset import Pedals_Dataset_RNN
-from static_rnn import StaticHyperGRU
+from rnn_dataset import Pedals_Dataset_RNN
+from rnn_static_model import StaticHyperGRU
 
 
 
 HIDDEN_INTIAL = None
 SR = 48000
-WINDOW_LENGTH = 2048
-BS = 64
+WINDOW_LENGTH = 4096
+BS = 128
 LR = 1e-3
 EPOCHS = 2
 
-FULL_DATAFRAME = "/home/ardan/ARDAN/PEDALINY/pedaliny_dataframe_marzo.csv"
-REDUCTION_DATAFRAME = "/home/ardan/ARDAN/dafx25-ArdanDomPedaliny/overdrive_modeler/network/VAE/tsne_latents_dataframe.csv"
-UNPROCESSED_FILE_PATH = "/home/ardan/ARDAN/PEDALINY/pedaliny_full_rec.wav"
+LOGS = False
+
+DATASET_DIR = os.path.join('..', 'dataset')
+FULL_DATAFRAME = os.path.join(DATASET_DIR, 'pedals_dataframe.csv')
+UNPROCESSED_FILE_PATH = os.path.join(DATASET_DIR, 'input','a_0-unprocessed_input.wav')
+
+REDUCTION_DATAFRAME = "../VAE/1-2025-03-11_16-50_tsne_latents.csv"
 
 
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-wandb.init(project="pedaliny", entity="francesco-dalri-2")
+wandb.init(project="Pedals_RNN", entity="francesco-dalri-2")
 
 
 def init_weights(model):
@@ -129,7 +136,7 @@ class STFTLoss(nn.Module):
 class MRSTFTLoss(nn.Module):
     def __init__(
         self,
-        scales: list = [1024, 512, 128, 32],#[2048, 512, 128, 32],
+        scales: list = [1024, 256, 32],#[2048, 512, 128, 32],
         overlap: float = 0.75, 
         pre_emp: bool = False
     ):
@@ -225,7 +232,7 @@ class GlobalLoss(nn.Module):
         self.mse_weight = mse_weight
         
         self.stft_loss = MRSTFTLoss(
-            scales=[1024, 512, 128, 32],#[2048, 512, 128, 32],
+            scales=[2048, 512, 128, 32],#[2048, 512, 128, 32],
             overlap=0.75,
             pre_emp=True
         ).to(DEVICE)
@@ -247,82 +254,82 @@ class GlobalLoss(nn.Module):
         return stft_loss, mse_loss
 
 
+def lr_lambda(step, decay_every=500, decay_rate=0.5):
+    return decay_rate ** (step // decay_every)
 
 
 
-
-def train(model, loss_func, optimizer, train_dataloader, num_epochs=100):
+def train(model, loss_func, optimizer, train_dataloader, num_epochs=1):
     wandb.init(project="pedaliny_training", name="train_dynamic_hypergru")
     
     model.train()
-    best_loss = float('inf')
-    #max_grad_norm = 0.8
+    scheduler = LambdaLR(optimizer, lr_lambda=lr_lambda)
+    step = 0
 
     print('{:=^40}'.format(' Start Training '))
 
+
     for epoch in range(num_epochs):
-        h = HIDDEN_INTIAL
-        total_loss = 0
+        #h = HIDDEN_INTIAL
+        total_mse_loss = 0
+        total_stft_loss = 0
 
         for i, batch in enumerate(train_dataloader):
             wav_x, wav_y, vec_c = batch
             wav_x, wav_y = wav_x.float().to(DEVICE), wav_y.float().to(DEVICE)
             vec_c = vec_c.float().to(DEVICE) if vec_c is not None else None
 
-            h = None
+            #h = None
             h = torch.zeros(1, wav_x.shape[0], model.rnn_size).to(wav_x.device)
             #hyper_h = torch.zeros(1, wav_x.shape[0], model.hyper_rnn_size).to(wav_x.device)
 
-            start_time = time.time()
+            #start_time = time.time()
             wav_y_pred, h, _ = model(wav_x, vec_c, h)
-            elapsed_time = time.time() - start_time
-            print(f"Processing time: {elapsed_time * 1000:.2f} ms")
+            #elapsed_time = time.time() - start_time
+            #print(f"Processing time: {elapsed_time * 1000:.2f} ms")
 
             stft_loss, mse_loss = loss_func(wav_y_pred, wav_y) 
 
-            loss = stft_loss + mse_loss
+            loss = stft_loss + mse_loss * 10
 
             optimizer.zero_grad()
             loss.backward()
             # Uncomment if gradient clipping is needed
             # torch.nn.utils.clip_grad_norm_(model.parameters(), max_grad_norm)
             optimizer.step()
+            scheduler.step()
+            step += 1
+            current_lr = optimizer.param_groups[0]['lr']
 
-            total_loss += loss.item()
+            total_mse_loss += mse_loss.item()
+            total_stft_loss += stft_loss.item()
 
             # Log loss and sample outputs to wandb
-            if i % 5 == 0:  # Log every 10 batches
-                wandb.log({
-                    "batch_loss": loss.item(),
-                    "stft_loss": stft_loss.item(),
-                    "mse_loss": mse_loss.item(),
-                    "wav_x": wandb.Audio(convert_tensor_to_numpy(wav_x[0]), sample_rate=SR),
-                    "wav_y": wandb.Audio(convert_tensor_to_numpy(wav_y[0]), sample_rate=SR),
-                    "wav_y_pred": wandb.Audio(convert_tensor_to_numpy(wav_y_pred[0]), sample_rate=SR),
-            })
+            if LOGS:
+                if i % 5 == 0:  # Log every 10 batches
+                    wandb.log({
+                        "stft_loss": stft_loss.item(),
+                        "mse_loss": mse_loss.item(),
+                })
+                if i % 25 == 0:  # Log every 10 batches
+                    wandb.log({
+                        "wav_x": wandb.Audio(convert_tensor_to_numpy(wav_x[0])*3, sample_rate=SR),
+                        "wav_y": wandb.Audio(convert_tensor_to_numpy(wav_y[0])*3, sample_rate=SR),
+                        "wav_y_pred": wandb.Audio(convert_tensor_to_numpy(wav_y_pred[0])*3, sample_rate=SR),
+                })
+            
+            print(f"Epoch {epoch} - Batch {i}, Loss: {loss.item():.5f}, STFT Loss: {stft_loss.item():.5f}, MSE Loss: {mse_loss.item():.5f}, LR: {current_lr:.4f}")
                 
-            torch.save(model.state_dict(), "/home/ardan/ARDAN/PEDALINY/pedaliny_static_rnn_mini.pth")
-
-            print(f"Epoch {epoch} - Batch {i}, Loss: {loss.item():.5f}, STFT Loss: {stft_loss.item():.5f}, MSE Loss: {mse_loss.item():.5f}")
-
-        avg_loss = total_loss / len(train_dataloader)
-        print(f"Epoch {epoch}, Average Loss: {avg_loss}")
-
-        # Log epoch loss to wandb
-        wandb.log({"epoch_loss": avg_loss})
-        if avg_loss < best_loss:
-            torch.save(model.state_dict(), "/home/ardan/ARDAN/PEDALINY/pedaliny_static_rnn_mini.pth")
-            best_loss = avg_loss
-
-    # Save model
-    #torch.save(model.state_dict(), "/home/ardan/ARDAN/PEDALINY/pedaliny_rnn_8.pth")
+    savename = os.path.basename(REDUCTION_DATAFRAME).split('_')[0]+"_static_rnn.pth"
+    torch.save(model.state_dict(), savename) 
     
 
 
 def test(model, loss_func, test_dataloader):
     print('{:=^40}'.format(' Start Testing '))
     model.eval()
-    test_loss = 0
+    test_mse_loss = 0
+    test_stft_loss = 0
 
     with torch.no_grad():
         for i, batch in enumerate(test_dataloader):
@@ -337,7 +344,9 @@ def test(model, loss_func, test_dataloader):
             stft_loss, mse_loss = loss_func(wav_y_pred, wav_y)
 
             loss = stft_loss + mse_loss
-            test_loss += loss.item()
+            
+            test_mse_loss += mse_loss.item()
+            test_stft_loss += stft_loss.item()
 
             if i % 20 == 0:  # Log every 10 batches
                 wandb.log({
@@ -345,10 +354,10 @@ def test(model, loss_func, test_dataloader):
                     "test_stft_loss": stft_loss.item(),
                     "test_mse_loss": mse_loss.item(),
                 })
+    if LOGS:
+        wandb.log({"test_mse_loss": test_mse_loss / len(test_dataloader)})
+        wandb.log({"test_stft_loss": test_stft_loss / len(test_dataloader)})
 
-    avg_test_loss = test_loss / len(test_dataloader)
-    print(f"Test Loss: {avg_test_loss:.5f}")
-    wandb.log({"test_loss": avg_test_loss})
 
 
 
@@ -356,7 +365,7 @@ if __name__ == '__main__':
     dataset = Pedals_Dataset_RNN(FULL_DATAFRAME, REDUCTION_DATAFRAME, UNPROCESSED_FILE_PATH, win_len=WINDOW_LENGTH)
 
     # Split into train and test (80% train, 20% test)
-    train_size = int(0.8 * len(dataset))
+    train_size = int(0.5 * len(dataset))
     test_size = len(dataset) - train_size
     train_data, test_data = torch.utils.data.random_split(dataset, [train_size, test_size])
     print(f"Train size: {len(train_data)}, Test size: {len(test_data)}")
@@ -365,13 +374,14 @@ if __name__ == '__main__':
 
     model = StaticHyperGRU(inp_channel =  1,
                             out_channel = 1,
-                            rnn_size =2,
+                            rnn_size = 32, # 16
                             sample_rate = SR,
-                            n_mlp_blocks = 2,
-                            mlp_size = 32,
+                            n_mlp_blocks = 2, # 4
+                            mlp_size = 16, # 32
                             num_conds = 8,
                             ).to(DEVICE)
-
+    
+    print(f'TRAINABLE PARAMS: {sum(p.numel() for p in model.parameters() if p.requires_grad)}')
 
     # Initialize weights
     def init_weights(model):
@@ -388,14 +398,14 @@ if __name__ == '__main__':
     optimizer = torch.optim.Adam(model.parameters(), lr=LR, weight_decay=1e-6)
 
     # Train the model
-    '''train(
+    train(
         model, loss_func, optimizer, train_dataloader=train_dataloader,
         num_epochs=EPOCHS,
-    )'''
+    )
 
     # Test the model
     test_dataloader = torch.utils.data.DataLoader(test_data, batch_size=BS, shuffle=False, num_workers=4, pin_memory=True)
-    #test(model, loss_func, test_dataloader)
+    test(model, loss_func, test_dataloader)
 
     #wandb.finish()
 

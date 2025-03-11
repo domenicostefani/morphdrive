@@ -160,8 +160,8 @@ for pedal in summary['pedal']:
     if pedal == '0-input':
         continue
     pedal_df = df[df['pedal'] == pedal]
-    assert pedal_df['gain'].nunique() == 5, f"Pedal {pedal} is missing some gain values"
-    assert pedal_df['tone'].nunique() == 5, f"Pedal {pedal} is missing some tone values"
+    assert pedal_df['gain'].nunique() == 6, f"Pedal {pedal} is missing some gain values"
+    assert pedal_df['tone'].nunique() == 6, f"Pedal {pedal} is missing some tone values"
 
 
 summary.drop(columns=['gain_mean','gain_std','gain_max','tone_mean','tone_std','tone_max'], inplace=True)
