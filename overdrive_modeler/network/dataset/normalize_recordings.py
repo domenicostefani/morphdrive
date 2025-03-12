@@ -33,10 +33,11 @@ initial_offset_samples = 1268  # Initial offset in samples
 pause_samples = 24000  # 0.5 seconds for 48kHz sampling rate
 sweep_length_seconds = 4  # 4 seconds
 sampling_rate = 48000  # Assuming 48kHz sampling rate
+IS_PHASE_INVERTED = ['honeybee', 'kingoftone', 'overzoid']
 
 # Convert ms to samples
-initial_noise_offset = int((200 / 1000) * sampling_rate)  # Convert 200ms to samples
-noise_length = int((300 / 1000) * sampling_rate)  # Convert 300ms to samples
+initial_noise_offset = int((200 / 1000) * sampling_rate) 
+noise_length = int((300 / 1000) * sampling_rate)  
 
 log_file = os.path.join(output_folder, "normalization_log.csv")
 
@@ -78,6 +79,8 @@ for effect, files in effect_groups.items():
     for file in files:
         file_path = os.path.join(input_folder, file)
         audio, sr = librosa.load(file_path, sr=sampling_rate)
+        if effect in IS_PHASE_INVERTED:
+            audio = -audio
         file_max = calculate_max_amplitude(audio)
         file_amplitudes[file] = file_max
         max_amplitude = max(max_amplitude, file_max)
@@ -140,7 +143,6 @@ print(f"Processing complete! Normalization log saved at \"{log_file}\".")
 df['pedal'] = df['name'].apply(lambda x: x.split("_")[0])
 df['gain'] = df['name'].apply(lambda x: int(x.split("_")[1].lstrip("g")))
 df['tone'] = df['name'].apply(lambda x: int(x.split("_")[2].lstrip("t").rstrip(".wav")))
-# Drop the 'name' column
 df.drop(columns=['name'], inplace=True)
 
 print(df)
