@@ -5,8 +5,8 @@ import librosa
 from mpl_toolkits.mplot3d import Axes3D
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
-
-
+import seaborn as sns
+from utils import DBmetadataRenamer
 
 def extract_spectrogram(audio, sr=32000):
     extracted_spectrogram = librosa.feature.melspectrogram(y=audio, sr=sr, n_mels=256, fmax=sr//2)
@@ -63,8 +63,8 @@ from sklearn.manifold import TSNE
 def normalize_coordinates(X):
     return (X - X.min(axis=0)) / (X.max(axis=0) - X.min(axis=0))
 
-def visualize_latents(reduction, X_transformed, y, image_path, label_type="pedal", mode="2D"):
-    fig = plt.figure(figsize=(10, 10))
+def visualize_latents(reduction, X_transformed, y, image_path, label_type="pedal", mode="2D",figsize=(10, 10), show_xy_titles=False, show_title=True, show_ticks=True, show_legend=True):
+    fig = plt.figure(figsize=figsize)
     if mode == "3D":
         ax = fig.add_subplot(111, projection='3d')
     else:
@@ -80,10 +80,20 @@ def visualize_latents(reduction, X_transformed, y, image_path, label_type="pedal
     unique_labels = np.unique(labels)
     num_labels = len(unique_labels)
 
-    cmap = plt.get_cmap("tab10" if num_labels <= 10 else "hsv")
-    colors = [cmap(i / num_labels) for i in range(num_labels)]
+    if num_labels < 10:
+        cmap = sns.color_palette()
+        # Skip green
+        rng = [i+1 if i >= 2 else i for i in range(num_labels)]
+        rng = [2 if i == 10 else i for i in rng] # Place green at the end
+        colors = [cmap[i] for i in rng]
+    else:
+        cmap = plt.get_cmap('hsv')
+        colors = [cmap(i) for i in np.linspace(0, 1, num_labels)]
     label_to_color = {label: colors[i] for i, label in enumerate(unique_labels)}
-    label_names = {label: label if label_type == "pedal" else str(label) for label in unique_labels}
+
+    datasetMetadataRenamer = DBmetadataRenamer()
+
+    label_names = {label: datasetMetadataRenamer.datasetname2shortname(label) if label_type == "pedal" else str(label) for label in unique_labels}
 
     for label in unique_labels:
         indices = (labels == label)
@@ -94,17 +104,27 @@ def visualize_latents(reduction, X_transformed, y, image_path, label_type="pedal
             ax.scatter(X_transformed[indices, 0], X_transformed[indices, 1],
                         color=[label_to_color[label]], label=label_names[label], s=100)
 
-    ax.set_title(f"{reduction} on Latents ({label_type.capitalize()})")
-    ax.set_xlabel("Component 1")
-    ax.set_ylabel("Component 2")
-    if mode == "3D":
-        ax.set_zlabel("Component 3")
+    if show_title:
+        ax.set_title(f"{reduction} on Latents ({label_type.capitalize()})")
+    if show_xy_titles:
+        ax.set_xlabel("Component 1")
+        ax.set_ylabel("Component 2")
+        if mode == "3D":
+            ax.set_zlabel("Component 3")
+
+    if not show_ticks:
+        ax.set_xticks([])
+        ax.set_yticks([])
+        if mode == "3D":
+            ax.set_zticks([])
     
-    plt.legend()
-    plt.savefig(image_path)
+    if show_legend:
+        plt.legend()
+    plt.tight_layout()
+    plt.savefig(image_path, bbox_inches='tight')
     plt.show()
 
-def pca_on_latents(latents_csv_path, csv_path, image_path, label_type="pedal", mode="2D"):
+def pca_on_latents(latents_csv_path, csv_path, image_path, label_type="pedal", mode="2D",figsize=(10, 10), show_xy_titles=False, show_title=True, show_ticks=True, show_legend=True):
     df = pd.read_csv(latents_csv_path)
     df["latents"] = df["latents"].apply(eval)  
     X = np.array(df["latents"].to_list())
@@ -120,9 +140,9 @@ def pca_on_latents(latents_csv_path, csv_path, image_path, label_type="pedal", m
     df = df[["label_name", "gain", "tone", "latents", "coords"]]
     df.to_csv(csv_path, index=False)
     
-    visualize_latents("PCA", X_pca, y, image_path, label_type, mode)
+    visualize_latents("PCA", X_pca, y, image_path, label_type, mode, figsize, show_xy_titles, show_title, show_ticks, show_legend)
 
-def tsne_on_latents(latents_csv_path, csv_path, image_path, label_type="pedal", mode="2D"):
+def tsne_on_latents(latents_csv_path, csv_path, image_path, label_type="pedal", mode="2D", figsize=(10, 10), show_xy_titles=False, show_title=True, show_ticks=True, show_legend=True):
     df = pd.read_csv(latents_csv_path)
     df["latents"] = df["latents"].apply(eval) 
     X = np.array(df["latents"].to_list())
@@ -138,7 +158,7 @@ def tsne_on_latents(latents_csv_path, csv_path, image_path, label_type="pedal", 
     df = df[["label_name", "gain", "tone", "latents", "coords"]]
     df.to_csv(csv_path, index=False)
     
-    visualize_latents("TSNE", X_tsne, y, image_path, label_type, mode)
+    visualize_latents("TSNE", X_tsne, y, image_path, label_type, mode, figsize, show_xy_titles, show_title, show_ticks, show_legend)
 
 if __name__ == "__main__":
     print("Plotters-Script")
@@ -152,11 +172,11 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.type == "pca":
-        pca_on_latents(args.latents_csv_path, csv_path="pca_latents.csv", image_path="pca_latents.png")
-        print(f'PCA on latents completed. Results saved to ./pca_latents.csv and ./pca_latents.png')
+        pca_on_latents(args.latents_csv_path, csv_path="pca_latents.csv", image_path="pca_latents.pdf", figsize=(5, 5), show_title=False, show_xy_titles=False, show_ticks=False, show_legend=False)
+        print(f'PCA on latents completed. Results saved to ./pca_latents.csv and ./pca_latents.pdf')
     elif args.type == "tsne":
-        tsne_on_latents(args.latents_csv_path, csv_path="tsne_latents.csv", image_path="tsne_latents.png")
-        print(f'TSNE on latents completed. Results saved to ./tsne_latents.csv and ./tsne_latents.png')
+        tsne_on_latents(args.latents_csv_path, csv_path="tsne_latents.csv", image_path="tsne_latents.pdf", figsize=(5, 5), show_title=False, show_xy_titles=False, show_ticks=False, show_legend=False)
+        print(f'TSNE on latents completed. Results saved to ./tsne_latents.csv and ./tsne_latents.pdf')
     else:
         print("Invalid type. Please choose either 'pca' or 'tsne'.")
         
