@@ -153,7 +153,7 @@ if __name__ == "__main__":
         out_channel=1,
         rnn_size=32,
         sample_rate=48000,
-        n_mlp_blocks=2,
+        n_mlp_blocks=3,
         mlp_size=16,
         num_conds=8,
     )
@@ -168,16 +168,3 @@ if __name__ == "__main__":
 
     print(f'Out shape: {out.shape}')
     print(f'Number of parameters: {model.compute_num_of_params()}')
-
-
-
-    # PICCOLA   
-    model = StaticHyperGRU(
-        inp_channel=1,
-        out_channel=1,
-        rnn_size=4,
-        sample_rate=48000,
-        n_mlp_blocks=3,
-        mlp_size=32,
-        num_conds=8,
-    )
