@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import wandb
 import librosa
 from mpl_toolkits.mplot3d import Axes3D
 from sklearn.decomposition import PCA
@@ -15,6 +14,7 @@ def extract_spectrogram(audio, sr=32000):
     return log_spectrogram
 
 def plot_spectrograms_to_wandb(model_output, original_audio, sr):
+    import wandb
 
     predicted = model_output.squeeze().cpu().detach().numpy()
     original = original_audio.squeeze().cpu().detach().numpy()
@@ -63,7 +63,7 @@ from sklearn.manifold import TSNE
 def normalize_coordinates(X):
     return (X - X.min(axis=0)) / (X.max(axis=0) - X.min(axis=0))
 
-def visualize_latents(reduction, X_transformed, y, index_to_label, image_path, label_type="pedal", mode="2D"):
+def visualize_latents(reduction, X_transformed, y, image_path, label_type="pedal", mode="2D"):
     fig = plt.figure(figsize=(10, 10))
     if mode == "3D":
         ax = fig.add_subplot(111, projection='3d')
@@ -83,7 +83,7 @@ def visualize_latents(reduction, X_transformed, y, index_to_label, image_path, l
     cmap = plt.get_cmap("tab10" if num_labels <= 10 else "hsv")
     colors = [cmap(i / num_labels) for i in range(num_labels)]
     label_to_color = {label: colors[i] for i, label in enumerate(unique_labels)}
-    label_names = {label: index_to_label[label] if label_type == "pedal" else str(label) for label in unique_labels}
+    label_names = {label: label if label_type == "pedal" else str(label) for label in unique_labels}
 
     for label in unique_labels:
         indices = (labels == label)
@@ -104,7 +104,7 @@ def visualize_latents(reduction, X_transformed, y, index_to_label, image_path, l
     plt.savefig(image_path)
     plt.show()
 
-def pca_on_latents(index_to_label, latents_csv_path, csv_path, image_path, label_type="pedal", mode="2D"):
+def pca_on_latents(latents_csv_path, csv_path, image_path, label_type="pedal", mode="2D"):
     df = pd.read_csv(latents_csv_path)
     df["latents"] = df["latents"].apply(eval)  
     X = np.array(df["latents"].to_list())
@@ -116,13 +116,13 @@ def pca_on_latents(index_to_label, latents_csv_path, csv_path, image_path, label
     X_pca = normalize_coordinates(X_pca)
     df["coords"] = X_pca.tolist()  
 
-    df["label_name"] = df["label"].map(index_to_label)
+    df["label_name"] = df["label"]
     df = df[["label_name", "gain", "tone", "latents", "coords"]]
     df.to_csv(csv_path, index=False)
     
-    visualize_latents("PCA", X_pca, y, index_to_label, image_path, label_type, mode)
+    visualize_latents("PCA", X_pca, y, image_path, label_type, mode)
 
-def tsne_on_latents(index_to_label, latents_csv_path, csv_path, image_path, label_type="pedal", mode="2D"):
+def tsne_on_latents(latents_csv_path, csv_path, image_path, label_type="pedal", mode="2D"):
     df = pd.read_csv(latents_csv_path)
     df["latents"] = df["latents"].apply(eval) 
     X = np.array(df["latents"].to_list())
@@ -134,8 +134,30 @@ def tsne_on_latents(index_to_label, latents_csv_path, csv_path, image_path, labe
     X_tsne = normalize_coordinates(X_tsne)
     df["coords"] = X_tsne.tolist()  
 
-    df["label_name"] = df["label"].map(index_to_label)
+    df["label_name"] = df["label"]
     df = df[["label_name", "gain", "tone", "latents", "coords"]]
     df.to_csv(csv_path, index=False)
     
-    visualize_latents("TSNE", X_tsne, y, index_to_label, image_path, label_type, mode)
+    visualize_latents("TSNE", X_tsne, y, image_path, label_type, mode)
+
+if __name__ == "__main__":
+    print("Plotters-Script")
+    import argparse
+    parser = argparse.ArgumentParser()
+    # One argument, mandatory: path to the latents csv file
+    parser.add_argument("latents_csv_path", type=str, help="Path to the latents csv file")
+    # One argument "type" that defaults to tsne
+    parser.add_argument("--type", type=str, default="tsne", help="Type of reduction (pca or tsne)")
+
+    args = parser.parse_args()
+
+    if args.type == "pca":
+        pca_on_latents(args.latents_csv_path, csv_path="pca_latents.csv", image_path="pca_latents.png")
+        print(f'PCA on latents completed. Results saved to ./pca_latents.csv and ./pca_latents.png')
+    elif args.type == "tsne":
+        tsne_on_latents(args.latents_csv_path, csv_path="tsne_latents.csv", image_path="tsne_latents.png")
+        print(f'TSNE on latents completed. Results saved to ./tsne_latents.csv and ./tsne_latents.png')
+    else:
+        print("Invalid type. Please choose either 'pca' or 'tsne'.")
+        
+    pass

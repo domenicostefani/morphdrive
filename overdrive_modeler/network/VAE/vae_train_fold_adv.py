@@ -10,7 +10,6 @@ import pandas as pd
 import numpy as np
 import os
 os.chdir(os.path.dirname(os.path.abspath(__file__))) # Change working directory to the script directory
-import wandb
 from torch.optim.lr_scheduler import LambdaLR
 from plotters import plot_spectrograms_to_wandb, load_audio_to_wandb, pca_on_latents, tsne_on_latents
 import datetime
@@ -28,8 +27,11 @@ DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 THIS_FOLDER_PATH = os.path.dirname(os.path.abspath(__file__))
 LOGS = False
 
+if LOGS:
+    import wandb
+
 PEDALS = ['dumkudo', 'ss2', 'theelements', 'ocd', 'tubedreamer', 'chime', 'ktr', 'kingoftone']
-PEDALS = ['honeybee']
+PEDALS = ['chime', 'bigfella']
 for pedal in PEDALS:
     assert os.path.exists(os.path.join(DATASET_DIR, pedal)), f"Pedal '{pedal}' not found in '{DATASET_DIR}'"
 
@@ -312,15 +314,15 @@ def train_fold(train_loader, val_loader, model, discriminator, optimizer_model, 
 
 
 
-def extract_latents(dataloader, model, label_to_index, save_path):
+def extract_latents(dataloader, model, label_to_index, index_to_label, save_path):
     model.eval()
     all_data = []
 
     for batch in dataloader:
-        audio = batch["audio"].float().to("cuda").unsqueeze(1)
-        target_class = torch.tensor([label_to_index[label] for label in batch["label"]], dtype=torch.long).to("cuda")
-        target_gain = batch["g"].clone().detach().to(torch.long).to("cuda")
-        target_tone = batch["t"].clone().detach().to(torch.long).to("cuda")
+        audio = batch["audio"].float().to(DEVICE).unsqueeze(1)
+        target_class = torch.tensor([label_to_index[label] for label in batch["label"]], dtype=torch.long).to(DEVICE)
+        target_gain = batch["g"].clone().detach().to(torch.long).to(DEVICE)
+        target_tone = batch["t"].clone().detach().to(torch.long).to(DEVICE)
 
         _, _, _, z = model(audio)
 
@@ -333,6 +335,7 @@ def extract_latents(dataloader, model, label_to_index, save_path):
             })
 
     df = pd.DataFrame(all_data)
+    df['label'] = df['label'].map(index_to_label)
     df.to_csv(save_path, index=False)
     print("Latents saved")
 
@@ -415,11 +418,12 @@ if __name__ == "__main__":
         wandb.init(project=WANDB_PROJECT_NAME, name=f"{start_time}_FINAL", reinit=True, entity=WANDB_ENTITY) 
 
     train_fold(full_dataloader, None, model, discriminator, optimizer_model, optimizer_disc, save_model_path, fold=0, with_validation=False)
-    extract_latents(full_dataloader, model, label_to_index, save_latents_path)
-    pca_on_latents(index_to_label, save_latents_path, pca_csv_path, pca_image_path)
-    tsne_on_latents(index_to_label, save_latents_path, tsne_csv_path, tsne_image_path)
-    pca_on_latents(index_to_label, save_latents_path, pca_csv_path_3d, pca_image_path_3d, mode="3D")
-    tsne_on_latents(index_to_label, save_latents_path, tsne_csv_path_3d, tsne_image_path_3d, mode="3D")
+    extract_latents(full_dataloader, model, label_to_index, index_to_label, save_latents_path)
+    
+    pca_on_latents(save_latents_path, pca_csv_path, pca_image_path)
+    tsne_on_latents(save_latents_path, tsne_csv_path, tsne_image_path)
+    pca_on_latents(save_latents_path, pca_csv_path_3d, pca_image_path_3d, mode="3D")
+    tsne_on_latents(save_latents_path, tsne_csv_path_3d, tsne_image_path_3d, mode="3D")
     
     if LOGS:
         wandb.finish()
