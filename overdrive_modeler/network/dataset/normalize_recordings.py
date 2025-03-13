@@ -79,8 +79,6 @@ for effect, files in effect_groups.items():
     for file in files:
         file_path = os.path.join(input_folder, file)
         audio, sr = librosa.load(file_path, sr=sampling_rate)
-        if effect in IS_PHASE_INVERTED:
-            audio = -audio
         file_max = calculate_max_amplitude(audio)
         file_amplitudes[file] = file_max
         max_amplitude = max(max_amplitude, file_max)
@@ -89,6 +87,9 @@ for effect, files in effect_groups.items():
     for file in files:
         file_path = os.path.join(input_folder, file)
         audio, sr = librosa.load(file_path, sr=sampling_rate)
+        if effect in IS_PHASE_INVERTED:
+            print('Inverting phase')
+            audio = -audio
         if not effect == 'input': # Skip normalization for the input file
             normalized_audio = normalize_audio(audio, normalization_level_db, max_amplitude)
 
