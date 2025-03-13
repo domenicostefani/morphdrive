@@ -52,7 +52,7 @@ void setup() {
   int margin = int((width-height)*0.12);
   latKnobs = new Knob[8];
   for (int pix=0; pix <8; pix++){
-    latKnobs[pix] = controlP5.addKnob("latent"+str(pix),
+    latKnobs[pix] = controlP5.addKnob("latent"+str(pix+1),
                               -1,//min
                               1, //max
                               0, //default
@@ -250,7 +250,7 @@ void oscEvent(OscMessage theOscMessage) {
     if (theOscMessage.checkTypetag("ffisff")) {
       println("$ I received a point");
       float sentx = theOscMessage.get(0).floatValue();
-      float senty = theOscMessage.get(1).floatValue();
+      float senty = 1-theOscMessage.get(1).floatValue(); // Invert Y to match processing coordinates
       int sentlabel = theOscMessage.get(2).intValue();
       String sentlabelName = theOscMessage.get(3).toString();
       float gain = theOscMessage.get(4).floatValue();

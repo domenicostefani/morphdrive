@@ -15,9 +15,9 @@ class PSNColors {
     colorLabels[4] = #7f7f7f; // matplotlib's tab10 tab:gray
     colorLabels[5] = #bcbd22; // matplotlib's tab10 tab:olive
     colorLabels[6] = #17becf; // matplotlib's tab10 tab:cyan
-    colorLabels[7] = #2ca02c; // matplotlib's tab10 tab:green
+    colorLabels[7] = #9467bd; // matplotlib's tab10 tab:purple
     colorLabels[8] = #8c564b; // matplotlib's tab10 tab:brown
-    colorLabels[9] = #9467bd; // matplotlib's tab10 tab:purple
+    colorLabels[9] = #2ca02c; // matplotlib's tab10 tab:green
   }
   
   color setAlpha(color inColor, int alpha) {
