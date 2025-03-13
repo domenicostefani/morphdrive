@@ -26,7 +26,8 @@ for iaf, audio_file in enumerate(audio_files):
     os.makedirs(os.path.dirname(new_path), exist_ok=True)
     
     audio, _ = librosa.load(audio_file, sr=ORIGINAL_SR)
-    sf.write(new_path, audio, NEW_SR)
+    audio_res = librosa.resample(y=audio, orig_sr=ORIGINAL_SR, target_sr=NEW_SR, res_type='soxr_vhq')
+    sf.write(new_path, audio_res, NEW_SR)
 
 print("Done")
 
