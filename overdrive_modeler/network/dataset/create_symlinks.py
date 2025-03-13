@@ -3,13 +3,13 @@ from glob import glob
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # Ardan
-DATASET_RAW_PATH       = "/mnt/volDISI_conci_Datasets/audio/dataset_raw"
-DATASET_PROCESSED_PATH = "/mnt/volDISI_conci_Datasets/audio/dataset_pedals"
-OTHER_PATHS =           ["/mnt/volDISI_conci_Datasets/audio/dataset_32000"]
+# DATASET_RAW_PATH       = "/mnt/volDISI_conci_Datasets/audio/pedals/dataset_raw"
+# DATASET_PROCESSED_PATH = "/mnt/volDISI_conci_Datasets/audio/pedals/dataset_48"
+# OTHER_PATHS =           ["/mnt/volDISI_conci_Datasets/audio/pedals/dataset_32"]
 # Dom
-# DATASET_RAW_PATH       = "/home/cimil-01/Develop/dafx25-ArdanDomPedaliny/DB_DISK/dataset_raw"
-# DATASET_PROCESSED_PATH = "/home/cimil-01/Develop/dafx25-ArdanDomPedaliny/DB_DISK/DATASET_PROCESSED"
-# OTHER_PATHS =           ["/home/cimil-01/Develop/dafx25-ArdanDomPedaliny/DB_DISK/dataset_32000"]
+DATASET_RAW_PATH       = "/home/cimil-01/Develop/dafx25-ArdanDomPedaliny/DB_DISK/dataset_raw"
+DATASET_PROCESSED_PATH = "/home/cimil-01/Develop/dafx25-ArdanDomPedaliny/DB_DISK/dataset_48"
+OTHER_PATHS =           ["/home/cimil-01/Develop/dafx25-ArdanDomPedaliny/DB_DISK/dataset_32"]
 
 
 audiofiles_raw_paths = glob(os.path.join(DATASET_RAW_PATH, "*.wav"))
