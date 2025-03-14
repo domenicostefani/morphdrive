@@ -1,6 +1,5 @@
 import torch
 import torch.nn as nn
-from torchinfo import summary
 
 
 class Pedals_MLP(nn.Module):
@@ -21,6 +20,7 @@ class Pedals_MLP(nn.Module):
     
 
 if __name__ == '__main__':
+    from torchinfo import summary
     model = Pedals_MLP(input_dim=2, output_dim=8)
     input = torch.randn(1, 2)
     output = model(input)

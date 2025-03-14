@@ -9,11 +9,11 @@ from mlp_dataset import PedalsDataset_MLP
 from mlp_model import Pedals_MLP
 import ast
 
-EPOCHS = 1
+EPOCHS = 300
 LEARNING_RATE = 1e-3
 N_LATENTS = 8
 
-REDUCTION_DATAFRAME = "../VAE/1-2025-03-11_17-12_tsne_latents.csv"
+REDUCTION_DATAFRAME = "../VAE/4-2025-03-05_23-11_tsne_latents.csv"
 assert os.path.exists(REDUCTION_DATAFRAME), f"File '{REDUCTION_DATAFRAME}' not found"
 
 def model_loss(pred_coords, target_coords):

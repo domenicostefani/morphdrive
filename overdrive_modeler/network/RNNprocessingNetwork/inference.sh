@@ -1,0 +1,1 @@
+python rnn_static_inference.py --rnn_model 4-2025-03-05_static_rnn.pth --reverse_tsne ../MLP/4-2025-03-05_mlp.pth --tsne_df ../VAE/4-2025-03-05_23-11_tsne_latents.csv  

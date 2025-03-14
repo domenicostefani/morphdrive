@@ -1,4 +1,3 @@
-import wandb
 import time
 import numpy as np
 import torch
@@ -18,7 +17,7 @@ from rnn_dataset import Pedals_Dataset_RNN
 from rnn_static_model import StaticHyperGRU
 
 
-
+DEBUG_RUN = True # If true, the model gets trained on a small subset of the dataset to check if everything is working
 HIDDEN_INTIAL = None
 SR = 48000
 WINDOW_LENGTH = 4096
@@ -27,16 +26,21 @@ LR = 1e-3
 EPOCHS = 2
 
 LOGS = False
+if LOGS:
+    import wandb
+
 
 DATASET_DIR = os.path.join('..', 'dataset')
 FULL_DATAFRAME = os.path.join(DATASET_DIR, 'pedals_dataframe.csv')
 UNPROCESSED_FILE_PATH = os.path.join(DATASET_DIR, 'input','a_0-unprocessed_input.wav')
 
-REDUCTION_DATAFRAME = "../VAE/1-2025-03-11_16-50_tsne_latents.csv"
+REDUCTION_DATAFRAME = "../VAE/4-2025-03-05_23-11_tsne_latents.csv"
+assert os.path.exists(REDUCTION_DATAFRAME), f"Reduction dataframe not found at {REDUCTION_DATAFRAME}, modify the path in the script"
 
 
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-wandb.init(project="Pedals_RNN", entity="francesco-dalri-2")
+if LOGS:
+    wandb.init(project="Pedals_RNN", entity="francesco-dalri-2")
 
 
 def init_weights(model):
@@ -260,7 +264,8 @@ def lr_lambda(step, decay_every=500, decay_rate=0.5):
 
 
 def train(model, loss_func, optimizer, train_dataloader, num_epochs=1):
-    wandb.init(project="pedaliny_training", name="train_dynamic_hypergru")
+    if LOGS:
+        wandb.init(project="pedaliny_training", name="train_dynamic_hypergru")
     
     model.train()
     scheduler = LambdaLR(optimizer, lr_lambda=lr_lambda)
@@ -318,7 +323,7 @@ def train(model, loss_func, optimizer, train_dataloader, num_epochs=1):
                         "wav_y_pred": wandb.Audio(convert_tensor_to_numpy(wav_y_pred[0])*3, sample_rate=SR),
                 })
             
-            print(f"Epoch {epoch} - Batch {i}, Loss: {loss.item():.5f}, STFT Loss: {stft_loss.item():.5f}, MSE Loss: {mse_loss.item():.5f}, LR: {current_lr:.4f}")
+            print(f"Epoch {epoch}/{num_epochs} - Batch {i}/{len(train_dataloader)}, Loss: {loss.item():.5f}, STFT Loss: {stft_loss.item():.5f}, MSE Loss: {mse_loss.item():.5f}, LR: {current_lr:.4f}")
                 
     savename = os.path.basename(REDUCTION_DATAFRAME).split('_')[0]+"_static_rnn.pth"
     torch.save(model.state_dict(), savename) 
@@ -348,7 +353,7 @@ def test(model, loss_func, test_dataloader):
             test_mse_loss += mse_loss.item()
             test_stft_loss += stft_loss.item()
 
-            if i % 20 == 0:  # Log every 10 batches
+            if i % 20 == 0 and LOGS:  # Log every 10 batches
                 wandb.log({
                     "test_batch_loss": loss.item(),
                     "test_stft_loss": stft_loss.item(),
@@ -365,8 +370,12 @@ if __name__ == '__main__':
     dataset = Pedals_Dataset_RNN(FULL_DATAFRAME, REDUCTION_DATAFRAME, UNPROCESSED_FILE_PATH, win_len=WINDOW_LENGTH)
 
     # Split into train and test (80% train, 20% test)
-    train_size = int(0.5 * len(dataset))
-    test_size = len(dataset) - train_size
+    debug_datset_size = 300
+    train_size = int(0.5 * len(dataset))   if not DEBUG_RUN else int(debug_datset_size *0.8)
+    test_size = len(dataset) - train_size  if not DEBUG_RUN else debug_datset_size - train_size
+    if DEBUG_RUN:
+        indices = torch.randperm(len(dataset))[:debug_datset_size]
+        dataset = torch.utils.data.Subset(dataset, indices)
     train_data, test_data = torch.utils.data.random_split(dataset, [train_size, test_size])
     print(f"Train size: {len(train_data)}, Test size: {len(test_data)}")
 
