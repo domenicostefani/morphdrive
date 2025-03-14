@@ -249,18 +249,18 @@ class DynamicHyperGRU(nn.Module):
 
 
 
-
+#20289
 
 if __name__ == "__main__":
 
     model = DynamicHyperGRU(
         inp_channel=1,
         out_channel=1,
-        rnn_size=4,
+        rnn_size=32,
+        hyper_rnn_size=16,
+        sample_rate=44100,
         num_layers=3,
-        hyper_rnn_size=4,
-        sample_rate=48000,
-        n_z_size=256,
+        n_z_size=32,
         num_conds=8,
         layer_norm=False
     )
@@ -269,8 +269,8 @@ if __name__ == "__main__":
 
     x = torch.randn(32, 1, 1024 + receptive_field_samples - 1)
     c = torch.randn(32, 8)
-    h = torch.ones(1, 32, 4)
-    h_hat = torch.ones(1, 32, 4)
+    h = torch.ones(1, 32, 32)
+    h_hat = torch.ones(1, 32, 16)
 
     out, _, _ = model(x, c, h, h_hat)
 

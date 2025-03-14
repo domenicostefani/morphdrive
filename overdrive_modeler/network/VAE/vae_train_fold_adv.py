@@ -9,25 +9,29 @@ from vae_dataset import PedalsDataset_VAE
 import pandas as pd
 import numpy as np
 import os
-import wandb
+os.chdir(os.path.dirname(os.path.abspath(__file__))) # Change working directory to the script directory
 from torch.optim.lr_scheduler import LambdaLR
 from plotters import plot_spectrograms_to_wandb, load_audio_to_wandb, pca_on_latents, tsne_on_latents
 import datetime
 
 # Constants
-DATASET_DIR = '/mnt/volDISI_conci_Datasets/audio/dataset_pedals_32000'
+DATASET_DIR = os.path.join('..', 'dataset_32')
 DATAFRAME_PATH = os.path.join(DATASET_DIR, 'pedals_dataframe.csv')
 SR = 32000
 BATCH_SIZE = 32
 LEARNING_RATE = 1e-3
-EPOCHS = 5000
+EPOCHS = 2
 N_LATENTS = 8
 FOLDS = 5  # Number of folds for cross-validation
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 THIS_FOLDER_PATH = os.path.dirname(os.path.abspath(__file__))
-LOGS = True
+LOGS = False
 
-PEDALS = ['bigfella', 'honeybee', 'souldriven', 'zendrive']
+if LOGS:
+    import wandb
+
+PEDALS = ['dumkudo', 'ss2', 'theelements', 'ocd', 'tubedreamer', 'chime', 'ktr', 'kingoftone']
+PEDALS = ['chime', 'bigfella']
 for pedal in PEDALS:
     assert os.path.exists(os.path.join(DATASET_DIR, pedal)), f"Pedal '{pedal}' not found in '{DATASET_DIR}'"
 
@@ -37,7 +41,6 @@ WANDB_ENTITY = 'francesco-dalri-2'
 if LOGS:
     wandb.login()
     #wandb.init(project=WANDB_PROJECT_NAME, entity=WANDB_ENTITY)
-
 
 
 
@@ -218,7 +221,7 @@ def lr_lambda(epoch):
         return 0.5 ** (epoch // 500)
 
 
-def train_fold(train_loader, val_loader, model, discriminator, optimizer_model, optimizer_disc, save_model_path, with_validation=True):
+def train_fold(train_loader, val_loader, model, discriminator, optimizer_model, optimizer_disc, save_model_path, fold, with_validation=True):
     model.train()
     discriminator.train()
 
@@ -265,6 +268,8 @@ def train_fold(train_loader, val_loader, model, discriminator, optimizer_model, 
             total_adv_loss += adv_loss.item()
             total_disc_loss += disc_loss.item()
 
+            #print(f"Fold {fold}, Epoch {epoch}: Adv Loss={adv_loss.item():.4f}, Disc Loss={disc_loss.item():.4f}, Val Loss={v_loss_1 / len(val_loader):.4f}")
+
         scheduler_model.step()
         scheduler_discriminator.step()
 
@@ -289,7 +294,6 @@ def train_fold(train_loader, val_loader, model, discriminator, optimizer_model, 
                         "val/stft_loss": val_stft_loss / len(val_loader)
                     })
             model.train()
-            print(f"Fold {fold}, Epoch {epoch}: Loss={loss.item():.4f}, Adv Loss={adv_loss.item():.4f}, Disc Loss={disc_loss.item():.4f}, Val Loss={v_loss_1 / len(val_loader):.4f}")
         
         if LOGS:
             wandb.log({
@@ -300,24 +304,25 @@ def train_fold(train_loader, val_loader, model, discriminator, optimizer_model, 
                 "train/adversarial_loss": total_adv_loss / len(train_loader),
                 "train/disc_loss": total_disc_loss / len(train_loader),
             })
-            if epoch % 10 == 0:
+            if epoch % 250 == 0:
                 plot_spectrograms_to_wandb(output[0], audio[0], sr=SR)
                 load_audio_to_wandb(audio[0], output[0], sr=SR)
+        
     if save_model_path is not None:            
         torch.save(model.state_dict(), save_model_path)
 
 
 
 
-def extract_latents(dataloader, model, label_to_index, save_path):
+def extract_latents(dataloader, model, label_to_index, index_to_label, save_path):
     model.eval()
     all_data = []
 
     for batch in dataloader:
-        audio = batch["audio"].float().to("cuda").unsqueeze(1)
-        target_class = torch.tensor([label_to_index[label] for label in batch["label"]], dtype=torch.long).to("cuda")
-        target_gain = batch["g"].clone().detach().to(torch.long).to("cuda")
-        target_tone = batch["t"].clone().detach().to(torch.long).to("cuda")
+        audio = batch["audio"].float().to(DEVICE).unsqueeze(1)
+        target_class = torch.tensor([label_to_index[label] for label in batch["label"]], dtype=torch.long).to(DEVICE)
+        target_gain = batch["g"].clone().detach().to(torch.long).to(DEVICE)
+        target_tone = batch["t"].clone().detach().to(torch.long).to(DEVICE)
 
         _, _, _, z = model(audio)
 
@@ -330,6 +335,7 @@ def extract_latents(dataloader, model, label_to_index, save_path):
             })
 
     df = pd.DataFrame(all_data)
+    df['label'] = df['label'].map(index_to_label)
     df.to_csv(save_path, index=False)
     print("Latents saved")
 
@@ -364,7 +370,9 @@ if __name__ == "__main__":
         train_loader = DataLoader(train_subset, batch_size=BATCH_SIZE, shuffle=True, drop_last=True)
         val_loader = DataLoader(val_subset, batch_size=BATCH_SIZE, shuffle=True, drop_last=False)
 
-        '''save_latents_path = f'{THIS_FOLDER_PATH}/latents_VAE_fold{fold}.csv'
+
+        '''
+        save_latents_path = f'{THIS_FOLDER_PATH}/latents_VAE_fold{fold}.csv'
         save_model_path = f'{THIS_FOLDER_PATH}/model_VAE_fold{fold}.pth'
         pca_csv_path = f'{THIS_FOLDER_PATH}/pca_latents_fold{fold}.csv'
         tsne_csv_path = f'{THIS_FOLDER_PATH}/tsne_latents_fold{fold}.csv'
@@ -379,7 +387,7 @@ if __name__ == "__main__":
         optimizer_model = Adam(model.parameters(), lr=LEARNING_RATE)
         optimizer_disc = Adam(discriminator.parameters(), lr=LEARNING_RATE * 0.5)
         
-        train_fold(train_loader, val_loader, model, discriminator, optimizer_model, optimizer_disc, save_model_path=None)
+        train_fold(train_loader, val_loader, model, discriminator, optimizer_model, optimizer_disc, save_model_path=None, fold=fold)
         
         #extract_latents(full_dataloader, model, label_to_index, save_latents_path)
         #pca_on_latents(index_to_label, save_latents_path, pca_csv_path, pca_image_path)
@@ -392,21 +400,30 @@ if __name__ == "__main__":
     optimizer_model = Adam(model.parameters(), lr=LEARNING_RATE)
     optimizer_disc = Adam(discriminator.parameters(), lr=LEARNING_RATE * 0.5)
 
-    save_latents_path = f'{THIS_FOLDER_PATH}/{start_time}_latents_VAE.csv'
-    save_model_path = f'{THIS_FOLDER_PATH}/{start_time}_model_VAE.pth'
-    pca_csv_path = f'{THIS_FOLDER_PATH}/{start_time}_pca_latents.csv'
-    tsne_csv_path = f'{THIS_FOLDER_PATH}/{start_time}_tsne_latents.csv'
-    pca_image_path = f'{THIS_FOLDER_PATH}/{start_time}_pca_latents.png'
-    tsne_image_path = f'{THIS_FOLDER_PATH}/{start_time}_tsne_latents.png'
+    save_latents_path = f'{THIS_FOLDER_PATH}/{len(PEDALS)}-{start_time}_latents_VAE.csv'
+    save_model_path = f'{THIS_FOLDER_PATH}/{len(PEDALS)}-{start_time}_model_VAE.pth'
+    pca_csv_path = f'{THIS_FOLDER_PATH}/{len(PEDALS)}-{start_time}_pca_latents.csv'
+    tsne_csv_path = f'{THIS_FOLDER_PATH}/{len(PEDALS)}-{start_time}_tsne_latents.csv'
+    pca_image_path = f'{THIS_FOLDER_PATH}/{len(PEDALS)}-{start_time}_pca_latents.png'
+    tsne_image_path = f'{THIS_FOLDER_PATH}/{len(PEDALS)}-{start_time}_tsne_latents.png'
+    pca_csv_path_3d = f'{THIS_FOLDER_PATH}/{len(PEDALS)}-{start_time}_pca_latents_3d.csv'
+    tsne_csv_path_3d = f'{THIS_FOLDER_PATH}/{len(PEDALS)}-{start_time}_tsne_latents_3d.csv'
+    pca_image_path_3d = f'{THIS_FOLDER_PATH}/{len(PEDALS)}-{start_time}_3D_pca_latents.png'
+    tsne_image_path_3d = f'{THIS_FOLDER_PATH}/{len(PEDALS)}-{start_time}_3D_tsne_latents.png'
+
+
 
     print("Training on full dataset")
     if LOGS:
         wandb.init(project=WANDB_PROJECT_NAME, name=f"{start_time}_FINAL", reinit=True, entity=WANDB_ENTITY) 
 
-    train_fold(full_dataloader, None, model, discriminator, optimizer_model, optimizer_disc, save_model_path, with_validation=False)
-    extract_latents(full_dataloader, model, label_to_index, save_latents_path)
-    pca_on_latents(index_to_label, save_latents_path, pca_csv_path, pca_image_path)
-    tsne_on_latents(index_to_label, save_latents_path, tsne_csv_path, tsne_image_path)
+    train_fold(full_dataloader, None, model, discriminator, optimizer_model, optimizer_disc, save_model_path, fold=0, with_validation=False)
+    extract_latents(full_dataloader, model, label_to_index, index_to_label, save_latents_path)
+    
+    pca_on_latents(save_latents_path, pca_csv_path, pca_image_path)
+    tsne_on_latents(save_latents_path, tsne_csv_path, tsne_image_path)
+    pca_on_latents(save_latents_path, pca_csv_path_3d, pca_image_path_3d, mode="3D")
+    tsne_on_latents(save_latents_path, tsne_csv_path_3d, tsne_image_path_3d, mode="3D")
     
     if LOGS:
         wandb.finish()

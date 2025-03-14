@@ -372,14 +372,15 @@ if __name__ == '__main__':
 
     train_dataloader = torch.utils.data.DataLoader(train_data, batch_size=BS, shuffle=True, num_workers=4, pin_memory=True)
 
-    model = StaticHyperGRU(inp_channel =  1,
-                            out_channel = 1,
-                            rnn_size = 32, # 16
-                            sample_rate = SR,
-                            n_mlp_blocks = 2, # 4
-                            mlp_size = 16, # 32
-                            num_conds = 8,
-                            ).to(DEVICE)
+    model = StaticHyperGRU(
+        inp_channel=1,
+        out_channel=1,
+        rnn_size=4,
+        sample_rate=48000,
+        n_mlp_blocks=3,
+        mlp_size=16,
+        num_conds=8,
+    ).to(DEVICE)
     
     print(f'TRAINABLE PARAMS: {sum(p.numel() for p in model.parameters() if p.requires_grad)}')
 

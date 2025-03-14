@@ -3,7 +3,8 @@ import pandas as pd
 import numpy as np
 import torch
 from torch.utils.data import Dataset
-
+import os
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 class Pedals_Dataset_RNN(Dataset):
     def __init__(self, full_dataframe, reduction_dataframe, unprocessed_file_path, win_len, sr=48000, pre_room=0):
@@ -59,7 +60,6 @@ class Pedals_Dataset_RNN(Dataset):
                 processed_wav = processed_wav[:, 0] 
             processed_wav = torch.tensor(processed_wav, dtype=torch.float32).unsqueeze(0)  
 
-
             last_chunk_start_frame = processed_wav.shape[-1] - win_len - pre_room + 1
             for offset in range(pre_room, last_chunk_start_frame, win_len):
                 self.wav_y_chunks.append(processed_wav[:, offset - pre_room : offset + win_len])
@@ -87,13 +87,24 @@ class Pedals_Dataset_RNN(Dataset):
     
 
 if __name__ == "__main__":
-    full_dataframe = "/home/ardan/ARDAN/PEDALINY/pedaliny_dataframe_marzo.csv"
-    reduction_dataframe = "/home/ardan/ARDAN/dafx25-ArdanDomPedaliny/overdrive_modeler/network/VAE/tsne_latents_dataframe.csv"
-    unprocessed_file_path = "/home/ardan/ARDAN/PEDALINY/pedaliny_full_rec.wav"
 
-    dataset = Pedals_Dataset_RNN(full_dataframe, reduction_dataframe, unprocessed_file_path, win_len=2048)
+    DATASET_DIR = os.path.join('..', 'dataset')
+    FULL_DATAFRAME = os.path.join(DATASET_DIR, 'pedals_dataframe.csv')
+    UNPROCESSED_FILE_PATH = os.path.join(DATASET_DIR, 'input','a_0-unprocessed_input.wav')
+
+    REDUCTION_DATAFRAME = "../VAE/1-2025-03-11_16-50_tsne_latents.csv" # Choose the reduction dataframe to use
+
+    dataset = Pedals_Dataset_RNN(FULL_DATAFRAME, REDUCTION_DATAFRAME, UNPROCESSED_FILE_PATH, win_len=4096)
     print(dataset[0])
     print(dataset[0][0].shape)
     print(dataset[0][1].shape)
     print(dataset[0][2].shape)
+
+    # def save_to_audio_file(wav, path, sr=48000):
+    #     wav = wav.squeeze(0).numpy()
+    #     sf.write(path, wav, sr)
+
+    #save_to_audio_file(dataset[0][0], "wav_x.wav")
+    #save_to_audio_file(dataset[0][1], "wav_y.wav")
+
     

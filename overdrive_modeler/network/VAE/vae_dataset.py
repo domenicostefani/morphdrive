@@ -4,7 +4,7 @@ from torch.utils.data import Dataset
 import os
 os.chdir(os.path.dirname(os.path.abspath(__file__))) # Change working directory to the script directory
 
-DATASET_DIR = '../dataset_32000Hz/'
+DATASET_DIR = '../dataset_32/'
 DATAFRAME_PATH = os.path.join(DATASET_DIR,'pedals_dataframe.csv')
 
 class PedalsDataset_VAE(Dataset):

@@ -15,7 +15,7 @@ warnings.filterwarnings("ignore")
 
 
 from rnn_dataset import Pedals_Dataset_RNN
-from rnn_static_model import StaticHyperGRU
+from rnn_dynamic_model import DynamicHyperGRU
 
 
 
@@ -254,7 +254,7 @@ class GlobalLoss(nn.Module):
         return stft_loss, mse_loss
 
 
-def lr_lambda(step, decay_every=500, decay_rate=0.5):
+def lr_lambda(step, decay_every=1000, decay_rate=0.5):
     return decay_rate ** (step // decay_every)
 
 
@@ -372,14 +372,17 @@ if __name__ == '__main__':
 
     train_dataloader = torch.utils.data.DataLoader(train_data, batch_size=BS, shuffle=True, num_workers=4, pin_memory=True)
 
-    model = StaticHyperGRU(inp_channel =  1,
-                            out_channel = 1,
-                            rnn_size = 32, # 16
-                            sample_rate = SR,
-                            n_mlp_blocks = 2, # 4
-                            mlp_size = 16, # 32
-                            num_conds = 8,
-                            ).to(DEVICE)
+    model = DynamicHyperGRU(
+        inp_channel=1,
+        out_channel=1,
+        rnn_size=32,
+        hyper_rnn_size=16,
+        sample_rate=44100,
+        num_layers=3,
+        n_z_size=32,
+        num_conds=8,
+        layer_norm=False
+    ).to(DEVICE)
     
     print(f'TRAINABLE PARAMS: {sum(p.numel() for p in model.parameters() if p.requires_grad)}')
 
