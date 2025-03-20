@@ -1,10 +1,11 @@
 network
-
+tmp/
 *.wav
 
 *.pth
 # *.csv
-*.png
+# *.png
+outplots/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
