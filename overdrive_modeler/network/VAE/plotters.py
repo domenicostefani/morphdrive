@@ -87,8 +87,36 @@ def visualize_latents(reduction, X_transformed, y, image_path, label_type="pedal
         rng = [2 if i == 10 else i for i in rng] # Place green at the end
         colors = [cmap[i] for i in rng]
     else:
-        cmap = plt.get_cmap('hsv')
-        colors = [cmap(i) for i in np.linspace(0, 1, num_labels)]
+        colors = [
+            "#FF5733",  # Deep Orange-Red
+            "#FFA500",  # Bright Orange
+            "#FFC300",  # Warm Yellow-Orange
+            "#B8860B",  # Dark Goldenrod
+            "#4682B4",  # Steel Blue
+            "#87CEFA",  # Light Sky Blue
+            "#1E3A8A",  # Dark Navy Blue
+            "#9370DB",  # Medium Purple
+            "#DDA0DD",  # Light Purple (Plum)
+            "#FF69B4",  # Hot Pink
+            "#DB7093",  # Muted Pink (Rosy Brown)
+            "#BA55D3",  # Medium Orchid
+            "#D8BFD8",  # Soft Lavender
+            "#8B4513",  # Saddle Brown
+            "#808080",  # Neutral Gray
+            "#B0C4DE",  # Light Steel Blue (Grayish Blue)
+            "#6A5ACD",  # Slate Blue
+            "#4B0082",  # Indigo
+            "#8B0000",  # Dark Red
+            "#DC143C",  # Crimson
+            "#CD5C5C",  # Indian Red
+            "#FF6347",  # Tomato Red
+            "#E9967A",  # Light Coral
+            "#FFDAB9",  # Peach Puff (Soft Peach)
+            "#F4A460",  # Sandy Brown
+            "#D2691E",  # Chocolate
+            "#5F4B32"   # Deep Brown
+        ]
+
     label_to_color = {label: colors[i] for i, label in enumerate(unique_labels)}
 
     datasetMetadataRenamer = DBmetadataRenamer()
@@ -99,10 +127,10 @@ def visualize_latents(reduction, X_transformed, y, image_path, label_type="pedal
         indices = (labels == label)
         if mode == "3D":
             ax.scatter(X_transformed[indices, 0], X_transformed[indices, 1], X_transformed[indices, 2],
-                        color=[label_to_color[label]], label=label_names[label], s=100)
+                        color=[label_to_color[label]], label=label_names[label], s=125, edgecolors='w')
         else:
             ax.scatter(X_transformed[indices, 0], X_transformed[indices, 1],
-                        color=[label_to_color[label]], label=label_names[label], s=100)
+                        color=[label_to_color[label]], label=label_names[label], s=125, edgecolors='w')
 
     if show_title:
         ax.set_title(f"{reduction} on Latents ({label_type.capitalize()})")
@@ -119,9 +147,16 @@ def visualize_latents(reduction, X_transformed, y, image_path, label_type="pedal
             ax.set_zticks([])
     
     if show_legend:
-        plt.legend()
+        # The legend should be on the right side of the plot, outside the plot area
+        ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), title=label_type.capitalize())
+
     plt.tight_layout()
-    plt.savefig(image_path, bbox_inches='tight')
+    plt.savefig(image_path, bbox_inches='tight',pad_inches = 0)
+    print(f"Saved plot to {image_path}")
+    # Png
+    image_path = image_path.replace(".pdf", ".png")
+    plt.savefig(image_path, bbox_inches='tight',pad_inches = 0)
+    print(f"Saved plot to {image_path}")
     plt.show()
 
 def pca_on_latents(latents_csv_path, csv_path, image_path, label_type="pedal", mode="2D",figsize=(10, 10), show_xy_titles=False, show_title=True, show_ticks=True, show_legend=True):
@@ -157,26 +192,49 @@ def tsne_on_latents(latents_csv_path, csv_path, image_path, label_type="pedal", 
     df["label_name"] = df["label"]
     df = df[["label_name", "gain", "tone", "latents", "coords"]]
     df.to_csv(csv_path, index=False)
-    
+
     visualize_latents("TSNE", X_tsne, y, image_path, label_type, mode, figsize, show_xy_titles, show_title, show_ticks, show_legend)
 
 if __name__ == "__main__":
     print("Plotters-Script")
-    import argparse
+    import argparse, os
     parser = argparse.ArgumentParser()
     # One argument, mandatory: path to the latents csv file
     parser.add_argument("latents_csv_path", type=str, help="Path to the latents csv file")
     # One argument "type" that defaults to tsne
-    parser.add_argument("--type", type=str, default="tsne", help="Type of reduction (pca or tsne)")
+    parser.add_argument("--compute", type=str, default=None, help="Type of reduction (pca or tsne)")
+    parser.add_argument("--figsize", '-f', type=float, nargs=2, default=(5, 5), help="Figure size")
+    parser.add_argument('--show-legend','-l', action='store_true', help='Show legend on the plot')
 
     args = parser.parse_args()
+    figsize = tuple(args.figsize)
 
-    if args.type == "pca":
-        pca_on_latents(args.latents_csv_path, csv_path="pca_latents.csv", image_path="pca_latents.pdf", figsize=(5, 5), show_title=False, show_xy_titles=False, show_ticks=False, show_legend=False)
+    show_legend = args.show_legend
+
+    if args.compute == "pca":
+        pca_on_latents(args.latents_csv_path, csv_path="pca_latents.csv", image_path="pca_latents.pdf", figsize=figsize, show_title=False, show_xy_titles=False, show_ticks=False, show_legend=False)
         print(f'PCA on latents completed. Results saved to ./pca_latents.csv and ./pca_latents.pdf')
-    elif args.type == "tsne":
-        tsne_on_latents(args.latents_csv_path, csv_path="tsne_latents.csv", image_path="tsne_latents.pdf", figsize=(5, 5), show_title=False, show_xy_titles=False, show_ticks=False, show_legend=False)
+    elif args.compute == "tsne":
+        tsne_on_latents(args.latents_csv_path, csv_path="tsne_latents.csv", image_path="tsne_latents.pdf", figsize=figsize, show_title=False, show_xy_titles=False, show_ticks=False, show_legend=False)
         print(f'TSNE on latents completed. Results saved to ./tsne_latents.csv and ./tsne_latents.pdf')
+    elif args.compute is None:
+        print("WARNING: NOT computing any reduction, but only visualizing precomputed reduction")
+        df = pd.read_csv(args.latents_csv_path)
+        if "label_name" not in df.columns:
+            raise ValueError("You may be trying to visualize latents from a temporary csv with no precomputed reduction. Please run the script with --compute pca or --compute tsne")
+
+        X_tsne = np.array(df["coords"].str.strip('[]').str.split(',').apply(lambda x: [float(x[0]), float(x[1]) if len(x) > 1 else 0]).to_list())
+
+        df.rename(columns={"label_name": "label"}, inplace=True)
+        y = df[["label", "gain", "tone"]]
+        image_path = os.path.splitext(args.latents_csv_path)[0] + "_latents.pdf"
+        label_type = "pedal"
+        mode = "2D"
+        show_xy_titles = False
+        show_title = False
+        show_ticks = False
+   
+        visualize_latents("TSNE", X_tsne, y, image_path, label_type, mode, figsize, show_xy_titles, show_title, show_ticks, show_legend)
     else:
         print("Invalid type. Please choose either 'pca' or 'tsne'.")
         
