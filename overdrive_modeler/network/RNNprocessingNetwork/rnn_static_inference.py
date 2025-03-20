@@ -12,16 +12,16 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 class RNNStatic_Inferencer:
     def __init__(self, rnn_model_path, samplerate=48000):
-        self.rnn_model = StaticHyperGRU(
-            inp_channel =  1,
-            out_channel = 1,
-            rnn_size = 32, # 16
-            sample_rate = samplerate,
-            n_mlp_blocks = 2, # 4
-            mlp_size = 16, # 32
-            num_conds = 8,
-            ).to(device)
-                
+        self.rnn_model = StaticHyperGRU(inp_channel =  1,
+                            out_channel = 1,
+                            rnn_size = 32,
+                            sample_rate = samplerate,
+                            n_mlp_blocks = 2,
+                            mlp_size = 16,
+                            num_conds = 8,
+                            ).to(device)
+
+
         self.rnn_model.load_state_dict(torch.load(rnn_model_path, map_location=device, weights_only=True))
         self.rnn_model.eval()
 
@@ -43,7 +43,7 @@ def gen_sine(freq, duration, sr):
 
 if __name__ == "__main__":
 
-    RNN_MODEL_PATH = '4-2025-03-05_static_rnn.pth'
+    RNN_MODEL_PATH = '4-PAPER_2025-03-05_static_small.pth'
     SR = 48000
 
     os.chdir(os.path.dirname(os.path.abspath(__file__))) # Change working directory to the script directory

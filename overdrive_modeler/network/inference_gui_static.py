@@ -27,7 +27,7 @@ class HyperdriveStaticRNNinference:
         return self.rnn_inferencer.inference_memoryless(input_audio, conditioning_vector)
 
 def gen_sine(freq, duration, sr):
-    return np.sin(2 * np.pi * freq * np.linspace(0, duration, sr * duration)).astype(np.float32)
+    return np.sin(2 * np.pi * freq * np.linspace(0, duration, int(sr * duration))).astype(np.float32)
 
 if __name__ == "__main__":
     MLP_MODEL_PATH = './MLP/4-2025-03-05_mlp.pth'

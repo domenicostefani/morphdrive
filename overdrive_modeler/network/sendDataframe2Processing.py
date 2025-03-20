@@ -3,15 +3,6 @@ import time
 import os
 import pandas as pd
 
-# TEST_DATAPATH = "../../network/complete_dataframe_8.csv"
-import argparse
-
-parser = argparse.ArgumentParser(description='Send a dataframe to Processing')
-parser.add_argument('DATAPATH', type=str, help='Path to the dataframe to send')
-
-args = parser.parse_args()
-TEST_DATAPATH = args.DATAPATH
-assert os.path.exists(TEST_DATAPATH), "File not found at %s" % TEST_DATAPATH
 
 class DFSender:
     def __init__(self, ip_toSendTo, port_toSendTo):
@@ -80,6 +71,18 @@ class DFSender:
 
 
 if __name__ == "__main__":
+
+    # TEST_DATAPATH = "../../network/complete_dataframe_8.csv"
+    import argparse
+
+    parser = argparse.ArgumentParser(description='Send a dataframe to Processing')
+    parser.add_argument('DATAPATH', type=str, help='Path to the dataframe to send')
+
+    args = parser.parse_args()
+    TEST_DATAPATH = args.DATAPATH
+    assert os.path.exists(TEST_DATAPATH), "File not found at %s" % TEST_DATAPATH
+
+
     sender = DFSender("127.0.0.1", 12000)
     sender.readDataframe(TEST_DATAPATH)
     sender.send()
