@@ -13,6 +13,7 @@ class Pedals_MLP(nn.Module):
             nn.Linear(64, 16),
             nn.LeakyReLU(),
             nn.Linear(16, output_dim),
+            nn.Tanh()
         )
 
     def forward(self, x):
