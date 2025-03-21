@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Hybrid neural guitar overdrive">
+    <meta name="keywords"
+      content="neural audio effects, deep learning, neural networks">
+    <meta name="author" content="Domenico Stefani">
+
+    <title>Morphdrive: Latent Conditioning For Cross-Circuit Effect
+      Morphing</title>
+    <!-- Bootstrap core CSS -->
+    <!--link href="bootstrap.min.css" rel="stylesheet"-->
+    <link rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous">
+  </head>
+
+  <body>
+    <div class="text-center">
+      <div class="container"></div>
+      <h1 class="pt-5">Latent Conditioning For Cross-Circuit Effect
+        Morphing/Modeling</h1>
+      <p style="font-size: 1.3em; margin-bottom: 0;">
+        <a href="https://github.com/return-nihil"> Ardan Dal Rì</a> and
+        <a href="http://www.domenicostefani.com"> Domenico Stefani</a>
+      </p>
+      <p style="margin-top: 0;">
+        University of Trento, Italy
+      </p>
+
+      <h5 class style="color: black;" role="group" aria-label="Top menu">
+        <s><a class target="blank_" href="#">Preprint</a></s> &#183;
+        <!-- TODO -->
+        <a class target="blank_"
+          href="https://github.com/domenicostefani/morphdrive">GitHub</a>
+        <!-- &#183; -->
+      </h5>
+      <div class="mt-3">
+        <img class="img-fluid" src='images/morphdrive-arch.svg' width="20%">
+        <img class="img-fluid" src='images/morphdrive_gui.png' width="20%">
+      </div>
+    </div>
+
+    <div class="container mt-4 "
+      style="max-width: 950px; margin-left: auto; margin-right: auto;">
+      <div class="container">
+        <div class="section">
+
+          <h3 class="text-center">Abstract</h3>
+          <hr>
+          <p class="pr-5 pl-5" tyle="text-align:justify;">
+            We present an approach to the neural modeling of overdrive guitar
+            pedals with conditioning from a cross-circuit and cross-setting
+            latent space. The resulting networks model the behavior of multiple
+            overdrive pedals across different settings, offering continuous
+            morphing between real configurations and hybrid behaviors.
+            Compact conditioning spaces are obtained through unsupervised
+            training of a variational autoencoder with adversarial training,
+            resulting in accurate reconstruction performance across different
+            sets of pedals.
+            We then compare three Hyper-Recurrent architectures for processing,
+            including dynamic and static HyperRNNs, and a smaller model for
+            real-time processing.
+            Additionally, we present a new open dataset including recordings of
+            27 analog overdrive pedals, each with 36 gain and tone parameter
+            combinations totaling over 97 hours of recordings. Precise parameter
+            setting was achieved through a custom recording robot.
+
+          </p>
+
+        </div>
+
+        <div id="index" class="text-center">
+          <p style="font-size: 1.3em; margin-bottom: 0;">
+            <!-- <a href="https://github.com/return-nihil"> Ardan Dal Rì</a> and
+            <a href="http://www.domenicostefani.com"> Domenico Stefani</a> -->
+            <a href="#demo">Demo</a> |
+            <a href="#examples">Examples</a> |
+            <a href="#dataset">Dataset</a>
+          </p>
+        </div>
+
+        <div class="section mt-4">
+          <h3 id="demo" class="text-center">Demo</h3>
+          <div class="text-center"><a href="#index" class="text-center">Back to top</a></div>
+          <hr>
+          <!-- <div class=" embed-responsive embed-responsive-16by9">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/Zmo8kB-SfF4" title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
+        </div> -->
+        </div>
+
+        <div id="examples" class="section mt-4">
+          <div class="row text-center justify-content-center">
+            <div class="table-responsive">
+              <h2>Examples</h2>
+              <div class="text-center"><a href="#index" class="text-center">Back to top</a></div>
+
+              <hr>
+              Below are a number of example effects from existing and hybrid
+              circuit/setting overdrive configurations.
+              <!-- <br>
+            Pre-trained models from different effect types are available for usage in the <a
+              href="https://colab.research.google.com/github/csteinmetz1/steerable-nafx/blob/master/steerable-nafx.ipynb">Colab
+              notebook</a>. -->
+              <hr>
+
+              <table class="text-center table align-middle">
+                <tr>
+                  <th>Dry Input</th>
+                </tr>
+                <tr>
+                  <td class="align-middle">
+                    <audio controls>
+                      <source src="audio/dry.mp3"
+                        type="audio/mp3">
+                    </audio>
+                </tr>
+              </table>
+
+              <h3>Hybrid Overdrives</h3>
+              <div class="text-center"><a href="#index" class="text-center">Back to top</a></div>
+              <table class="align-middle text-center table">
+                <tr>
+                  <th>2D Conditioning over THD map</th>
+                  <th>Static HyperRNN + VAE</th>
+                </tr>
+                <tr>
+                  <td class="align-middle">
+                    <img src="images/thdmap.png" width="300 rem">
+                  </td>
+                  <td class="align-middle">
+                    <audio controls>
+                      <source src="audio/wet_hybrid_0.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="align-middle">
+                    <img src="images/thdmap.png" width="300 rem">
+                  </td>
+                  <td class="align-middle">
+                    <audio controls>
+                      <source src="audio/wet_hybrid_1.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="align-middle">
+                    <img src="images/thdmap.png" width="300 rem">
+                  </td>
+                  <td class="align-middle">
+                    <audio controls>
+                      <source src="audio/wet_hybrid_2.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="align-middle">
+                    <img src="images/thdmap.png" width="300 rem">
+                  </td>
+                  <td class="align-middle">
+                    <audio controls>
+                      <source src="audio/wet_hybrid_3.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                </tr>
+              </table>
+
+              <h3>Existing Configurations</h3>
+              <div class="text-center"><a href="#index" class="text-center">Back to top</a></div>
+
+              <table class="text-center table">
+                <tr>
+                  <th>Pedal/Settings</th>
+                  <th>Dataset</th>
+                  <th>Static HyperRNN + VAE</th>
+                </tr>
+                <!-- <tr>
+                <td colspan="4">
+                  <h5>Vocal</h5>
+                </td>
+              </tr> -->
+                <tr>
+                  <td class="align-middle">
+                    Bearfoot - Honey Bee<br>
+                    Gain X / 10<br>
+                    Tone X / 10<br>
+                  </td>
+                  <td class="align-middle">
+                    <audio controls>
+                      <source src="audio/reverb/fvox_clean.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                  <td class="align-middle">
+                    <audio controls>
+                      <source src="audio/reverb/fvox_clean.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="align-middle">
+                    Hermida Audio - Zendrive<br>
+                    Gain X / 10<br>
+                    Tone X / 10<br>
+                  </td>
+                  <td class="align-middle">
+                    <audio controls>
+                      <source src="audio/reverb/fvox_clean.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                  <td class="align-middle">
+                    <audio controls>
+                      <source src="audio/reverb/fvox_clean.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="align-middle">Lunastone - Big Fella<br>
+                    Gain X / 10<br>
+                    Tone X / 10<br>
+                  </td>
+                  <td class="align-middle">
+                    <audio controls>
+                      <source src="audio/reverb/fvox_clean.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                  <td class="align-middle">
+                    <audio controls>
+                      <source src="audio/reverb/fvox_clean.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="align-middle">Xotic - Soul Driven<br>
+                    Gain X / 10<br>
+                    Tone X / 10<br>
+                  </td>
+                  <td class="align-middle">
+                    <audio controls>
+                      <source src="audio/reverb/fvox_clean.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                  <td class="align-middle">
+                    <audio controls>
+                      <source src="audio/reverb/fvox_clean.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                </tr>
+
+              </table>
+
+            </div>
+          </div>
+        </div>
+
+        <div id="dataset" class="section mt-4">
+          <div class="container  text-center">
+            <h2>Dataset - <i>pOD-set</i></h2>
+          </div>
+
+          <i>pOD-set</i> is a new dataset that comprises a total of 27
+          guitar pedals, with 36 combinations of parameters for each. Out
+          of the wide range of different overdrive pedals currently available
+          on the market, we selected a set of high-end, boutique pedals
+           spanning from renowned classic circuits to novel, peculiar,
+          and unconventional designs, covering a variety of tonal nuances.
+          The 36 parameter settings represent combinations of the gain
+          and tone knobs, typically found in most overdrive pedals. For each
+          knob, we recorded six positions, covering their full range in evenly
+          spaced increments (i.e., 0, 2, 4, 6, 8, and 10 on 10-mark scales).
+          Additional controls, where present, were set to flat/neutral posi-
+          tions.
+          <br>
+          The dataset is available on Zenodo with a TODO license: 
+          <a href="https://zenodo.org/record/TODO">https://zenodo.org/record/TODO</a>
+          <br>
+          The following table lists the pedals included in the dataset:
+          <span style="padding-bottom:5rem;"></span>
+
+          <div class="container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Label</th>
+                            <th scope="col">Brand</th>
+                            <th scope="col">Model</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td><code>KOT</code></td>
+                            <td>AnalogMan</td>
+                            <td>King of Tone</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><code>HON</code></td>
+                            <td>Bearfoot</td>
+                            <td>Honey Bee</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><code>BEE</code></td>
+                            <td>Beetronix</td>
+                            <td>Overhive</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><code>WES</code></td>
+                            <td>Bogner</td>
+                            <td>Wessex MKII</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td><code>BLU</code></td>
+                            <td>Boss</td>
+                            <td>BD-2-B50A</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td><code>GLA</code></td>
+                            <td>Cornerstone</td>
+                            <td>Gladio</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td><code>SS2</code></td>
+                            <td>Cornish</td>
+                            <td>SS2</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td><code>ELE</code></td>
+                            <td>Dr Scientist</td>
+                            <td>The Elements</td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td><code>PLU</code></td>
+                            <td>EarthQuaker Devices</td>
+                            <td>Plumes</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td><code>OCD</code></td>
+                            <td>Fulltone</td>
+                            <td>OCD v1.3</td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td><code>ZEN</code></td>
+                            <td>Hermida Audio</td>
+                            <td>Zendrive</td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td><code>PRE</code></td>
+                            <td>Horizon Devices</td>
+                            <td>Precision Drive</td>
+                        </tr>
+                        <tr>
+                            <td>13</td>
+                            <td><code>TUB</code></td>
+                            <td>Jam Pedals</td>
+                            <td>Tube Dreamer</td>
+                        </tr>
+                        <tr>
+                            <td>14</td>
+                            <td><code>KTR</code></td>
+                            <td>Klon</td>
+                            <td>KTR</td>
+                        </tr>
+                        <tr>
+                            <td>15</td>
+                            <td><code>ACQ</code></td>
+                            <td>Lichtlaerm Audio</td>
+                            <td>Acquaria</td>
+                        </tr>
+                        <tr>
+                            <td>16</td>
+                            <td><code>FEL</code></td>
+                            <td>Lunastone</td>
+                            <td>Big Fella</td>
+                        </tr>
+                        <tr>
+                            <td>17</td>
+                            <td><code>CHI</code></td>
+                            <td>Pettyjohn</td>
+                            <td>Chime</td>
+                        </tr>
+                        <tr>
+                            <td>18</td>
+                            <td><code>LIG</code></td>
+                            <td>Rawkworks</td>
+                            <td>Light OD</td>
+                        </tr>
+                        <tr>
+                            <td>19</td>
+                            <td><code>ZOI</code></td>
+                            <td>SviSound</td>
+                            <td>Overzoid</td>
+                        </tr>
+                        <tr>
+                            <td>20</td>
+                            <td><code>DUM</code></td>
+                            <td>Tanabe</td>
+                            <td>Dumkudo</td>
+                        </tr>
+                        <tr>
+                            <td>21</td>
+                            <td><code>RUM</code></td>
+                            <td>Tone City</td>
+                            <td>Big Rumble</td>
+                        </tr>
+                        <tr>
+                            <td>22</td>
+                            <td><code>JAN</code></td>
+                            <td>Vemuram</td>
+                            <td>Jan Ray</td>
+                        </tr>
+                        <tr>
+                            <td>23</td>
+                            <td><code>SIL</code></td>
+                            <td>Vox</td>
+                            <td>Silk Drive</td>
+                        </tr>
+                        <tr>
+                            <td>24</td>
+                            <td><code>RED</code></td>
+                            <td>Way Huge</td>
+                            <td>Red Llama*</td>
+                        </tr>
+                        <tr>
+                            <td>25</td>
+                            <td><code>MOF</code></td>
+                            <td>Wampler</td>
+                            <td>Mofetta</td>
+                        </tr>
+                        <tr>
+                            <td>26</td>
+                            <td><code>385</code></td>
+                            <td>Walrus Audio</td>
+                            <td>385 MKII</td>
+                        </tr>
+                        <tr>
+                            <td>27</td>
+                            <td><code>SOU</code></td>
+                            <td>Xotic</td>
+                            <td>Soul Driven</td>
+                        </tr>
+                    </tbody>
+                    <tfoot class="table-footer">
+                        <tr>
+                            <td colspan="4">Tot: 27 overdrive pedals, 97 hours 57 minutes</td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <p><small>* Modified with Tone control</small></p>
+        </div>
+
+        </div>
+        <!-- <div class="section">
+        <h2>Paper</h2>
+        <hr>
+        <div>
+          <div class="list-group">
+            <a href="#" class="list-group-item">
+              <img src="assets/paper_sm.jpg" style="width:100%; margin-right:-20px; margin-top:-10px;">
+            </a>
+          </div>
+        </div>
+      </div> -->
+
+        <!-- <div class="section">
+        <h2>Bibtex</h2>
+        <hr>
+        <div style="background-color: #e9ecef;">
+          <pre>
+                <code>
+  @inproceedings{dalri2025latent,
+    title={TODO},
+    author={Dal Rì, Francesco A, Stefani, Domenico, Turchet, Luca, and Conci, Nicola},
+    booktitle={TODO},
+    year={2025}}</code>
+          </pre>
+        </div>
+      </div> -->
+
+        <hr>
+        <footer>
+          <p><!--*Accepted to the <a href="https://neuripscreativityworkshop.github.io/2021/">NeurIPS 2021 Workshop on Machine
+            Learning for Creativity and Design</a> -->
+            <br> Send feedback and questions to <a href="https://github.com/return-nihil">Ardan Dal Rì</a> and <a href="http://domenicostefani.com">Domenico Stefani</a>.
+            <br>
+            <i>Website inspired by <a href="https://csteinmetz1.github.io/steerable-nafx/">Steerable Neural Audio Effects</a> by Christian J. Steinmetz</i>
+          </p>
+
+          <!-- <div class="container">
+          <div class="row m-3 justify-content-center">
+            <img class="m-3 text-center" src="assets/logos/qm.png" height="60px">
+            <img class="m-3 text-center" src="assets/logos/aim.png" height="60px">
+            <img class="m-3 text-center" src="assets/logos/ukri.png" height="60px">
+            <p>Supported by the EPSRC UKRI Centre for Doctoral Training in Artificial Intelligence and
+              Music
+              (EP/S022694/1).</p>
+          </div>
+        </div> -->
+        </footer>
+      </div>
+    </div>
+
+    <script type="text/javascript"
+      src="https://cdn.rawgit.com/pcooksey/bibtex-js/5ccf967/src/bibtex_js.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"></script>
+
+  </body>
+
+</html>
