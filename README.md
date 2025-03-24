@@ -14,17 +14,18 @@ Morphdrive: Latent Conditioning for Cross-Circuit Effect Modeling
 </div>
 
 
-
-<img src="docs/images/morphdrive-arch.svg" style="width: 45%;">
-<img src="docs/images/morphdrive_gui.png"  style="width: 45%;">
+<div style="width: 100%">
+<img src="docs/images/morphdrive-arch.svg" style="width: 48%;">
+<img src="docs/images/morphdrive_gui.png"  style="width: 48%;">
+</div>
 
 *Accompanying material for "MorphDrive: Latent Conditioning for Cross-Circuit Effect Modeling and a Parametric Audio Dataset of Analog Overdrive Pedals"*
 
 ## Website with Examples
 
-<a href="https://domenicostefani.com/morphdrive">www.domenicostefani.com/morphdrive</a>
+<a href="https://domenicostefani.com/morphdrive" style="margin-bottom:4 rem">www.domenicostefani.com/morphdrive</a>
 
-<div  style="margin-bottom:4rem"></div>
+<div  >  </div>  
 
 ## Abstract
 
@@ -42,11 +43,13 @@ We present an approach to the neural modeling of overdrive guitar pedals with co
 
 <img src="docs/images/latent-spaces/27-NEW_tsne_latents5_latents.jpg"  style="width: 90%;">
 
-t-SNE reductions for subsets of the dataset containing 2, 4 and 8 pedals:
+t-SNE reductions for subsets of the dataset containing 2, 4, and 8 pedals:
 
+<div style="width: 100%">
 <img src="docs/images/latent-spaces/2-PAPER_2025-03-16_12-00_tsne_latents_latents.jpg"  style="width: 30%;">
 <img src="docs/images/latent-spaces/4-PAPER_2025-03-05_23-11_tsne_latents_latents.jpg"  style="width: 30%;">
 <img src="docs/images/latent-spaces/8-PAPER_2025-03-16_13-18_tsne_latents_latents.jpg"  style="width: 30%;">
+</div>
 
 <!-- 
 ### Recording Robot:
@@ -83,10 +86,12 @@ For each knob, we recorded six positions, covering their full range in evenly sp
 Precise parameter setting was achieved through a custom recording robot, which allowed us to record the dataset in a controlled and repeatable manner.
 
 
+<div style="width: 100%">
 <img src="docs/images/robot_prototype.jpg" style="width: 47%;" align="center">
 <img src="docs/images/puredata.png" style="width: 47%;" align="center">
+</div>
 
-The dataset is available on Zenodo with a TODO license: https://zenodo.org/record/TODO
+The dataset is available on Zenodo with a [CC BY-NC license](https://creativecommons.org/licenses/by-nc/4.0/): https://zenodo.org/record/TODO
 The following table lists the pedals included in the dataset:  
 
 <!-- <div  style="margin-bottom:4rem"></div> -->
