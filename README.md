@@ -21,11 +21,9 @@ Morphdrive: Latent Conditioning for Cross-Circuit Effect Modeling
 
 *Accompanying material for "MorphDrive: Latent Conditioning for Cross-Circuit Effect Modeling and a Parametric Audio Dataset of Analog Overdrive Pedals"*
 
-## Website with Examples
+<!-- ## Website with Examples
 
-<a href="https://domenicostefani.com/morphdrive" style="margin-bottom:4 rem">www.domenicostefani.com/morphdrive</a>
-
-<div  >  </div>  
+<a href="https://domenicostefani.com/morphdrive" style="margin-bottom:4 rem">www.domenicostefani.com/morphdrive</a> -->
 
 ## Abstract
 
@@ -91,7 +89,8 @@ Precise parameter setting was achieved through a custom recording robot, which a
 <img src="docs/images/puredata.png" style="width: 47%;" align="center">
 </div>
 
-The dataset is available on Zenodo with a [CC BY-NC license](https://creativecommons.org/licenses/by-nc/4.0/): https://zenodo.org/record/TODO
+The dataset will soon be available on Zenodo with a [CC BY-NC license](https://creativecommons.org/licenses/by-nc/4.0/).
+<!-- : https://zenodo.org/record/TODO -->
 The following table lists the pedals included in the dataset:  
 
 <!-- <div  style="margin-bottom:4rem"></div> -->
