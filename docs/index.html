@@ -48,7 +48,7 @@
     </div>
 
     <div class="container mt-4 "
-      style="max-width: 950px; margin-left: auto; margin-right: auto;">
+      style="max-width: 1250px; margin-left: auto; margin-right: auto;">
       <div class="container">
         <div class="section">
 
@@ -115,7 +115,7 @@
               notebook</a>. -->
               <hr>
 
-              <table class="text-center table align-middle">
+              <!-- <table class="text-center table align-middle">
                 <tr>
                   <th>Dry Input</th>
                 </tr>
@@ -126,9 +126,9 @@
                         type="audio/mp3">
                     </audio>
                 </tr>
-              </table>
+              </table> -->
 
-              <h3>Hybrid Overdrives</h3>
+              <!-- <h3>Hybrid Overdrives</h3>
               <div class="text-center"><a href="#index" class="text-center">Back to top</a></div>
               <table class="align-middle text-center table">
                 <tr>
@@ -179,7 +179,7 @@
                     </audio>
                   </td>
                 </tr>
-              </table>
+              </table> -->
 
               <h3>Existing Configurations</h3>
               <div class="text-center"><a href="#index" class="text-center">Back to top</a></div>
@@ -187,29 +187,31 @@
               <table class="text-center table">
                 <tr>
                   <th>Pedal/Settings</th>
+                  <th>Dry</th>
                   <th>Dataset</th>
                   <th>Static HyperRNN + VAE</th>
                 </tr>
-                <!-- <tr>
-                <td colspan="4">
-                  <h5>Vocal</h5>
-                </td>
-              </tr> -->
                 <tr>
                   <td class="align-middle">
                     Bearfoot - Honey Bee<br>
-                    Gain X / 10<br>
-                    Tone X / 10<br>
+                    Gain 5 / 5<br>
+                    Tone 0 / 5<br>
                   </td>
                   <td class="align-middle">
                     <audio controls>
-                      <source src="audio/reverb/fvox_clean.mp3"
+                      <source src="demo/dry/guitar-funk.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
                   <td class="align-middle">
                     <audio controls>
-                      <source src="audio/reverb/fvox_clean.mp3"
+                      <source src="demo/dataset/a_honeybee_g5_t0_guitar-funk.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                  <td class="align-middle">
+                    <audio controls>
+                      <source src="demo/morphdrive_real/wet_a_honeybee_g5_t0_guitar-funk.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
@@ -217,54 +219,72 @@
                 <tr>
                   <td class="align-middle">
                     Hermida Audio - Zendrive<br>
-                    Gain X / 10<br>
-                    Tone X / 10<br>
+                    Gain 5 / 5<br>
+                    Tone 3 / 5<br>
                   </td>
                   <td class="align-middle">
                     <audio controls>
-                      <source src="audio/reverb/fvox_clean.mp3"
+                      <source src="demo/dry/guitar-chords.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
                   <td class="align-middle">
                     <audio controls>
-                      <source src="audio/reverb/fvox_clean.mp3"
+                      <source src="demo/dataset/a_zendrive_g5_t3_guitar-chords.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                  <td class="align-middle">
+                    <audio controls>
+                      <source src="demo/morphdrive_real/wet_a_zendrive_g5_t3_guitar-chords.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
                 </tr>
                 <tr>
                   <td class="align-middle">Lunastone - Big Fella<br>
-                    Gain X / 10<br>
-                    Tone X / 10<br>
+                    Gain 5 / 5<br>
+                    Tone 3 / 5<br>
                   </td>
                   <td class="align-middle">
                     <audio controls>
-                      <source src="audio/reverb/fvox_clean.mp3"
+                      <source src="demo/dry/epiano.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
                   <td class="align-middle">
                     <audio controls>
-                      <source src="audio/reverb/fvox_clean.mp3"
+                      <source src="demo/dataset/a_bigfella_g5_t3_epiano.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                  <td class="align-middle">
+                    <audio controls>
+                      <source src="demo/morphdrive_real/wet_a_bigfella_g5_t3_epiano.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
                 </tr>
                 <tr>
                   <td class="align-middle">Xotic - Soul Driven<br>
-                    Gain X / 10<br>
-                    Tone X / 10<br>
+                    Gain 4 / 5<br>
+                    Tone 2 / 5<br>
                   </td>
                   <td class="align-middle">
                     <audio controls>
-                      <source src="audio/reverb/fvox_clean.mp3"
+                      <source src="demo/dry/guitar-funk2.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
                   <td class="align-middle">
                     <audio controls>
-                      <source src="audio/reverb/fvox_clean.mp3"
+                      <source src="demo/dataset/a_souldriven_g4_t2_guitar-funk2.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                  <td class="align-middle">
+                    <audio controls>
+                      <source src="demo/morphdrive_real/wet_a_souldriven_g4_t2_guitar-funk2.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
@@ -294,8 +314,8 @@
           Additional controls, where present, were set to flat/neutral posi-
           tions.
           <br>
-          The dataset is available on Zenodo with a TODO license: 
-          <a href="https://zenodo.org/record/TODO">https://zenodo.org/record/TODO</a>
+          The dataset will soon be available on Zenodo with a <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC license</a>.
+          <!-- <a href="https://zenodo.org/record/TODO">https://zenodo.org/record/TODO</a> -->
           <br>
           <br>
           The following table lists the pedals included in the dataset:
