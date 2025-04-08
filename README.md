@@ -16,14 +16,14 @@
 <i>University of Trento, Italy</i>
 </div>
 
-<center>
+<div align="center">
 <div style="width: 100%">
 <img src="docs/images/morphdrive-arch.svg" style="width: 38%;">
 <img src="docs/images/morphdrive_gui.png"  style="width: 38%;">
 </div>
 
 *Accompanying material for "MorphDrive: Latent Conditioning for Cross-Circuit Effect Modeling and a Parametric Audio Dataset of Analog Overdrive Pedals"*
-</center>
+</div>
 
 <div align="center">
 
@@ -49,6 +49,8 @@ We present an approach to the neural modeling of overdrive guitar pedals with co
 `overdrive_modeler`  - contains the code for the neural network modeler, GUI, and evaluation  
 `robotic_database_recorder` -  contains the code for the robotic database recorder  
 
+<div align="center">
 <center>
 <img src="docs/images/robot-gif.gif"  style="width: 78%;">
 </center>
+</div>
