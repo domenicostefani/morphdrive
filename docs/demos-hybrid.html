@@ -1,0 +1,1086 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Hybrid neural guitar overdrive">
+    <meta name="keywords"
+      content="neural audio effects, deep learning, neural networks">
+    <meta name="author" content="Domenico Stefani">
+
+    <title>Morphdrive Hybrid Demos</title>
+    <!-- Bootstrap core CSS -->
+    <!--link href="bootstrap.min.css" rel="stylesheet"-->
+    <link rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous">
+
+    <style>
+        .table-borderless td, .table-borderless th {
+            border: none;
+        }
+        .progtab {
+            margin: 0 auto;
+            padding: 0;
+            width: 100%;
+        }
+        .progtab tr {
+            margin: 0;
+            padding: 0;
+        }
+        .progtab td {
+            margin: 0;
+            padding: 0;
+        }
+
+        .left{
+            width: 30%;
+        }
+    </style>
+  </head>
+
+  <body>
+    <div class="text-center">
+      <div class="container"></div>
+      <h1 class="pt-5">Morphdrive: Demos for hybrid configurations</h1>
+      <p style="font-size: 1.3em; margin-bottom: 0;">
+        <a href="https://github.com/return-nihil"> Ardan Dal Rì</a>,
+        <a href="http://www.domenicostefani.com"> Domenico Stefani</a>,
+        Luca Turchet,
+        Nicola Conci
+      </p>
+      <p style="margin-top: 0;">
+        University of Trento, Italy
+      </p>
+
+      <h5 class style="color: black;" role="group" aria-label="Top menu">
+        <a href="index.html">>> Back to the Homepage<<</a>
+      </h5>
+      <!-- <div class="mt-3">
+        <img class="img-fluid" src='images/morphdrive-arch.svg' width="20%">
+        <img class="img-fluid" src='images/morphdrive_gui.png' width="20%">
+        <img class="img-fluid" src="images/robot-gif.gif" width="20%">
+      </div> -->
+    </div>
+
+    <div class="container mt-4 "
+      style="max-width: 1250px; margin-left: auto; margin-right: auto;">
+      <div class="container">
+      
+
+        <div id="examples" class="section mt-4">
+          <div class="row text-center justify-content-center">
+            <div class="table-responsive">
+
+            
+              <table class="align-middle text-center table">
+                <tr>
+                  <th>#</th>
+                  <th>2D Conditioning over THD map</th>
+                  <th>Dry</th>
+                  <th>Static HyperRNN + VAE</th>
+                </tr>
+
+<tr>
+    <td class="align-middle">
+    1
+    </td>
+    <td class="align-middle">
+    x=0.9 y=0.1<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.9_0.1.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\organ.mp3">organ.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\organ.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_organ_x0.9_y0.1.mp3">dcb_wet_organ_x0.9_y0.1.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_organ_x0.9_y0.1.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    2
+    </td>
+    <td class="align-middle">
+    x=0.8 y=0.3<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.8_0.3.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\organ.mp3">organ.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\organ.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_organ_x0.8_y0.3.mp3">dcb_wet_organ_x0.8_y0.3.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_organ_x0.8_y0.3.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    3
+    </td>
+    <td class="align-middle">
+    x=0.7 y=0.8<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.7_0.8.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\organ.mp3">organ.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\organ.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_organ_x0.7_y0.8.mp3">dcb_wet_organ_x0.7_y0.8.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_organ_x0.7_y0.8.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    4
+    </td>
+    <td class="align-middle">
+    x=0.4 y=0.6<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.4_0.6.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\organ.mp3">organ.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\organ.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_organ_x0.4_y0.6.mp3">dcb_wet_organ_x0.4_y0.6.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_organ_x0.4_y0.6.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    5
+    </td>
+    <td class="align-middle">
+    x=0.2 y=0.1<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.2_0.1.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\organ.mp3">organ.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\organ.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_organ_x0.2_y0.1.mp3">dcb_wet_organ_x0.2_y0.1.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_organ_x0.2_y0.1.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    6
+    </td>
+    <td class="align-middle">
+    x=0.9 y=0.1<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.9_0.1.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\guitar-funk.mp3">guitar-funk.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\guitar-funk.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_guitar-funk_x0.9_y0.1.mp3">dcb_wet_guitar-funk_x0.9_y0.1.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_guitar-funk_x0.9_y0.1.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    7
+    </td>
+    <td class="align-middle">
+    x=0.8 y=0.3<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.8_0.3.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\guitar-funk.mp3">guitar-funk.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\guitar-funk.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_guitar-funk_x0.8_y0.3.mp3">dcb_wet_guitar-funk_x0.8_y0.3.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_guitar-funk_x0.8_y0.3.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    8
+    </td>
+    <td class="align-middle">
+    x=0.7 y=0.8<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.7_0.8.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\guitar-funk.mp3">guitar-funk.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\guitar-funk.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_guitar-funk_x0.7_y0.8.mp3">dcb_wet_guitar-funk_x0.7_y0.8.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_guitar-funk_x0.7_y0.8.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    9
+    </td>
+    <td class="align-middle">
+    x=0.4 y=0.6<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.4_0.6.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\guitar-funk.mp3">guitar-funk.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\guitar-funk.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_guitar-funk_x0.4_y0.6.mp3">dcb_wet_guitar-funk_x0.4_y0.6.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_guitar-funk_x0.4_y0.6.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    10
+    </td>
+    <td class="align-middle">
+    x=0.2 y=0.1<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.2_0.1.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\guitar-funk.mp3">guitar-funk.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\guitar-funk.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_guitar-funk_x0.2_y0.1.mp3">dcb_wet_guitar-funk_x0.2_y0.1.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_guitar-funk_x0.2_y0.1.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    11
+    </td>
+    <td class="align-middle">
+    x=0.9 y=0.1<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.9_0.1.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\guitar-funk2.mp3">guitar-funk2.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\guitar-funk2.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_guitar-funk2_x0.9_y0.1.mp3">dcb_wet_guitar-funk2_x0.9_y0.1.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_guitar-funk2_x0.9_y0.1.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    12
+    </td>
+    <td class="align-middle">
+    x=0.8 y=0.3<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.8_0.3.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\guitar-funk2.mp3">guitar-funk2.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\guitar-funk2.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_guitar-funk2_x0.8_y0.3.mp3">dcb_wet_guitar-funk2_x0.8_y0.3.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_guitar-funk2_x0.8_y0.3.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    13
+    </td>
+    <td class="align-middle">
+    x=0.7 y=0.8<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.7_0.8.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\guitar-funk2.mp3">guitar-funk2.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\guitar-funk2.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_guitar-funk2_x0.7_y0.8.mp3">dcb_wet_guitar-funk2_x0.7_y0.8.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_guitar-funk2_x0.7_y0.8.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    14
+    </td>
+    <td class="align-middle">
+    x=0.4 y=0.6<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.4_0.6.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\guitar-funk2.mp3">guitar-funk2.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\guitar-funk2.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_guitar-funk2_x0.4_y0.6.mp3">dcb_wet_guitar-funk2_x0.4_y0.6.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_guitar-funk2_x0.4_y0.6.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    15
+    </td>
+    <td class="align-middle">
+    x=0.2 y=0.1<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.2_0.1.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\guitar-funk2.mp3">guitar-funk2.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\guitar-funk2.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_guitar-funk2_x0.2_y0.1.mp3">dcb_wet_guitar-funk2_x0.2_y0.1.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_guitar-funk2_x0.2_y0.1.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    16
+    </td>
+    <td class="align-middle">
+    x=0.9 y=0.1<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.9_0.1.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\guitar-flanger.mp3">guitar-flanger.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\guitar-flanger.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_guitar-flanger_x0.9_y0.1.mp3">dcb_wet_guitar-flanger_x0.9_y0.1.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_guitar-flanger_x0.9_y0.1.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    17
+    </td>
+    <td class="align-middle">
+    x=0.8 y=0.3<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.8_0.3.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\guitar-flanger.mp3">guitar-flanger.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\guitar-flanger.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_guitar-flanger_x0.8_y0.3.mp3">dcb_wet_guitar-flanger_x0.8_y0.3.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_guitar-flanger_x0.8_y0.3.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    18
+    </td>
+    <td class="align-middle">
+    x=0.7 y=0.8<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.7_0.8.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\guitar-flanger.mp3">guitar-flanger.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\guitar-flanger.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_guitar-flanger_x0.7_y0.8.mp3">dcb_wet_guitar-flanger_x0.7_y0.8.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_guitar-flanger_x0.7_y0.8.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    19
+    </td>
+    <td class="align-middle">
+    x=0.4 y=0.6<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.4_0.6.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\guitar-flanger.mp3">guitar-flanger.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\guitar-flanger.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_guitar-flanger_x0.4_y0.6.mp3">dcb_wet_guitar-flanger_x0.4_y0.6.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_guitar-flanger_x0.4_y0.6.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    20
+    </td>
+    <td class="align-middle">
+    x=0.2 y=0.1<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.2_0.1.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\guitar-flanger.mp3">guitar-flanger.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\guitar-flanger.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_guitar-flanger_x0.2_y0.1.mp3">dcb_wet_guitar-flanger_x0.2_y0.1.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_guitar-flanger_x0.2_y0.1.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    21
+    </td>
+    <td class="align-middle">
+    x=0.9 y=0.1<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.9_0.1.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\guitar-distorted.mp3">guitar-distorted.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\guitar-distorted.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_guitar-distorted_x0.9_y0.1.mp3">dcb_wet_guitar-distorted_x0.9_y0.1.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_guitar-distorted_x0.9_y0.1.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    22
+    </td>
+    <td class="align-middle">
+    x=0.8 y=0.3<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.8_0.3.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\guitar-distorted.mp3">guitar-distorted.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\guitar-distorted.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_guitar-distorted_x0.8_y0.3.mp3">dcb_wet_guitar-distorted_x0.8_y0.3.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_guitar-distorted_x0.8_y0.3.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    23
+    </td>
+    <td class="align-middle">
+    x=0.7 y=0.8<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.7_0.8.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\guitar-distorted.mp3">guitar-distorted.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\guitar-distorted.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_guitar-distorted_x0.7_y0.8.mp3">dcb_wet_guitar-distorted_x0.7_y0.8.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_guitar-distorted_x0.7_y0.8.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    24
+    </td>
+    <td class="align-middle">
+    x=0.4 y=0.6<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.4_0.6.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\guitar-distorted.mp3">guitar-distorted.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\guitar-distorted.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_guitar-distorted_x0.4_y0.6.mp3">dcb_wet_guitar-distorted_x0.4_y0.6.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_guitar-distorted_x0.4_y0.6.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    25
+    </td>
+    <td class="align-middle">
+    x=0.2 y=0.1<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.2_0.1.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\guitar-distorted.mp3">guitar-distorted.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\guitar-distorted.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_guitar-distorted_x0.2_y0.1.mp3">dcb_wet_guitar-distorted_x0.2_y0.1.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_guitar-distorted_x0.2_y0.1.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    26
+    </td>
+    <td class="align-middle">
+    x=0.9 y=0.1<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.9_0.1.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\guitar-chords.mp3">guitar-chords.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\guitar-chords.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_guitar-chords_x0.9_y0.1.mp3">dcb_wet_guitar-chords_x0.9_y0.1.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_guitar-chords_x0.9_y0.1.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    27
+    </td>
+    <td class="align-middle">
+    x=0.8 y=0.3<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.8_0.3.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\guitar-chords.mp3">guitar-chords.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\guitar-chords.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_guitar-chords_x0.8_y0.3.mp3">dcb_wet_guitar-chords_x0.8_y0.3.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_guitar-chords_x0.8_y0.3.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    28
+    </td>
+    <td class="align-middle">
+    x=0.7 y=0.8<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.7_0.8.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\guitar-chords.mp3">guitar-chords.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\guitar-chords.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_guitar-chords_x0.7_y0.8.mp3">dcb_wet_guitar-chords_x0.7_y0.8.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_guitar-chords_x0.7_y0.8.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    29
+    </td>
+    <td class="align-middle">
+    x=0.4 y=0.6<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.4_0.6.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\guitar-chords.mp3">guitar-chords.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\guitar-chords.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_guitar-chords_x0.4_y0.6.mp3">dcb_wet_guitar-chords_x0.4_y0.6.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_guitar-chords_x0.4_y0.6.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    30
+    </td>
+    <td class="align-middle">
+    x=0.2 y=0.1<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.2_0.1.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\guitar-chords.mp3">guitar-chords.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\guitar-chords.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_guitar-chords_x0.2_y0.1.mp3">dcb_wet_guitar-chords_x0.2_y0.1.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_guitar-chords_x0.2_y0.1.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    31
+    </td>
+    <td class="align-middle">
+    x=0.9 y=0.1<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.9_0.1.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\epiano.mp3">epiano.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\epiano.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_epiano_x0.9_y0.1.mp3">dcb_wet_epiano_x0.9_y0.1.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_epiano_x0.9_y0.1.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    32
+    </td>
+    <td class="align-middle">
+    x=0.8 y=0.3<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.8_0.3.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\epiano.mp3">epiano.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\epiano.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_epiano_x0.8_y0.3.mp3">dcb_wet_epiano_x0.8_y0.3.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_epiano_x0.8_y0.3.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    33
+    </td>
+    <td class="align-middle">
+    x=0.7 y=0.8<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.7_0.8.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\epiano.mp3">epiano.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\epiano.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_epiano_x0.7_y0.8.mp3">dcb_wet_epiano_x0.7_y0.8.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_epiano_x0.7_y0.8.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    34
+    </td>
+    <td class="align-middle">
+    x=0.4 y=0.6<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.4_0.6.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\epiano.mp3">epiano.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\epiano.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_epiano_x0.4_y0.6.mp3">dcb_wet_epiano_x0.4_y0.6.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_epiano_x0.4_y0.6.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    35
+    </td>
+    <td class="align-middle">
+    x=0.2 y=0.1<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.2_0.1.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\epiano.mp3">epiano.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\epiano.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_epiano_x0.2_y0.1.mp3">dcb_wet_epiano_x0.2_y0.1.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_epiano_x0.2_y0.1.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    36
+    </td>
+    <td class="align-middle">
+    x=0.9 y=0.1<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.9_0.1.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\bass.mp3">bass.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\bass.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_bass_x0.9_y0.1.mp3">dcb_wet_bass_x0.9_y0.1.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_bass_x0.9_y0.1.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    37
+    </td>
+    <td class="align-middle">
+    x=0.8 y=0.3<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.8_0.3.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\bass.mp3">bass.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\bass.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_bass_x0.8_y0.3.mp3">dcb_wet_bass_x0.8_y0.3.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_bass_x0.8_y0.3.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    38
+    </td>
+    <td class="align-middle">
+    x=0.7 y=0.8<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.7_0.8.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\bass.mp3">bass.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\bass.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_bass_x0.7_y0.8.mp3">dcb_wet_bass_x0.7_y0.8.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_bass_x0.7_y0.8.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    39
+    </td>
+    <td class="align-middle">
+    x=0.4 y=0.6<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.4_0.6.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\bass.mp3">bass.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\bass.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_bass_x0.4_y0.6.mp3">dcb_wet_bass_x0.4_y0.6.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_bass_x0.4_y0.6.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+<tr>
+    <td class="align-middle">
+    40
+    </td>
+    <td class="align-middle">
+    x=0.2 y=0.1<br>
+    <img src="demo\morphdrive_hybrid\heatmap_point_0.2_0.1.png" width="300 rem">
+    </td>
+    <td class="align-middle">
+        <b>Dry: </b><a href="demo\dry\bass.mp3">bass.mp3</a><br>
+    <audio controls>
+        <source src="demo\dry\bass.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+    <td class="align-middle">
+        <a href="demo\morphdrive_hybrid\dcb_wet_bass_x0.2_y0.1.mp3">dcb_wet_bass_x0.2_y0.1.mp3</a><br>
+    <audio controls>
+        <source src="demo\morphdrive_hybrid\dcb_wet_bass_x0.2_y0.1.mp3"
+        type="audio/mp3">
+    </audio>
+    </td>
+</tr>
+
+</table>
+
+            </div>
+          </div>
+        </div>
+
+        
+
+        <hr>
+        <footer>
+          <p><!--*Accepted to the <a href="https://neuripscreativityworkshop.github.io/2021/">NeurIPS 2021 Workshop on Machine
+            Learning for Creativity and Design</a> -->
+            <br> Send feedback and questions to <a href="https://github.com/return-nihil">Ardan Dal Rì</a> and <a href="http://domenicostefani.com">Domenico Stefani</a>.
+            <br>
+            <i>Website inspired by <a href="https://csteinmetz1.github.io/steerable-nafx/">Steerable Neural Audio Effects</a> by Christian J. Steinmetz</i>
+          </p>
+
+
+        </footer>
+      </div>
+    </div>
+
+    <script type="text/javascript"
+      src="https://cdn.rawgit.com/pcooksey/bibtex-js/5ccf967/src/bibtex_js.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"></script>
+
+  </body>
+
+</html>

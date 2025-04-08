@@ -10,7 +10,8 @@
       content="neural audio effects, deep learning, neural networks">
     <meta name="author" content="Domenico Stefani">
 
-    <title>Morphdrive: Latent Conditioning for Cross-Circuit Effect Modeling</title>
+    <title>Morphdrive: Latent Conditioning for Cross-Circuit Effect
+      Modeling</title>
     <!-- Bootstrap core CSS -->
     <!--link href="bootstrap.min.css" rel="stylesheet"-->
     <link rel="stylesheet"
@@ -22,7 +23,8 @@
   <body>
     <div class="text-center">
       <div class="container"></div>
-      <h1 class="pt-5">Morphdrive: Latent Conditioning for Cross-Circuit Effect Modeling</h1>
+      <h1 class="pt-5">Morphdrive: Latent Conditioning for Cross-Circuit Effect
+        Modeling</h1>
       <p style="font-size: 1.3em; margin-bottom: 0;">
         <a href="https://github.com/return-nihil"> Ardan Dal Rì</a>,
         <a href="http://www.domenicostefani.com"> Domenico Stefani</a>, <br>
@@ -104,7 +106,8 @@
           <div class="row text-center justify-content-center">
             <div class="table-responsive">
               <h2>Examples</h2>
-              <div class="text-center"><a href="#index" class="text-center">Back to top</a></div>
+              <div class="text-center"><a href="#index" class="text-center">Back
+                  to top</a></div>
 
               <hr>
               Below are a number of example effects from existing and hybrid
@@ -128,61 +131,133 @@
                 </tr>
               </table> -->
 
-              <!-- <h3>Hybrid Overdrives</h3>
-              <div class="text-center"><a href="#index" class="text-center">Back to top</a></div>
-              <table class="align-middle text-center table">
-                <tr>
+              <h3>Hybrid Overdrives</h3>
+              <div class="text-center"><a href="#index" class="text-center">Back
+                  to top</a></div>
+              <table class="align-middle text-center table"><tr>
                   <th>2D Conditioning over THD map</th>
+                  <th>Dry</th>
                   <th>Static HyperRNN + VAE</th>
                 </tr>
                 <tr>
                   <td class="align-middle">
-                    <img src="images/thdmap.png" width="300 rem">
+                    x=0.7 y=0.8<br>
+                    <img src="demo\morphdrive_hybrid\heatmap_point_0.7_0.8.png"
+                      width="300 rem">
                   </td>
                   <td class="align-middle">
+                    <b>Dry: </b>guitar-funk.mp3<br>
                     <audio controls>
-                      <source src="audio/wet_hybrid_0.mp3"
+                      <source src="demo\dry\guitar-funk.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                  <td class="align-middle">
+                    dcb_wet_guitar-funk_x0.7_y0.8.mp3<br>
+                    <audio controls>
+                      <source
+                        src="demo\morphdrive_hybrid\dcb_wet_guitar-funk_x0.7_y0.8.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
                 </tr>
                 <tr>
                   <td class="align-middle">
-                    <img src="images/thdmap.png" width="300 rem">
+                    x=0.2 y=0.1<br>
+                    <img src="demo\morphdrive_hybrid\heatmap_point_0.2_0.1.png"
+                      width="300 rem">
                   </td>
                   <td class="align-middle">
+                    <b>Dry: </b>guitar-chords.mp3<br>
                     <audio controls>
-                      <source src="audio/wet_hybrid_1.mp3"
+                      <source src="demo\dry\guitar-chords.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                  <td class="align-middle">
+                    dcb_wet_guitar-chords_x0.2_y0.1.mp3<br>
+                    <audio controls>
+                      <source
+                        src="demo\morphdrive_hybrid\dcb_wet_guitar-chords_x0.2_y0.1.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
                 </tr>
                 <tr>
                   <td class="align-middle">
-                    <img src="images/thdmap.png" width="300 rem">
+                    x=0.7 y=0.8<br>
+                    <img src="demo\morphdrive_hybrid\heatmap_point_0.7_0.8.png"
+                      width="300 rem">
                   </td>
                   <td class="align-middle">
+                    <b>Dry: </b>epiano.mp3<br>
                     <audio controls>
-                      <source src="audio/wet_hybrid_2.mp3"
+                      <source src="demo\dry\epiano.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                  <td class="align-middle">
+                    dcb_wet_epiano_x0.7_y0.8.mp3<br>
+                    <audio controls>
+                      <source
+                        src="demo\morphdrive_hybrid\dcb_wet_epiano_x0.7_y0.8.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
                 </tr>
                 <tr>
                   <td class="align-middle">
-                    <img src="images/thdmap.png" width="300 rem">
+                    x=0.9 y=0.1<br>
+                    <img src="demo\morphdrive_hybrid\heatmap_point_0.9_0.1.png"
+                      width="300 rem">
                   </td>
                   <td class="align-middle">
+                    <b>Dry: </b>guitar-chords.mp3<br>
                     <audio controls>
-                      <source src="audio/wet_hybrid_3.mp3"
+                      <source src="demo\dry\guitar-chords.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                  <td class="align-middle">
+                    dcb_wet_guitar-chords_x0.9_y0.1.mp3<br>
+                    <audio controls>
+                      <source
+                        src="demo\morphdrive_hybrid\dcb_wet_guitar-chords_x0.9_y0.1.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
                 </tr>
-              </table> -->
+                <tr>
+                  <td class="align-middle">
+                    x=0.7 y=0.8<br>
+                    <img src="demo\morphdrive_hybrid\heatmap_point_0.7_0.8.png"
+                      width="300 rem">
+                  </td>
+                  <td class="align-middle">
+                    <b>Dry: </b>organ.mp3<br>
+                    <audio controls>
+                      <source src="demo\dry\organ.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                  <td class="align-middle">
+                    dcb_wet_organ_x0.7_y0.8.mp3<br>
+                    <audio controls>
+                      <source
+                        src="demo\morphdrive_hybrid\dcb_wet_organ_x0.7_y0.8.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                </tr>
+              </table>
+              <h4 class="text-center"><a href="demos-hybrid.html">More Demos
+                  (Hybrid Configurations)</a></h4>
+
+              <div style="margin-bottom: 4rem;"></div>
 
               <h3>Existing Configurations</h3>
-              <div class="text-center"><a href="#index" class="text-center">Back to top</a></div>
+              <div class="text-center"><a href="#index" class="text-center">Back
+                  to top</a></div>
 
               <table class="text-center table">
                 <tr>
@@ -205,13 +280,15 @@
                   </td>
                   <td class="align-middle">
                     <audio controls>
-                      <source src="demo/dataset/a_honeybee_g5_t0_guitar-funk.mp3"
+                      <source
+                        src="demo/dataset/a_honeybee_g5_t0_guitar-funk.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
                   <td class="align-middle">
                     <audio controls>
-                      <source src="demo/morphdrive_real/wet_a_honeybee_g5_t0_guitar-funk.mp3"
+                      <source
+                        src="demo/morphdrive_real/wet_a_honeybee_g5_t0_guitar-funk.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
@@ -230,13 +307,15 @@
                   </td>
                   <td class="align-middle">
                     <audio controls>
-                      <source src="demo/dataset/a_zendrive_g5_t3_guitar-chords.mp3"
+                      <source
+                        src="demo/dataset/a_zendrive_g5_t3_guitar-chords.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
                   <td class="align-middle">
                     <audio controls>
-                      <source src="demo/morphdrive_real/wet_a_zendrive_g5_t3_guitar-chords.mp3"
+                      <source
+                        src="demo/morphdrive_real/wet_a_zendrive_g5_t3_guitar-chords.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
@@ -260,7 +339,8 @@
                   </td>
                   <td class="align-middle">
                     <audio controls>
-                      <source src="demo/morphdrive_real/wet_a_bigfella_g5_t3_epiano.mp3"
+                      <source
+                        src="demo/morphdrive_real/wet_a_bigfella_g5_t3_epiano.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
@@ -278,21 +358,25 @@
                   </td>
                   <td class="align-middle">
                     <audio controls>
-                      <source src="demo/dataset/a_souldriven_g4_t2_guitar-funk2.mp3"
+                      <source
+                        src="demo/dataset/a_souldriven_g4_t2_guitar-funk2.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
                   <td class="align-middle">
                     <audio controls>
-                      <source src="demo/morphdrive_real/wet_a_souldriven_g4_t2_guitar-funk2.mp3"
+                      <source
+                        src="demo/morphdrive_real/wet_a_souldriven_g4_t2_guitar-funk2.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
                 </tr>
 
               </table>
-              
-              <h4 class="text-center"><a href="demos-real.html" >More Demos</a></h4>
+
+              <h4 class="text-center"><a href="demos-real.html">More Demos (Real
+                  Configurations)</a></h4>
+              <div style="margin-bottom: 4rem;"></div>
 
             </div>
           </div>
@@ -307,7 +391,7 @@
           guitar pedals, with 36 combinations of parameters for each. Out
           of the wide range of different overdrive pedals currently available
           on the market, we selected a set of high-end, boutique pedals
-           spanning from renowned classic circuits to novel, peculiar,
+          spanning from renowned classic circuits to novel, peculiar,
           and unconventional designs, covering a variety of tonal nuances.
           The 36 parameter settings represent combinations of the gain
           and tone knobs, typically found in most overdrive pedals. For each
@@ -316,7 +400,9 @@
           Additional controls, where present, were set to flat/neutral posi-
           tions.
           <br>
-          The dataset will soon be available on Zenodo with a <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC license</a>.
+          The dataset will soon be available on Zenodo with a <a
+            href="https://creativecommons.org/licenses/by-nc/4.0/"
+            target="_blank">CC BY-NC license</a>.
           <!-- <a href="https://zenodo.org/record/TODO">https://zenodo.org/record/TODO</a> -->
           <br>
           <br>
@@ -325,187 +411,188 @@
           <div style="margin-bottom:2rem;"></div>
 
           <div class="container">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Label</th>
-                            <th scope="col">Brand</th>
-                            <th scope="col">Model</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td><code>KOT</code></td>
-                            <td>AnalogMan</td>
-                            <td>King of Tone</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td><code>HON</code></td>
-                            <td>Bearfoot</td>
-                            <td>Honey Bee</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td><code>BEE</code></td>
-                            <td>Beetronix</td>
-                            <td>Overhive</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td><code>WES</code></td>
-                            <td>Bogner</td>
-                            <td>Wessex MKII</td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td><code>BLU</code></td>
-                            <td>Boss</td>
-                            <td>BD-2-B50A</td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
-                            <td><code>GLA</code></td>
-                            <td>Cornerstone</td>
-                            <td>Gladio</td>
-                        </tr>
-                        <tr>
-                            <td>7</td>
-                            <td><code>SS2</code></td>
-                            <td>Cornish</td>
-                            <td>SS2</td>
-                        </tr>
-                        <tr>
-                            <td>8</td>
-                            <td><code>ELE</code></td>
-                            <td>Dr Scientist</td>
-                            <td>The Elements</td>
-                        </tr>
-                        <tr>
-                            <td>9</td>
-                            <td><code>PLU</code></td>
-                            <td>EarthQuaker Devices</td>
-                            <td>Plumes</td>
-                        </tr>
-                        <tr>
-                            <td>10</td>
-                            <td><code>OCD</code></td>
-                            <td>Fulltone</td>
-                            <td>OCD v1.3</td>
-                        </tr>
-                        <tr>
-                            <td>11</td>
-                            <td><code>ZEN</code></td>
-                            <td>Hermida Audio</td>
-                            <td>Zendrive</td>
-                        </tr>
-                        <tr>
-                            <td>12</td>
-                            <td><code>PRE</code></td>
-                            <td>Horizon Devices</td>
-                            <td>Precision Drive</td>
-                        </tr>
-                        <tr>
-                            <td>13</td>
-                            <td><code>TUB</code></td>
-                            <td>Jam Pedals</td>
-                            <td>Tube Dreamer</td>
-                        </tr>
-                        <tr>
-                            <td>14</td>
-                            <td><code>KTR</code></td>
-                            <td>Klon</td>
-                            <td>KTR</td>
-                        </tr>
-                        <tr>
-                            <td>15</td>
-                            <td><code>ACQ</code></td>
-                            <td>Lichtlaerm Audio</td>
-                            <td>Acquaria</td>
-                        </tr>
-                        <tr>
-                            <td>16</td>
-                            <td><code>FEL</code></td>
-                            <td>Lunastone</td>
-                            <td>Big Fella</td>
-                        </tr>
-                        <tr>
-                            <td>17</td>
-                            <td><code>CHI</code></td>
-                            <td>Pettyjohn</td>
-                            <td>Chime</td>
-                        </tr>
-                        <tr>
-                            <td>18</td>
-                            <td><code>LIG</code></td>
-                            <td>Rawkworks</td>
-                            <td>Light OD</td>
-                        </tr>
-                        <tr>
-                            <td>19</td>
-                            <td><code>ZOI</code></td>
-                            <td>SviSound</td>
-                            <td>Overzoid</td>
-                        </tr>
-                        <tr>
-                            <td>20</td>
-                            <td><code>DUM</code></td>
-                            <td>Tanabe</td>
-                            <td>Dumkudo</td>
-                        </tr>
-                        <tr>
-                            <td>21</td>
-                            <td><code>RUM</code></td>
-                            <td>Tone City</td>
-                            <td>Big Rumble</td>
-                        </tr>
-                        <tr>
-                            <td>22</td>
-                            <td><code>JAN</code></td>
-                            <td>Vemuram</td>
-                            <td>Jan Ray</td>
-                        </tr>
-                        <tr>
-                            <td>23</td>
-                            <td><code>SIL</code></td>
-                            <td>Vox</td>
-                            <td>Silk Drive</td>
-                        </tr>
-                        <tr>
-                            <td>24</td>
-                            <td><code>RED</code></td>
-                            <td>Way Huge</td>
-                            <td>Red Llama*</td>
-                        </tr>
-                        <tr>
-                            <td>25</td>
-                            <td><code>MOF</code></td>
-                            <td>Wampler</td>
-                            <td>Mofetta</td>
-                        </tr>
-                        <tr>
-                            <td>26</td>
-                            <td><code>385</code></td>
-                            <td>Walrus Audio</td>
-                            <td>385 MKII</td>
-                        </tr>
-                        <tr>
-                            <td>27</td>
-                            <td><code>SOU</code></td>
-                            <td>Xotic</td>
-                            <td>Soul Driven</td>
-                        </tr>
-                    </tbody>
-                    <tfoot class="table-footer">
-                        <tr>
-                            <td colspan="4">Tot: 27 overdrive pedals, 97 hours 57 minutes</td>
-                        </tr>
-                    </tfoot>
-                </table>
-                <p><small>* Modified with Tone control</small></p>
-        </div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Label</th>
+                  <th scope="col">Brand</th>
+                  <th scope="col">Model</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td><code>KOT</code></td>
+                  <td>AnalogMan</td>
+                  <td>King of Tone</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td><code>HON</code></td>
+                  <td>Bearfoot</td>
+                  <td>Honey Bee</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td><code>BEE</code></td>
+                  <td>Beetronix</td>
+                  <td>Overhive</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td><code>WES</code></td>
+                  <td>Bogner</td>
+                  <td>Wessex MKII</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td><code>BLU</code></td>
+                  <td>Boss</td>
+                  <td>BD-2-B50A</td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td><code>GLA</code></td>
+                  <td>Cornerstone</td>
+                  <td>Gladio</td>
+                </tr>
+                <tr>
+                  <td>7</td>
+                  <td><code>SS2</code></td>
+                  <td>Cornish</td>
+                  <td>SS2</td>
+                </tr>
+                <tr>
+                  <td>8</td>
+                  <td><code>ELE</code></td>
+                  <td>Dr Scientist</td>
+                  <td>The Elements</td>
+                </tr>
+                <tr>
+                  <td>9</td>
+                  <td><code>PLU</code></td>
+                  <td>EarthQuaker Devices</td>
+                  <td>Plumes</td>
+                </tr>
+                <tr>
+                  <td>10</td>
+                  <td><code>OCD</code></td>
+                  <td>Fulltone</td>
+                  <td>OCD v1.3</td>
+                </tr>
+                <tr>
+                  <td>11</td>
+                  <td><code>ZEN</code></td>
+                  <td>Hermida Audio</td>
+                  <td>Zendrive</td>
+                </tr>
+                <tr>
+                  <td>12</td>
+                  <td><code>PRE</code></td>
+                  <td>Horizon Devices</td>
+                  <td>Precision Drive</td>
+                </tr>
+                <tr>
+                  <td>13</td>
+                  <td><code>TUB</code></td>
+                  <td>Jam Pedals</td>
+                  <td>Tube Dreamer</td>
+                </tr>
+                <tr>
+                  <td>14</td>
+                  <td><code>KTR</code></td>
+                  <td>Klon</td>
+                  <td>KTR</td>
+                </tr>
+                <tr>
+                  <td>15</td>
+                  <td><code>ACQ</code></td>
+                  <td>Lichtlaerm Audio</td>
+                  <td>Acquaria</td>
+                </tr>
+                <tr>
+                  <td>16</td>
+                  <td><code>FEL</code></td>
+                  <td>Lunastone</td>
+                  <td>Big Fella</td>
+                </tr>
+                <tr>
+                  <td>17</td>
+                  <td><code>CHI</code></td>
+                  <td>Pettyjohn</td>
+                  <td>Chime</td>
+                </tr>
+                <tr>
+                  <td>18</td>
+                  <td><code>LIG</code></td>
+                  <td>Rawkworks</td>
+                  <td>Light OD</td>
+                </tr>
+                <tr>
+                  <td>19</td>
+                  <td><code>ZOI</code></td>
+                  <td>SviSound</td>
+                  <td>Overzoid</td>
+                </tr>
+                <tr>
+                  <td>20</td>
+                  <td><code>DUM</code></td>
+                  <td>Tanabe</td>
+                  <td>Dumkudo</td>
+                </tr>
+                <tr>
+                  <td>21</td>
+                  <td><code>RUM</code></td>
+                  <td>Tone City</td>
+                  <td>Big Rumble</td>
+                </tr>
+                <tr>
+                  <td>22</td>
+                  <td><code>JAN</code></td>
+                  <td>Vemuram</td>
+                  <td>Jan Ray</td>
+                </tr>
+                <tr>
+                  <td>23</td>
+                  <td><code>SIL</code></td>
+                  <td>Vox</td>
+                  <td>Silk Drive</td>
+                </tr>
+                <tr>
+                  <td>24</td>
+                  <td><code>RED</code></td>
+                  <td>Way Huge</td>
+                  <td>Red Llama*</td>
+                </tr>
+                <tr>
+                  <td>25</td>
+                  <td><code>MOF</code></td>
+                  <td>Wampler</td>
+                  <td>Mofetta</td>
+                </tr>
+                <tr>
+                  <td>26</td>
+                  <td><code>385</code></td>
+                  <td>Walrus Audio</td>
+                  <td>385 MKII</td>
+                </tr>
+                <tr>
+                  <td>27</td>
+                  <td><code>SOU</code></td>
+                  <td>Xotic</td>
+                  <td>Soul Driven</td>
+                </tr>
+              </tbody>
+              <tfoot class="table-footer">
+                <tr>
+                  <td colspan="4">Tot: 27 overdrive pedals, 97 hours 57
+                    minutes</td>
+                </tr>
+              </tfoot>
+            </table>
+            <p><small>* Modified with Tone control</small></p>
+          </div>
 
         </div>
         <!-- <div class="section">
@@ -539,9 +626,13 @@
         <footer>
           <p><!--*Accepted to the <a href="https://neuripscreativityworkshop.github.io/2021/">NeurIPS 2021 Workshop on Machine
             Learning for Creativity and Design</a> -->
-            <br> Send feedback and questions to <a href="https://github.com/return-nihil">Ardan Dal Rì</a> and <a href="http://domenicostefani.com">Domenico Stefani</a>.
+            <br> Send feedback and questions to <a
+              href="https://github.com/return-nihil">Ardan Dal Rì</a> and <a
+              href="http://domenicostefani.com">Domenico Stefani</a>.
             <br>
-            <i>Website inspired by <a href="https://csteinmetz1.github.io/steerable-nafx/">Steerable Neural Audio Effects</a> by Christian J. Steinmetz</i>
+            <i>Website inspired by <a
+                href="https://csteinmetz1.github.io/steerable-nafx/">Steerable
+                Neural Audio Effects</a> by Christian J. Steinmetz</i>
           </p>
 
           <!-- <div class="container">
