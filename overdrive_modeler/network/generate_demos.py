@@ -4,10 +4,13 @@ os.chdir(os.path.abspath(os.path.dirname(__file__)))
 from glob import glob
 import pandas as pd
 
+DO_GENERATE_REALISTIC_EFFECTS = False
+DO_GENERATE_HYBRID_EFFECTS = True
+
 DATAFRAME_PATH = r'C:\Users\cimil\Develop\DAFx25-Pedaliny\ROBOT_RECORDER\overdrive_modeler\network\VAE\4-2025-03-05_23-11_tsne_latents.csv'
 assert os.path.exists(DATAFRAME_PATH), f"Path {DATAFRAME_PATH} does not exist"
 df = pd.read_csv(DATAFRAME_PATH, sep=',', header=0, index_col=0)
-print(df.head())
+# print(df.head())
 
 # python .\inference_gui_static.py i C:\Users\cimil\Develop\DAFx25-Pedaliny\ROBOT_RECORDER\DB_DISK\demos\bass.wav
 
@@ -18,40 +21,68 @@ NETWET_EXCERPTS_FOLDER = r"C:\Users\cimil\Develop\DAFx25-Pedaliny\ROBOT_RECORDER
 if not os.path.exists(NETWET_EXCERPTS_FOLDER):
     os.makedirs(NETWET_EXCERPTS_FOLDER)
 
+NETWET_HYBRID_EXCERPTS_FOLDER = r"C:\Users\cimil\Develop\DAFx25-Pedaliny\ROBOT_RECORDER\DB_DISK\demos\morphdrive_output_hybrid"
+if not os.path.exists(NETWET_HYBRID_EXCERPTS_FOLDER):
+    os.makedirs(NETWET_HYBRID_EXCERPTS_FOLDER)
+
 DRY_FOLDER = r"C:\Users\cimil\Develop\DAFx25-Pedaliny\ROBOT_RECORDER\DB_DISK\demos\DRY"
 assert os.path.exists(DRY_FOLDER), f"Path {DRY_FOLDER} does not exist"
 
-wet_db_files = glob(os.path.join(DB_WET_EXCERPTS_FOLDER, "*.wav"))
-dry_files = [os.path.basename(a) for a in glob(os.path.join(DRY_FOLDER, "*.wav"))]
-# print('\n'.join(wet_db_files))
 
-for wetdbfile in wet_db_files:
-    filename = os.path.basename(wetdbfile)
-    assert filename[:2] == 'a_', f"File {filename} does not start with 'a_'"
-    filenamespl = filename[2:].split('_')
-    pedalname = filenamespl[0]
-    gain = int(filenamespl[1].lstrip('g'))
-    tone = int(filenamespl[2].lstrip('t'))
-    # print('>>>>',pedalname, gain, tone)
+if DO_GENERATE_REALISTIC_EFFECTS:
+    wet_db_files = glob(os.path.join(DB_WET_EXCERPTS_FOLDER, "*.wav"))
+    dry_files = [os.path.basename(a) for a in glob(os.path.join(DRY_FOLDER, "*.wav"))]
+    # print('\n'.join(wet_db_files))
 
-    perpedal = df.loc[pedalname]
-    test = perpedal[(perpedal['gain'] == gain) & (perpedal['tone'] == tone)]
-    coords = test['coords'].values[0].strip('[]').split(',')
-    coords = [float(s) for s in coords]
-    # print('coords', coords)
-    
-    drysoundname = wetdbfile.split('_')[-1].split('.')[0]+'.wav'
-    assert drysoundname in dry_files, f"File {drysoundname} not found in {DRY_FOLDER}"
-    # print('drysoundname',drysoundname)
-    drysoundpath = os.path.join(DRY_FOLDER, drysoundname)
-    assert os.path.exists(drysoundpath), f"Path {drysoundpath} does not exist"
+    for wetdbfile in wet_db_files:
+        filename = os.path.basename(wetdbfile)
+        assert filename[:2] == 'a_', f"File {filename} does not start with 'a_'"
+        filenamespl = filename[2:].split('_')
+        pedalname = filenamespl[0]
+        gain = int(filenamespl[1].lstrip('g'))
+        tone = int(filenamespl[2].lstrip('t'))
+        # print('>>>>',pedalname, gain, tone)
 
-    netwetname = os.path.join(NETWET_EXCERPTS_FOLDER, f"wet_{filename}")
+        perpedal = df.loc[pedalname]
+        test = perpedal[(perpedal['gain'] == gain) & (perpedal['tone'] == tone)]
+        coords = test['coords'].values[0].strip('[]').split(',')
+        coords = [float(s) for s in coords]
+        # print('coords', coords)
+        
+        drysoundname = wetdbfile.split('_')[-1].split('.')[0]+'.wav'
+        assert drysoundname in dry_files, f"File {drysoundname} not found in {DRY_FOLDER}"
+        # print('drysoundname',drysoundname)
+        drysoundpath = os.path.join(DRY_FOLDER, drysoundname)
+        assert os.path.exists(drysoundpath), f"Path {drysoundpath} does not exist"
 
-    command = f'python ./inference_gui_static.py -i "{drysoundpath}" -xy {coords[0]} {coords[1]} -o "{netwetname}"'
-    print(command)
-    os.system(command)
+        netwetname = os.path.join(NETWET_EXCERPTS_FOLDER, f"wet_{filename}")
+
+        command = f'python ./inference_gui_static.py -i "{drysoundpath}" -xy {coords[0]} {coords[1]} -o "{netwetname}"'
+        print(command)
+        os.system(command)
     
 
 
     # exit()
+
+if DO_GENERATE_HYBRID_EFFECTS:
+    # Now for hybrid configurations with xy taken from interesting points in the latent space
+    interesting_points = [
+        (0.8, 0.3),  # Typhoon
+        (0.4, 0.6),  # Pit
+        (0.2, 0.1),  # bottom left
+        (0.9, 0.1),  # bottom right
+        (0.7, 0.8),  # boh
+    ]
+
+    dryfilepaths = glob(os.path.join(DRY_FOLDER, "*.wav"))
+    # print('dryfilepaths', dryfilepaths)
+
+    for dryfilepath in dryfilepaths:
+        for point in interesting_points:
+            x, y = point
+            dryfilename = os.path.basename(dryfilepath)
+            netwetname = os.path.join(NETWET_HYBRID_EXCERPTS_FOLDER, f"wet_{dryfilename[:-4]}_x{x:.1f}_y{y:.1f}.wav")
+            command = f'python ./inference_gui_static.py -i "{dryfilepath}" -xy {x} {y} -o "{netwetname}"'
+            print(command)
+            os.system(command)
