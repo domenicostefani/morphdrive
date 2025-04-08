@@ -1,33 +1,40 @@
-def get_table_row (idx,figure, dry_path, wet_path, x=None, y=None):
+def get_table_row (idx,figure, dry_paths, wet_paths, x=None, y=None):
     """
     Generate a table row for the given pedal name, gain, tone, and audio paths.
     """    
 
     return f"""
 <tr>
-    <td class="align-middle">
-    {idx}
-    </td>
+    <td class="align-middle">{idx}</td>
     <td class="align-middle">
     {"" if x is None else f"x={x:.1f} y={y:.1f}<br>"}
     <img src="{figure}" width="300 rem">
     </td>
     <td class="align-middle">
-        <b>Dry: </b><a href="{dry_path}">{os.path.basename(dry_path)}</a><br>
-    <audio controls>
-        <source src="{dry_path}"
-        type="audio/mp3">
-    </audio>
+      <b>Amp: </b><a href="{dry_paths[1]}">{os.path.basename(dry_paths[1])}</a><br>
+      <audio controls>
+          <source src="{dry_paths[1]}"
+          type="audio/mp3">
+      </audio><br>
+      <b>DI: </b><a href="{dry_paths[0]}">{os.path.basename(dry_paths[0])}</a><br>
+      <audio controls>
+          <source src="{dry_paths[0]}"
+          type="audio/mp3">
+      </audio>
     </td>
     <td class="align-middle">
-        <a href="{wet_path}">{os.path.basename(wet_path)}</a><br>
-    <audio controls>
-        <source src="{wet_path}"
-        type="audio/mp3">
-    </audio>
+      <b>Amp: </b><a href="{wet_paths[1]}">{os.path.basename(wet_paths[1])}</a><br>
+      <audio controls>
+          <source src="{wet_paths[1]}"
+          type="audio/mp3">
+      </audio><br>
+      <b>DI: </b><a href="{wet_paths[0]}">{os.path.basename(wet_paths[0])}</a><br>
+      <audio controls>
+          <source src="{wet_paths[0]}"
+          type="audio/mp3">
+      </audio>
     </td>
-</tr>
-"""
+</tr>"""
 
 
 HEADER = """
@@ -90,8 +97,10 @@ HEADER = """
       </p>
 
       <h5 class style="color: black;" role="group" aria-label="Top menu">
-        <a href="index.html">>> Back to the Homepage<<</a>
+        <a href="index.html">>> Back to the Homepage <<</a>
       </h5>
+      <a href="demos-real.html">> to existing configuration demos <<</a>
+
       <!-- <div class="mt-3">
         <img class="img-fluid" src='images/morphdrive-arch.svg' width="20%">
         <img class="img-fluid" src='images/morphdrive_gui.png' width="20%">
@@ -176,7 +185,17 @@ morphdrive_files = sorted(glob(r"demo\morphdrive_hybrid\*.mp3"), reverse=True)
 output_lines = []
 output_lines.append(HEADER)
 
+
 datasetMetadataRenamer = DBmetadataRenamer()
+
+mainpage_table_lines = []
+INTERESTING_CONFIGS = [
+    'dcb_wet_guitar-funk_x0.7_y0.8.mp3',
+    'dcb_wet_guitar-chords_x0.2_y0.1.mp3',
+    'dcb_wet_epiano_x0.7_y0.8.mp3',
+    'dcb_wet_guitar-chords_x0.9_y0.1.mp3',
+    'dcb_wet_organ_x0.7_y0.8.mp3',
+]
 
 prevname = ""
 for iw, wet_path in enumerate(morphdrive_files):
@@ -205,13 +224,26 @@ for iw, wet_path in enumerate(morphdrive_files):
     #     if iw > 0:
     #         output_lines.append('<tr><td class="v-divider"></td><td class="v-divider"></td><td class="v-divider"></td><td class="v-divider"></td></tr>'.encode('utf-8'))
 
-    output_lines.append(get_table_row(iw+1,mappath,dryfile,wet_path, x=xval, y=yval).encode('utf-8'))
+
+    # Filenames with amp sym 
+    dryfiles = (dryfile,os.path.join(os.path.dirname(dryfile),'amp','amp_'+os.path.basename(dryfile)))
+    assert os.path.exists(dryfiles[1]), f"File {dryfiles[1]} not found in amp folder"
+
+    wet_paths = (wet_path,os.path.join(os.path.dirname(wet_path),'amp','amp_'+os.path.basename(wet_path).removeprefix('dcb_')))
+    assert os.path.exists(wet_paths[1]), f"File {wet_paths[1]} not found in amp folder"
+
+    row = get_table_row(iw+1,mappath,dryfiles,wet_paths, x=xval, y=yval).encode('utf-8')
+    output_lines.append(row)
+    if os.path.basename(wet_path) in INTERESTING_CONFIGS:
+        mainpage_table_lines.append(row)
     
 output_lines.append(FOOTER)
 
 with open('demos-hybrid.html', 'wb') as f:
     f.writelines(output_lines)
 
+with open('demos-hybrid-mainpage.html', 'wb') as f:
+    f.writelines(mainpage_table_lines)
     
 
 

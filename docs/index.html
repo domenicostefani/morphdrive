@@ -18,6 +18,28 @@
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
       crossorigin="anonymous">
+    <style>
+      .table-borderless td, .table-borderless th {
+          border: none;
+      }
+      .progtab {
+          margin: 0 auto;
+          padding: 0;
+          width: 100%;
+      }
+      .progtab tr {
+          margin: 0;
+          padding: 0;
+      }
+      .progtab td {
+          margin: 0;
+          padding: 0;
+      }
+
+      .left{
+          width: 30%;
+      }
+  </style>
   </head>
 
   <body>
@@ -111,7 +133,8 @@
 
               <hr>
               Below are a number of example effects from existing and hybrid
-              circuit/setting overdrive configurations.
+              circuit/setting overdrive configurations.<br>
+              Sound samples are presented both as <b>DI</b> (Direct Input) and an amplified (<b>Amp</b>), processed through the open-source <a href="https://www.resonantdsp.com/swankyamp/" target="_blank">Swanky Amp</a> tube amplifier and cabinet simulation.
               <!-- <br>
             Pre-trained models from different effect types are available for usage in the <a
               href="https://colab.research.google.com/github/csteinmetz1/steerable-nafx/blob/master/steerable-nafx.ipynb">Colab
@@ -140,20 +163,73 @@
                   <th>Static HyperRNN + VAE</th>
                 </tr>
                 <tr>
+                  <!-- <td class="align-middle">3</td> -->
                   <td class="align-middle">
                     x=0.7 y=0.8<br>
                     <img src="demo\morphdrive_hybrid\heatmap_point_0.7_0.8.png"
                       width="300 rem">
                   </td>
                   <td class="align-middle">
-                    <b>Dry: </b>guitar-funk.mp3<br>
+                    <b>Amp:  </b><a
+                      href="demo\dry\amp\amp_organ.mp3">amp_organ.mp3</a><br>
+                    <audio controls>
+                      <source src="demo\dry\amp\amp_organ.mp3"
+                        type="audio/mp3">
+                    </audio><br>
+                    <b>DI: </b><a href="demo\dry\organ.mp3">organ.mp3</a><br>
+                    <audio controls>
+                      <source src="demo\dry\organ.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                  <td class="align-middle">
+                    <b>Amp:  </b><a
+                      href="demo\morphdrive_hybrid\amp\amp_wet_organ_x0.7_y0.8.mp3">amp_wet_organ_x0.7_y0.8.mp3</a><br>
+                    <audio controls>
+                      <source
+                        src="demo\morphdrive_hybrid\amp\amp_wet_organ_x0.7_y0.8.mp3"
+                        type="audio/mp3">
+                    </audio><br>
+                    <b>DI: </b><a
+                      href="demo\morphdrive_hybrid\dcb_wet_organ_x0.7_y0.8.mp3">dcb_wet_organ_x0.7_y0.8.mp3</a><br>
+                    <audio controls>
+                      <source
+                        src="demo\morphdrive_hybrid\dcb_wet_organ_x0.7_y0.8.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                </tr>
+                <tr>
+                  <!-- <td class="align-middle">8</td> -->
+                  <td class="align-middle">
+                    x=0.7 y=0.8<br>
+                    <img src="demo\morphdrive_hybrid\heatmap_point_0.7_0.8.png"
+                      width="300 rem">
+                  </td>
+                  <td class="align-middle">
+                    <b>Amp:  </b><a
+                      href="demo\dry\amp\amp_guitar-funk.mp3">amp_guitar-funk.mp3</a><br>
+                    <audio controls>
+                      <source src="demo\dry\amp\amp_guitar-funk.mp3"
+                        type="audio/mp3">
+                    </audio><br>
+                    <b>DI: </b><a
+                      href="demo\dry\guitar-funk.mp3">guitar-funk.mp3</a><br>
                     <audio controls>
                       <source src="demo\dry\guitar-funk.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
                   <td class="align-middle">
-                    dcb_wet_guitar-funk_x0.7_y0.8.mp3<br>
+                    <b>Amp:  </b><a
+                      href="demo\morphdrive_hybrid\amp\amp_wet_guitar-funk_x0.7_y0.8.mp3">amp_wet_guitar-funk_x0.7_y0.8.mp3</a><br>
+                    <audio controls>
+                      <source
+                        src="demo\morphdrive_hybrid\amp\amp_wet_guitar-funk_x0.7_y0.8.mp3"
+                        type="audio/mp3">
+                    </audio><br>
+                    <b>DI: </b><a
+                      href="demo\morphdrive_hybrid\dcb_wet_guitar-funk_x0.7_y0.8.mp3">dcb_wet_guitar-funk_x0.7_y0.8.mp3</a><br>
                     <audio controls>
                       <source
                         src="demo\morphdrive_hybrid\dcb_wet_guitar-funk_x0.7_y0.8.mp3"
@@ -162,64 +238,36 @@
                   </td>
                 </tr>
                 <tr>
-                  <td class="align-middle">
-                    x=0.2 y=0.1<br>
-                    <img src="demo\morphdrive_hybrid\heatmap_point_0.2_0.1.png"
-                      width="300 rem">
-                  </td>
-                  <td class="align-middle">
-                    <b>Dry: </b>guitar-chords.mp3<br>
-                    <audio controls>
-                      <source src="demo\dry\guitar-chords.mp3"
-                        type="audio/mp3">
-                    </audio>
-                  </td>
-                  <td class="align-middle">
-                    dcb_wet_guitar-chords_x0.2_y0.1.mp3<br>
-                    <audio controls>
-                      <source
-                        src="demo\morphdrive_hybrid\dcb_wet_guitar-chords_x0.2_y0.1.mp3"
-                        type="audio/mp3">
-                    </audio>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="align-middle">
-                    x=0.7 y=0.8<br>
-                    <img src="demo\morphdrive_hybrid\heatmap_point_0.7_0.8.png"
-                      width="300 rem">
-                  </td>
-                  <td class="align-middle">
-                    <b>Dry: </b>epiano.mp3<br>
-                    <audio controls>
-                      <source src="demo\dry\epiano.mp3"
-                        type="audio/mp3">
-                    </audio>
-                  </td>
-                  <td class="align-middle">
-                    dcb_wet_epiano_x0.7_y0.8.mp3<br>
-                    <audio controls>
-                      <source
-                        src="demo\morphdrive_hybrid\dcb_wet_epiano_x0.7_y0.8.mp3"
-                        type="audio/mp3">
-                    </audio>
-                  </td>
-                </tr>
-                <tr>
+                  <!-- <td class="align-middle">26</td> -->
                   <td class="align-middle">
                     x=0.9 y=0.1<br>
                     <img src="demo\morphdrive_hybrid\heatmap_point_0.9_0.1.png"
                       width="300 rem">
                   </td>
                   <td class="align-middle">
-                    <b>Dry: </b>guitar-chords.mp3<br>
+                    <b>Amp:  </b><a
+                      href="demo\dry\amp\amp_guitar-chords.mp3">amp_guitar-chords.mp3</a><br>
+                    <audio controls>
+                      <source src="demo\dry\amp\amp_guitar-chords.mp3"
+                        type="audio/mp3">
+                    </audio><br>
+                    <b>DI: </b><a
+                      href="demo\dry\guitar-chords.mp3">guitar-chords.mp3</a><br>
                     <audio controls>
                       <source src="demo\dry\guitar-chords.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
                   <td class="align-middle">
-                    dcb_wet_guitar-chords_x0.9_y0.1.mp3<br>
+                    <b>Amp:  </b><a
+                      href="demo\morphdrive_hybrid\amp\amp_wet_guitar-chords_x0.9_y0.1.mp3">amp_wet_guitar-chords_x0.9_y0.1.mp3</a><br>
+                    <audio controls>
+                      <source
+                        src="demo\morphdrive_hybrid\amp\amp_wet_guitar-chords_x0.9_y0.1.mp3"
+                        type="audio/mp3">
+                    </audio><br>
+                    <b>DI: </b><a
+                      href="demo\morphdrive_hybrid\dcb_wet_guitar-chords_x0.9_y0.1.mp3">dcb_wet_guitar-chords_x0.9_y0.1.mp3</a><br>
                     <audio controls>
                       <source
                         src="demo\morphdrive_hybrid\dcb_wet_guitar-chords_x0.9_y0.1.mp3"
@@ -228,29 +276,82 @@
                   </td>
                 </tr>
                 <tr>
+                  <!-- <td class="align-middle">30</td> -->
+                  <td class="align-middle">
+                    x=0.2 y=0.1<br>
+                    <img src="demo\morphdrive_hybrid\heatmap_point_0.2_0.1.png"
+                      width="300 rem">
+                  </td>
+                  <td class="align-middle">
+                    <b>Amp:  </b><a
+                      href="demo\dry\amp\amp_guitar-chords.mp3">amp_guitar-chords.mp3</a><br>
+                    <audio controls>
+                      <source src="demo\dry\amp\amp_guitar-chords.mp3"
+                        type="audio/mp3">
+                    </audio><br>
+                    <b>DI: </b><a
+                      href="demo\dry\guitar-chords.mp3">guitar-chords.mp3</a><br>
+                    <audio controls>
+                      <source src="demo\dry\guitar-chords.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                  <td class="align-middle">
+                    <b>Amp:  </b><a
+                      href="demo\morphdrive_hybrid\amp\amp_wet_guitar-chords_x0.2_y0.1.mp3">amp_wet_guitar-chords_x0.2_y0.1.mp3</a><br>
+                    <audio controls>
+                      <source
+                        src="demo\morphdrive_hybrid\amp\amp_wet_guitar-chords_x0.2_y0.1.mp3"
+                        type="audio/mp3">
+                    </audio><br>
+                    <b>DI: </b><a
+                      href="demo\morphdrive_hybrid\dcb_wet_guitar-chords_x0.2_y0.1.mp3">dcb_wet_guitar-chords_x0.2_y0.1.mp3</a><br>
+                    <audio controls>
+                      <source
+                        src="demo\morphdrive_hybrid\dcb_wet_guitar-chords_x0.2_y0.1.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                </tr>
+                <tr>
+                  <!-- <td class="align-middle">33</td> -->
                   <td class="align-middle">
                     x=0.7 y=0.8<br>
                     <img src="demo\morphdrive_hybrid\heatmap_point_0.7_0.8.png"
                       width="300 rem">
                   </td>
                   <td class="align-middle">
-                    <b>Dry: </b>organ.mp3<br>
+                    <b>Amp:  </b><a
+                      href="demo\dry\amp\amp_epiano.mp3">amp_epiano.mp3</a><br>
                     <audio controls>
-                      <source src="demo\dry\organ.mp3"
+                      <source src="demo\dry\amp\amp_epiano.mp3"
+                        type="audio/mp3">
+                    </audio><br>
+                    <b>DI: </b><a href="demo\dry\epiano.mp3">epiano.mp3</a><br>
+                    <audio controls>
+                      <source src="demo\dry\epiano.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
                   <td class="align-middle">
-                    dcb_wet_organ_x0.7_y0.8.mp3<br>
+                    <b>Amp:  </b><a
+                      href="demo\morphdrive_hybrid\amp\amp_wet_epiano_x0.7_y0.8.mp3">amp_wet_epiano_x0.7_y0.8.mp3</a><br>
                     <audio controls>
                       <source
-                        src="demo\morphdrive_hybrid\dcb_wet_organ_x0.7_y0.8.mp3"
+                        src="demo\morphdrive_hybrid\amp\amp_wet_epiano_x0.7_y0.8.mp3"
+                        type="audio/mp3">
+                    </audio><br>
+                    <b>DI: </b><a
+                      href="demo\morphdrive_hybrid\dcb_wet_epiano_x0.7_y0.8.mp3">dcb_wet_epiano_x0.7_y0.8.mp3</a><br>
+                    <audio controls>
+                      <source
+                        src="demo\morphdrive_hybrid\dcb_wet_epiano_x0.7_y0.8.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
                 </tr>
               </table>
-              <h4 class="text-center"><a href="demos-hybrid.html">More Demos
+              <h4 class="text-center"><a style="color:red" href="demos-hybrid.html">More Demos
                   (Hybrid Configurations)</a></h4>
 
               <div style="margin-bottom: 4rem;"></div>
@@ -266,107 +367,324 @@
                   <th>Dataset</th>
                   <th>Static HyperRNN + VAE</th>
                 </tr>
+
                 <tr>
+                  <!-- <td class="align-middle">4</td> -->
                   <td class="align-middle">
-                    Bearfoot - Honey Bee<br>
-                    Gain 5 / 5<br>
-                    Tone 0 / 5<br>
+                    Soul Driven (Xotic)
+                    <table
+                      class="progtab text-center table table-borderless align-middle">
+                      <tr><td class='align-middle left'>Gain</td> <td
+                          class='align-middle'><div class="progress"><div
+                              class="progress-bar bg-danger"
+                              style="width: 80.0%;">4/5</div></div></td></tr>
+                      <tr><td class='align-middle left'>Tone</td> <td
+                          class='align-middle'><div class="progress"><div
+                              class="progress-bar bg-warning"
+                              style="width: 40.0%;">2/5</div></div></td></tr>
+                    </table>
+                    <!--Gain <div class="progress"><div class="progress-bar" style="width: 80.0%;">4/5</div></div><br>
+    Tone <div class="progress"><div class="progress-bar bg-info" style="width: 40.0%;">2/5</div></div><br> -->
                   </td>
                   <td class="align-middle">
+                    <b>Amp: </b><a
+                      href="demo\dry\amp\amp_organ.mp3">amp_organ.mp3</a><br>
                     <audio controls>
-                      <source src="demo/dry/guitar-funk.mp3"
+                      <source src="demo\dry\amp\amp_organ.mp3"
+                        type="audio/mp3">
+                    </audio><br>
+                    <b>DI: </b><a href="demo\dry\organ.mp3">organ.mp3</a><br>
+                    <audio controls>
+                      <source src="demo\dry\organ.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
                   <td class="align-middle">
+                    <b>Amp: </b><a
+                      href="demo\dataset\amp\amp_a_souldriven_g4_t2_organ.mp3">amp_a_souldriven_g4_t2_organ.mp3</a><br>
                     <audio controls>
                       <source
-                        src="demo/dataset/a_honeybee_g5_t0_guitar-funk.mp3"
+                        src="demo\dataset\amp\amp_a_souldriven_g4_t2_organ.mp3"
+                        type="audio/mp3">
+                    </audio>
+                    <b>DI.: </b><a
+                      href="demo\dataset\a_souldriven_g4_t2_organ.mp3">a_souldriven_g4_t2_organ.mp3</a><br>
+                    <audio controls>
+                      <source src="demo\dataset\a_souldriven_g4_t2_organ.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
                   <td class="align-middle">
+                    <b>Amp: </b><a
+                      href="demo\morphdrive_real\amp\amp_wet_a_souldriven_g4_t2_organ.mp3">amp_wet_a_souldriven_g4_t2_organ.mp3</a><br>
                     <audio controls>
                       <source
-                        src="demo/morphdrive_real/wet_a_honeybee_g5_t0_guitar-funk.mp3"
+                        src="demo\morphdrive_real\amp\amp_wet_a_souldriven_g4_t2_organ.mp3"
+                        type="audio/mp3">
+                    </audio>
+                    <b>DI: </b><a
+                      href="demo\morphdrive_real\wet_a_souldriven_g4_t2_organ.mp3">wet_a_souldriven_g4_t2_organ.mp3</a><br>
+                    <audio controls>
+                      <source
+                        src="demo\morphdrive_real\wet_a_souldriven_g4_t2_organ.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
                 </tr>
                 <tr>
+                  <!-- <td class="align-middle">13</td> -->
                   <td class="align-middle">
-                    Hermida Audio - Zendrive<br>
-                    Gain 5 / 5<br>
-                    Tone 3 / 5<br>
+                    Honey Bee (Bearfoot)
+                    <table
+                      class="progtab text-center table table-borderless align-middle">
+                      <tr><td class='align-middle left'>Gain</td> <td
+                          class='align-middle'><div class="progress"><div
+                              class="progress-bar bg-danger"
+                              style="width: 100.0%;">5/5</div></div></td></tr>
+                      <tr><td class='align-middle left'>Tone</td> <td
+                          class='align-middle'><div class="progress"><div
+                              class="progress-bar bg-warning"
+                              style="width: 0.0%;">0/5</div></div></td></tr>
+                    </table>
+                    <!--Gain <div class="progress"><div class="progress-bar" style="width: 100.0%;">5/5</div></div><br>
+    Tone <div class="progress"><div class="progress-bar bg-info" style="width: 0.0%;">0/5</div></div><br> -->
                   </td>
                   <td class="align-middle">
+                    <b>Amp: </b><a
+                      href="demo\dry\amp\amp_guitar-funk2.mp3">amp_guitar-funk2.mp3</a><br>
                     <audio controls>
-                      <source src="demo/dry/guitar-chords.mp3"
+                      <source src="demo\dry\amp\amp_guitar-funk2.mp3"
+                        type="audio/mp3">
+                    </audio><br>
+                    <b>DI: </b><a
+                      href="demo\dry\guitar-funk2.mp3">guitar-funk2.mp3</a><br>
+                    <audio controls>
+                      <source src="demo\dry\guitar-funk2.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
                   <td class="align-middle">
+                    <b>Amp: </b><a
+                      href="demo\dataset\amp\amp_a_honeybee_g5_t0_guitar-funk2.mp3">amp_a_honeybee_g5_t0_guitar-funk2.mp3</a><br>
                     <audio controls>
                       <source
-                        src="demo/dataset/a_zendrive_g5_t3_guitar-chords.mp3"
+                        src="demo\dataset\amp\amp_a_honeybee_g5_t0_guitar-funk2.mp3"
+                        type="audio/mp3">
+                    </audio>
+                    <b>DI.: </b><a
+                      href="demo\dataset\a_honeybee_g5_t0_guitar-funk2.mp3">a_honeybee_g5_t0_guitar-funk2.mp3</a><br>
+                    <audio controls>
+                      <source
+                        src="demo\dataset\a_honeybee_g5_t0_guitar-funk2.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
                   <td class="align-middle">
+                    <b>Amp: </b><a
+                      href="demo\morphdrive_real\amp\amp_wet_a_honeybee_g5_t0_guitar-funk2.mp3">amp_wet_a_honeybee_g5_t0_guitar-funk2.mp3</a><br>
                     <audio controls>
                       <source
-                        src="demo/morphdrive_real/wet_a_zendrive_g5_t3_guitar-chords.mp3"
+                        src="demo\morphdrive_real\amp\amp_wet_a_honeybee_g5_t0_guitar-funk2.mp3"
+                        type="audio/mp3">
+                    </audio>
+                    <b>DI: </b><a
+                      href="demo\morphdrive_real\wet_a_honeybee_g5_t0_guitar-funk2.mp3">wet_a_honeybee_g5_t0_guitar-funk2.mp3</a><br>
+                    <audio controls>
+                      <source
+                        src="demo\morphdrive_real\wet_a_honeybee_g5_t0_guitar-funk2.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
                 </tr>
                 <tr>
-                  <td class="align-middle">Lunastone - Big Fella<br>
-                    Gain 5 / 5<br>
-                    Tone 3 / 5<br>
+                  <!-- <td class="align-middle">21</td> -->
+                  <td class="align-middle">
+                    Big Fella (Lunastone)
+                    <table
+                      class="progtab text-center table table-borderless align-middle">
+                      <tr><td class='align-middle left'>Gain</td> <td
+                          class='align-middle'><div class="progress"><div
+                              class="progress-bar bg-danger"
+                              style="width: 100.0%;">5/5</div></div></td></tr>
+                      <tr><td class='align-middle left'>Tone</td> <td
+                          class='align-middle'><div class="progress"><div
+                              class="progress-bar bg-warning"
+                              style="width: 60.0%;">3/5</div></div></td></tr>
+                    </table>
+                    <!--Gain <div class="progress"><div class="progress-bar" style="width: 100.0%;">5/5</div></div><br>
+    Tone <div class="progress"><div class="progress-bar bg-info" style="width: 60.0%;">3/5</div></div><br> -->
                   </td>
                   <td class="align-middle">
+                    <b>Amp: </b><a
+                      href="demo\dry\amp\amp_guitar-funk.mp3">amp_guitar-funk.mp3</a><br>
                     <audio controls>
-                      <source src="demo/dry/epiano.mp3"
+                      <source src="demo\dry\amp\amp_guitar-funk.mp3"
+                        type="audio/mp3">
+                    </audio><br>
+                    <b>DI: </b><a
+                      href="demo\dry\guitar-funk.mp3">guitar-funk.mp3</a><br>
+                    <audio controls>
+                      <source src="demo\dry\guitar-funk.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
                   <td class="align-middle">
-                    <audio controls>
-                      <source src="demo/dataset/a_bigfella_g5_t3_epiano.mp3"
-                        type="audio/mp3">
-                    </audio>
-                  </td>
-                  <td class="align-middle">
+                    <b>Amp: </b><a
+                      href="demo\dataset\amp\amp_a_bigfella_g5_t3_guitar-funk.mp3">amp_a_bigfella_g5_t3_guitar-funk.mp3</a><br>
                     <audio controls>
                       <source
-                        src="demo/morphdrive_real/wet_a_bigfella_g5_t3_epiano.mp3"
+                        src="demo\dataset\amp\amp_a_bigfella_g5_t3_guitar-funk.mp3"
+                        type="audio/mp3">
+                    </audio>
+                    <b>DI.: </b><a
+                      href="demo\dataset\a_bigfella_g5_t3_guitar-funk.mp3">a_bigfella_g5_t3_guitar-funk.mp3</a><br>
+                    <audio controls>
+                      <source
+                        src="demo\dataset\a_bigfella_g5_t3_guitar-funk.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                  <td class="align-middle">
+                    <b>Amp: </b><a
+                      href="demo\morphdrive_real\amp\amp_wet_a_bigfella_g5_t3_guitar-funk.mp3">amp_wet_a_bigfella_g5_t3_guitar-funk.mp3</a><br>
+                    <audio controls>
+                      <source
+                        src="demo\morphdrive_real\amp\amp_wet_a_bigfella_g5_t3_guitar-funk.mp3"
+                        type="audio/mp3">
+                    </audio>
+                    <b>DI: </b><a
+                      href="demo\morphdrive_real\wet_a_bigfella_g5_t3_guitar-funk.mp3">wet_a_bigfella_g5_t3_guitar-funk.mp3</a><br>
+                    <audio controls>
+                      <source
+                        src="demo\morphdrive_real\wet_a_bigfella_g5_t3_guitar-funk.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
                 </tr>
                 <tr>
-                  <td class="align-middle">Xotic - Soul Driven<br>
-                    Gain 4 / 5<br>
-                    Tone 2 / 5<br>
+                  <!-- <td class="align-middle">37</td> -->
+                  <td class="align-middle">
+                    Zendrive (Hermida Audio)
+                    <table
+                      class="progtab text-center table table-borderless align-middle">
+                      <tr><td class='align-middle left'>Gain</td> <td
+                          class='align-middle'><div class="progress"><div
+                              class="progress-bar bg-danger"
+                              style="width: 100.0%;">5/5</div></div></td></tr>
+                      <tr><td class='align-middle left'>Tone</td> <td
+                          class='align-middle'><div class="progress"><div
+                              class="progress-bar bg-warning"
+                              style="width: 60.0%;">3/5</div></div></td></tr>
+                    </table>
+                    <!--Gain <div class="progress"><div class="progress-bar" style="width: 100.0%;">5/5</div></div><br>
+    Tone <div class="progress"><div class="progress-bar bg-info" style="width: 60.0%;">3/5</div></div><br> -->
                   </td>
                   <td class="align-middle">
+                    <b>Amp: </b><a
+                      href="demo\dry\amp\amp_guitar-chords.mp3">amp_guitar-chords.mp3</a><br>
                     <audio controls>
-                      <source src="demo/dry/guitar-funk2.mp3"
+                      <source src="demo\dry\amp\amp_guitar-chords.mp3"
+                        type="audio/mp3">
+                    </audio><br>
+                    <b>DI: </b><a
+                      href="demo\dry\guitar-chords.mp3">guitar-chords.mp3</a><br>
+                    <audio controls>
+                      <source src="demo\dry\guitar-chords.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
                   <td class="align-middle">
+                    <b>Amp: </b><a
+                      href="demo\dataset\amp\amp_a_zendrive_g5_t3_guitar-chords.mp3">amp_a_zendrive_g5_t3_guitar-chords.mp3</a><br>
                     <audio controls>
                       <source
-                        src="demo/dataset/a_souldriven_g4_t2_guitar-funk2.mp3"
+                        src="demo\dataset\amp\amp_a_zendrive_g5_t3_guitar-chords.mp3"
+                        type="audio/mp3">
+                    </audio>
+                    <b>DI.: </b><a
+                      href="demo\dataset\a_zendrive_g5_t3_guitar-chords.mp3">a_zendrive_g5_t3_guitar-chords.mp3</a><br>
+                    <audio controls>
+                      <source
+                        src="demo\dataset\a_zendrive_g5_t3_guitar-chords.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
                   <td class="align-middle">
+                    <b>Amp: </b><a
+                      href="demo\morphdrive_real\amp\amp_wet_a_zendrive_g5_t3_guitar-chords.mp3">amp_wet_a_zendrive_g5_t3_guitar-chords.mp3</a><br>
                     <audio controls>
                       <source
-                        src="demo/morphdrive_real/wet_a_souldriven_g4_t2_guitar-funk2.mp3"
+                        src="demo\morphdrive_real\amp\amp_wet_a_zendrive_g5_t3_guitar-chords.mp3"
+                        type="audio/mp3">
+                    </audio>
+                    <b>DI: </b><a
+                      href="demo\morphdrive_real\wet_a_zendrive_g5_t3_guitar-chords.mp3">wet_a_zendrive_g5_t3_guitar-chords.mp3</a><br>
+                    <audio controls>
+                      <source
+                        src="demo\morphdrive_real\wet_a_zendrive_g5_t3_guitar-chords.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                </tr>
+                <tr>
+                  <!-- <td class="align-middle">47</td> -->
+                  <td class="align-middle">
+                    Honey Bee (Bearfoot)
+                    <table
+                      class="progtab text-center table table-borderless align-middle">
+                      <tr><td class='align-middle left'>Gain</td> <td
+                          class='align-middle'><div class="progress"><div
+                              class="progress-bar bg-danger"
+                              style="width: 100.0%;">5/5</div></div></td></tr>
+                      <tr><td class='align-middle left'>Tone</td> <td
+                          class='align-middle'><div class="progress"><div
+                              class="progress-bar bg-warning"
+                              style="width: 40.0%;">2/5</div></div></td></tr>
+                    </table>
+                    <!--Gain <div class="progress"><div class="progress-bar" style="width: 100.0%;">5/5</div></div><br>
+    Tone <div class="progress"><div class="progress-bar bg-info" style="width: 40.0%;">2/5</div></div><br> -->
+                  </td>
+                  <td class="align-middle">
+                    <b>Amp: </b><a
+                      href="demo\dry\amp\amp_epiano.mp3">amp_epiano.mp3</a><br>
+                    <audio controls>
+                      <source src="demo\dry\amp\amp_epiano.mp3"
+                        type="audio/mp3">
+                    </audio><br>
+                    <b>DI: </b><a href="demo\dry\epiano.mp3">epiano.mp3</a><br>
+                    <audio controls>
+                      <source src="demo\dry\epiano.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                  <td class="align-middle">
+                    <b>Amp: </b><a
+                      href="demo\dataset\amp\amp_a_honeybee_g5_t2_epiano.mp3">amp_a_honeybee_g5_t2_epiano.mp3</a><br>
+                    <audio controls>
+                      <source
+                        src="demo\dataset\amp\amp_a_honeybee_g5_t2_epiano.mp3"
+                        type="audio/mp3">
+                    </audio>
+                    <b>DI.: </b><a
+                      href="demo\dataset\a_honeybee_g5_t2_epiano.mp3">a_honeybee_g5_t2_epiano.mp3</a><br>
+                    <audio controls>
+                      <source src="demo\dataset\a_honeybee_g5_t2_epiano.mp3"
+                        type="audio/mp3">
+                    </audio>
+                  </td>
+                  <td class="align-middle">
+                    <b>Amp: </b><a
+                      href="demo\morphdrive_real\amp\amp_wet_a_honeybee_g5_t2_epiano.mp3">amp_wet_a_honeybee_g5_t2_epiano.mp3</a><br>
+                    <audio controls>
+                      <source
+                        src="demo\morphdrive_real\amp\amp_wet_a_honeybee_g5_t2_epiano.mp3"
+                        type="audio/mp3">
+                    </audio>
+                    <b>DI: </b><a
+                      href="demo\morphdrive_real\wet_a_honeybee_g5_t2_epiano.mp3">wet_a_honeybee_g5_t2_epiano.mp3</a><br>
+                    <audio controls>
+                      <source
+                        src="demo\morphdrive_real\wet_a_honeybee_g5_t2_epiano.mp3"
                         type="audio/mp3">
                     </audio>
                   </td>
@@ -374,7 +692,7 @@
 
               </table>
 
-              <h4 class="text-center"><a href="demos-real.html">More Demos (Real
+              <h4 class="text-center"><a style="color:red" href="demos-real.html">More Demos (Real
                   Configurations)</a></h4>
               <div style="margin-bottom: 4rem;"></div>
 
