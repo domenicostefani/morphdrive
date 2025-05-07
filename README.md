@@ -22,7 +22,9 @@
 <img src="docs/images/morphdrive_gui.png"  style="width: 38%;">
 </div>
 
-*Accompanying material for "MorphDrive: Latent Conditioning for Cross-Circuit Effect Modeling and a Parametric Audio Dataset of Analog Overdrive Pedals"*
+*Accompanying material for "**MorphDrive: Latent Conditioning for Cross-Circuit Effect Modeling and a Parametric Audio Dataset of Analog Overdrive Pedals**"*  
+Accepted at the 28th International Conference on Digital Audio Effects (DAFx25), Ancona, Italy, 2 - 5 September 2025
+
 </div>
 
 <div align="center">
@@ -34,6 +36,8 @@
 <!-- ## Website with Examples
 
 <a href="https://domenicostefani.com/morphdrive" style="margin-bottom:4 rem">www.domenicostefani.com/morphdrive</a> -->
+
+## **[Preprint <--](https://www.domenicostefani.com/publications/2025DAFx_Morphdrive_PREPRINT.pdf)**
 
 ## Abstract
 
