@@ -1,6 +1,8 @@
 wandb/
 DB_DISK/
 
+overdrive_modeler
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

@@ -1,6 +1,0 @@
-OUTPUT SHAPE : torch.Size([1, 88200])
-MU SHAPE : torch.Size([1, 8])
-LOGVAR SHAPE : torch.Size([1, 8])
-Z SHAPE : torch.Size([1, 8])
-NUMBER OF PARAMETERS: 5292396
-
