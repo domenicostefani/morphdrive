@@ -39,6 +39,51 @@
       .left{
           width: 30%;
       }
+
+
+      /* CUSTOM WIDTHS */
+    .w-10, .w-xs-10 { width: 10%!important; }
+    .w-15, .w-xs-15 { width: 15%!important; }
+    .w-20, .w-xs-20 { width: 20%!important; }
+    .w-60, .w-xs-60 {width: 60%!important;}
+
+    /* BREAKPOINTS */
+
+    /* SM breakpoint */
+    @media (min-width: 576px) {
+        /* CUSTOM WIDTHS */
+        .w-sm-10 { width: 10%!important; }
+        .w-sm-15 { width: 15%!important; }
+        .w-sm-20 { width: 20%!important; }
+        .w-sm-60 { width: 60%!important; }
+    }
+
+    /* MD breakpoint*/
+    /* @media (min-width: 768px) { */
+    @media screen and (max-width: 768px) {
+        /* CUSTOM WIDTHS */
+        .w-md-10 { width: 10%!important; }
+        .w-md-15 { width: 15%!important; }
+        .w-md-20 { width: 20%!important; }
+        .w-md-60 { width: 60%!important; }
+        .w-md-100 { width: 100%!important; }
+        audio {
+            transform: scale(0.7); transform-origin: center;
+        }
+        .table td {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+    }
+
+    /* LG breakpoint */
+    @media (min-width: 992px) {
+        /* CUSTOM WIDTHS */
+        .w-lg-10 { width: 10%!important; }
+        .w-lg-15 { width: 15%!important; }
+        .w-lg-20 { width: 20%!important; }
+        .w-lg-60 { width: 60%!important; }
+    }
   </style>
   </head>
 
@@ -81,7 +126,7 @@
 
           <h3 class="text-center">Abstract</h3>
           <hr>
-          <p class="pr-5 pl-5" tyle="text-align:justify;">
+          <p class="px-0 px-md-5  text-justify">
             We present an approach to the neural modeling of overdrive guitar
             pedals with conditioning from a cross-circuit and cross-setting
             latent space. The resulting networks model the behavior of multiple
@@ -135,14 +180,19 @@
                   to top</a></div>
 
               <hr>
-              Below are a number of example effects from existing and hybrid
-              circuit/setting overdrive configurations.<br>
-              Sound samples are presented both as <b>DI</b> (Direct Input) and an amplified (<b>Amp</b>), processed through the open-source <a href="https://www.resonantdsp.com/swankyamp/" target="_blank">Swanky Amp</a> tube amplifier and cabinet simulation.
-              <!-- <br>
-            Pre-trained models from different effect types are available for usage in the <a
-              href="https://colab.research.google.com/github/csteinmetz1/steerable-nafx/blob/master/steerable-nafx.ipynb">Colab
-              notebook</a>. -->
+                <div class="px-0 px-md-5" style="text-align:justify;">
+                    Below are a number of example effects from existing and hybrid
+                    circuit/setting overdrive configurations.<br>
+                    Sound samples are presented both as <b>DI</b> (Direct Input) and an amplified (<b>Amp</b>), processed through the open-source <a href="https://www.resonantdsp.com/swankyamp/" target="_blank">Swanky Amp</a> tube amplifier and cabinet simulation.
+                    <!-- <br>
+                                Pre-trained models from different effect types are available for usage in the <a
+                    href="https://colab.research.google.com/github/csteinmetz1/steerable-nafx/blob/master/steerable-nafx.ipynb">Colab
+                    notebook</a>. -->
+                </div>
               <hr>
+            </div>
+              
+            <div class="table-responsive">
 
               <!-- <table class="text-center table align-middle">
                 <tr>
@@ -165,12 +215,11 @@
                   <th>Dry</th>
                   <th>Static HyperRNN + VAE</th>
                 </tr>
-                <tr>
+                <tr style="overflow-x:scroll;">
                   <!-- <td class="align-middle">3</td> -->
                   <td class="align-middle">
                     x=0.7 y=0.8<br>
-                    <img src="demo\morphdrive_hybrid\heatmap_point_0.7_0.8.png"
-                      width="300 rem">
+                    <img src="demo\morphdrive_hybrid\heatmap_point_0.7_0.8.png" class= "w-60 w-md-100 clickable-image" width="300">
                   </td>
                   <td class="align-middle">
                     <b>Amp:  </b><a
@@ -207,7 +256,7 @@
                   <td class="align-middle">
                     x=0.7 y=0.8<br>
                     <img src="demo\morphdrive_hybrid\heatmap_point_0.7_0.8.png"
-                      width="300 rem">
+                      class= "w-60 w-md-100 clickable-image" width="300">
                   </td>
                   <td class="align-middle">
                     <b>Amp:  </b><a
@@ -245,7 +294,7 @@
                   <td class="align-middle">
                     x=0.9 y=0.1<br>
                     <img src="demo\morphdrive_hybrid\heatmap_point_0.9_0.1.png"
-                      width="300 rem">
+                      class= "w-60 w-md-100 clickable-image" width="300">
                   </td>
                   <td class="align-middle">
                     <b>Amp:  </b><a
@@ -283,7 +332,7 @@
                   <td class="align-middle">
                     x=0.2 y=0.1<br>
                     <img src="demo\morphdrive_hybrid\heatmap_point_0.2_0.1.png"
-                      width="300 rem">
+                      class= "w-60 w-md-100 clickable-image" width="300">
                   </td>
                   <td class="align-middle">
                     <b>Amp:  </b><a
@@ -321,7 +370,7 @@
                   <td class="align-middle">
                     x=0.7 y=0.8<br>
                     <img src="demo\morphdrive_hybrid\heatmap_point_0.7_0.8.png"
-                      width="300 rem">
+                      class= "w-60 w-md-100 clickable-image" width="300">
                   </td>
                   <td class="align-middle">
                     <b>Amp:  </b><a
@@ -354,14 +403,20 @@
                   </td>
                 </tr>
               </table>
-              <h4 class="text-center"><a style="color:red" href="demos-hybrid.html">More Demos
-                  (Hybrid Configurations)</a></h4>
+            </div>
+            <h4 class="text-center"><a style="color:red" href="demos-hybrid.html">More Demos
+                (Hybrid Configurations)</a></h4>
+            <div style="margin-bottom: 4rem;"></div>
 
-              <div style="margin-bottom: 4rem;"></div>
+            <div class="table-responsive">
+                <h3>Existing Configurations</h3>
+                <div class="text-center"><a href="#index" class="text-center">Back
+                    to top</a></div>
+            </div>
 
-              <h3>Existing Configurations</h3>
-              <div class="text-center"><a href="#index" class="text-center">Back
-                  to top</a></div>
+            <div class="table-responsive">
+
+
 
               <table class="text-center table">
                 <tr>
@@ -694,17 +749,16 @@
                 </tr>
 
               </table>
-
-              <h4 class="text-center"><a style="color:red" href="demos-real.html">More Demos (Real
-                  Configurations)</a></h4>
-              <div style="margin-bottom: 4rem;"></div>
-
             </div>
+
+            <h4 class="text-center"><a style="color:red" href="demos-real.html">More Demos (Real
+                Configurations)</a></h4>
+            <div style="margin-bottom: 4rem;"></div>
           </div>
         </div>
 
         <div id="dataset" class="section mt-4">
-          <div class="container  text-center">
+          <div class="container text-justify">
             <h2>Dataset - <i>pOD-set</i></h2>
           </div>
 
@@ -992,7 +1046,17 @@
       src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
       integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
       crossorigin="anonymous"></script>
-
+    <script>
+        // wrap all clickable-image with <a> pointing to the image source, but only on phones
+        if (window.innerWidth < 768) {
+          document.querySelectorAll('.clickable-image').forEach(img => {
+            const link = document.createElement('a');
+            link.href = img.src;
+            img.parentNode.insertBefore(link, img);
+            link.appendChild(img);
+          });
+        }
+    </script>
   </body>
 
 </html>
