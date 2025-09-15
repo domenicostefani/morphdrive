@@ -23,7 +23,8 @@
 </div>
 
 *Accompanying material for "**MorphDrive: Latent Conditioning for Cross-Circuit Effect Modeling and a Parametric Audio Dataset of Analog Overdrive Pedals**"*  
-Accepted at the 28th International Conference on Digital Audio Effects (DAFx25), Ancona, Italy, 2 - 5 September 2025
+Francesco Ardan Dal Rì, Domenico Stefani, Luca Turchet, Nicola Conci  
+in Proceedings of the 28-th Int. Conf. on Digital Audio Effects (DAFx25), 2025, Ancona, Italy.
 
 </div>
 
